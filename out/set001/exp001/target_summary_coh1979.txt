@@ -1,0 +1,23 @@
+
+Summary of calibration targets for 1979 cohort
+
+All in year 2010 prices
+Mean earnings by schooling (age 40, thousands):   30.4    42.5    67.8  
+Log skill premiums:   0.34    0.47  
+College cost: mean / std  5.0 / 5.7 
+In college: mean hours: 0.24   mean earnings: 0.0 
+
+By parental income quartile
+   Q  ypMean   zMean
+   1     0.0     2.8
+   2     0.0     4.3
+   3     0.0     6.3
+   4     0.0     9.1
+
+
+By IQ quartile
+   Q  CD+CG    CG  ypMean  zMean
+   1   0.22  0.03    34.8    0.0
+   2   0.42  0.10    52.7    0.0
+   3   0.62  0.23    60.0    0.0
+   4   0.87  0.54    70.4    0.0

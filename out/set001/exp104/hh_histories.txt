@@ -1,0 +1,90 @@
+
+    ---------    
+
+Life history of type 1
+
+Parents:  
+income (per year): 18.2 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 18.2  uPrime: 0.71 
+Child:   c: 23.7  uPrime: 0.60 
+
+Try college:
+Parent:  transfer: 0.0   c: 18.2  uPrime: 0.71 
+Child:   coll cost: 4.6 
+Child phase 1:  c: 14.6  uPrime: 0.47  earn: 14.5  save: -9.5 
+Child phase 2:  c: 15.2  uPrime: 0.43  earn: 13.4  save: -13.1 
+
+
+    ---------    
+
+Life history of type 21
+
+Parents:  
+income (per year): 29.1 
+
+Work as HSG:
+Parent:  transfer: 2.0   c: 27.1  uPrime: 0.61 
+Child:   c: 24.0  uPrime: 0.59 
+
+Try college:
+Parent:  transfer: 0.0   c: 29.1  uPrime: 0.60 
+Child:   coll cost: 1.4 
+Child phase 1:  c: 15.6  uPrime: 0.41  earn: 12.6  save: -8.7 
+Child phase 2:  c: 16.4  uPrime: 0.37  earn: 11.1  save: -13.9 
+
+
+    ---------    
+
+Life history of type 41
+
+Parents:  
+income (per year): 30.8 
+
+Work as HSG:
+Parent:  transfer: 2.8   c: 28.0  uPrime: 0.61 
+Child:   c: 24.1  uPrime: 0.58 
+
+Try college:
+Parent:  transfer: 0.0   c: 30.8  uPrime: 0.59 
+Child:   coll cost: 2.6 
+Child phase 1:  c: 14.5  uPrime: 0.47  earn: 14.7  save: -4.8 
+Child phase 2:  c: 16.7  uPrime: 0.36  earn: 10.5  save: -17.8 
+
+
+    ---------    
+
+Life history of type 60
+
+Parents:  
+income (per year): 18.2 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 18.2  uPrime: 0.71 
+Child:   c: 23.7  uPrime: 0.60 
+
+Try college:
+Parent:  transfer: 0.0   c: 18.2  uPrime: 0.71 
+Child:   coll cost: 6.8 
+Child phase 1:  c: 14.3  uPrime: 0.49  earn: 15.2  save: -11.7 
+Child phase 2:  c: 14.0  uPrime: 0.51  earn: 15.6  save: -10.9 
+
+
+    ---------    
+
+Life history of type 80
+
+Parents:  
+income (per year): 14.7 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 14.7  uPrime: 0.76 
+Child:   c: 23.7  uPrime: 0.60 
+
+Try college:
+Parent:  transfer: 0.0   c: 14.7  uPrime: 0.76 
+Child:   coll cost: -4.0 
+Child phase 1:  c: 14.8  uPrime: 0.46  earn: 14.2  save: 7.0 
+Child phase 2:  c: 19.1  uPrime: 0.27  earn: 5.9  save: -18.2 
+

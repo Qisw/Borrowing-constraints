@@ -1,0 +1,37 @@
+function eeDevV = hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, j, iCohort, paramS, cS)
+% Euler equation deviation in college; periods 3-4
+%{
+eeDev > 0  implies  u'(c) > V_k  =>  raise c
+
+Checked: 2015-mar-20
+%}
+
+%% Input check
+if cS.dbg > 10
+   validateattributes(cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
+   validateattributes(hoursV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '<', 1})
+end
+
+
+
+%% Main
+
+% Marginal value of capital, discounted to start of work
+muKV = nan(size(cV));
+for i1 = 1 : length(cV)
+   [~,~,~, muKV(i1)] = hh_bc1.hh_work_bc1(kPrimeV(i1), cS.iCG, j, iCohort, paramS, cS);
+end
+
+ucV = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV, paramS, cS);
+
+% Give up 1/2 c in each period to gain 1 k'
+eeDevV = (1 + paramS.prefBeta) .* ucV / 2  -  (paramS.prefBeta .^ 2) .* muKV;
+
+
+%% Output check
+if cS.dbg > 10
+   validateattributes(eeDevV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      'size', size(cV)})
+end
+
+end
