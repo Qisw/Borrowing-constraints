@@ -23,7 +23,7 @@ guessV = cS.pvector.guess_make(paramS, doCalV);
 fprintf('  %i calibrated parameters \n', length(guessV));
 
 % Test guess extraction
-if rand_time < 0.05
+if rand_time < 0.01
    fprintf('Testing guess extraction \n');
    % Try running directly with paramS
    [dev, outS, hhS, aggrS] = calibr_bc1.cal_dev(tgS, paramS, cS);

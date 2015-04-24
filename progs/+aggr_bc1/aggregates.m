@@ -337,6 +337,11 @@ aggrS.debtMean_yV = zeros([nyp, 1]);
 aggrS.logYpMean_yV = zeros([nyp, 1]);
 
 
+aggrS.mass_qyM = nan([nIq, nyp]);
+aggrS.massColl_qyM = nan([nIq, nyp]);
+aggrS.massGrad_qyM = nan([nIq, nyp]);
+
+
 for iy = 1 : nyp
    % Types in this class
    jIdxV = find(paramS.ypClass_jV == iy);
@@ -347,6 +352,8 @@ for iy = 1 : nyp
 
    % Their masses in college
    massColl_jV = aggrS.massColl_jV(jIdxV);
+   % Mass of grad
+   massGrad_jV = massColl_jV .* aggrS.prGrad_jV(jIdxV);
    if any(massColl_jV > 0)
       jMass = sum(massColl_jV);
 
@@ -369,6 +376,18 @@ for iy = 1 : nyp
       aggrS.debtFrac_yV(iy) = sum(mass_tjM(:) .* (debt_tjM(:) > 0)) ./ sum(mass_tjM(:));
       % Meand debt (not conditional)
       aggrS.debtMean_yV(iy) = sum(mass_tjM(:) .* debt_tjM(:)) ./ sum(mass_tjM(:));
+      
+      
+      % ******  Stats by [iq, yp]
+      
+      % Mass (q,y) = sum over j in y group  Pr(iq,j) * mass(j)
+      aggrS.mass_qyM(:, iy) = sum(prIq_jM(:, jIdxV) .* (ones([nIq,1]) * aggrS.mass_jV(jIdxV)'), 2);
+      
+      % Mass in college by [iq, j] for the right yp group
+      aggrS.massColl_qyM(:, iy) = sum(prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massColl_jV(:)'), 2);
+      
+      % Mass in college by [iq, j] for the right yp group
+      aggrS.massGrad_qyM(:, iy) = sum(prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massGrad_jV(:)'), 2);
    end
 end
 
@@ -378,6 +397,26 @@ if dbg > 10
       'size', [nyp,1]})
    validateattributes(aggrS.transfer_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, 'size', [nyp,1]})
+   
+   % Compare with entry / grad rates by IQ
+   probEnter_qV = sum(aggrS.massColl_qyM, 2) ./ sum(aggrS.mass_qyM, 2);
+   if any(abs(probEnter_qV(:) - aggrS.fracEnter_qV) > 0.02)
+      error_bc1('no match', cS);
+   end
+   probGrad_qV = sum(aggrS.massGrad_qyM, 2) ./ sum(aggrS.mass_qyM, 2);
+   if any(abs(probGrad_qV(:) - aggrS.fracGrad_qV) > 0.02)
+      error_bc1('no match', cS);
+   end
+   
+   % Compare with entry / grad rates by yParent
+   probEnter_yV = sum(aggrS.massColl_qyM) ./ sum(aggrS.mass_qyM);
+   if any(abs(probEnter_yV(:) - aggrS.fracEnter_yV) > 0.02)
+      error_bc1('no match', cS);
+   end
+   probGrad_yV = sum(aggrS.massGrad_qyM) ./ sum(aggrS.mass_qyM);
+   if any(abs(probGrad_yV(:) - aggrS.fracGrad_yV) > 0.02)
+      error_bc1('no match', cS);
+   end
 end
 
 
