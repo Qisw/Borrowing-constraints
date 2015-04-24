@@ -5,7 +5,6 @@ figS = const_fig_bc1;
 paramS = param_load_bc1(setNo, expNo);
 hhS = var_load_bc1(cS.vHhSolution, cS);
 aggrS = var_load_bc1(cS.vAggregates, cS);
-iCohort = cS.iCohort;
 
 
 %% Entry probabilities by type
@@ -18,7 +17,6 @@ if 1
    ylabel('College entry rate');
    output_bc1.fig_format(fh, 'line');
    output_bc1.fig_save('entry_m', saveFigures, cS);
-   
 end
 
 
@@ -26,11 +24,11 @@ end
 if 1
    fh = output_bc1.fig_new(saveFigures, []);
    hold on;
-   xV = log(paramS.yParent_jV);
-   plot(xV,  log(hhS.v0S.zColl_jV), 'o', 'color', figS.colorM(1,:));
+   xV = (paramS.yParent_jV);
+   plot(xV,  (hhS.v0S.zColl_jV), 'o', 'color', figS.colorM(1,:));
    plot([min(xV), max(xV)], [min(xV), max(xV)], '--', 'color', figS.colorM(2,:));
-   xlabel('Log parental income');
-   ylabel('Log Transfer');
+   xlabel('Parental income');
+   ylabel('Transfer (college)');
    output_bc1.fig_format(fh, 'line');
    output_bc1.fig_save('z_yp', saveFigures, cS);
 end
@@ -44,7 +42,7 @@ if 1
          workStudyStr = 'college';
          transfer_jV = hhS.v0S.zColl_jV;
          t = 1;
-         uPrimeChild_jV = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:), 1 - aggrS.hours_tjM(t,:), paramS, cS);
+         [~,uPrimeChild_jV] = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:), 1 - aggrS.hours_tjM(t,:), paramS, cS);
 
       else
          % Kids work as HSG
@@ -53,7 +51,9 @@ if 1
          uPrimeChild_jV = nan([cS.nTypes, 1]);
          for j = 1 : cS.nTypes
             k1 = hhS.v0S.k1Work_jV(j);
-            cV = hh_bc1.hh_work_bc1(k1, cS.iHSG, j, iCohort, paramS, cS);
+            % Use ability level with highest probability
+            [~, iAbil] = max(paramS.prob_a_jM(:,j));
+            cV = hh_bc1.hh_work_bc1(k1, cS.iHSG, iAbil, paramS, cS);
             cChild = cV(1);
             [~, uPrimeChild_jV(j)] = hh_bc1.util_work_bc1(cChild, paramS, cS);
          end
@@ -92,7 +92,7 @@ if 1
    
    mupV = hh_bc1.util_parent(cV, paramS, cS);
    [~, muWorkV] = hh_bc1.util_work_bc1(cV, paramS, cS);
-   muCollV = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS, cS);
+   [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS, cS);
    
    iLine = 1;
    plot(cV,  mupV, figS.lineStyleDenseV{iLine}, 'color', figS.colorM(iLine,:));

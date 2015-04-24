@@ -4,11 +4,13 @@ function college(setNo)
 cS = const_bc1(setNo);
 expNo = cS.expBase;
 cS.dbg = 111;
+fprintf('\nTesting college code\n');
 
 paramS = param_load_bc1(setNo, expNo);
 
-iCohort = randi(cS.nCohorts, [1,1]);
+% iCohort = randi(cS.nCohorts, [1,1]);
 j = randi(cS.nTypes, [1,1]);
+iAbil = randi(cS.nAbil, [1,1]);
 
 k = randn([1,1]) * paramS.kMax;
 wColl = paramS.wColl_jV(j);
@@ -35,7 +37,7 @@ fprintf('Test hh utility in college\n');
 n = 5;
 cV = linspace(1, 2, n);
 leisureV = linspace(0.1, 0.9, n);
-[muCV, muLV, utilV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS, cS);
+[utilV, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS, cS);
 
 % Inverse of u(c)
 c2V = hh_bc1.hh_uprimec_inv_bc1(muCV, paramS, cS);
@@ -45,14 +47,14 @@ end
 
 % MU(l)
 dLeisure = 1e-5;
-[~,~,util2V] = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS, cS);
+util2V = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS, cS);
 if max(abs(((util2V - utilV) ./ dLeisure - muLV) ./ max(0.1, muLV))) > 1e-4
    error_bc1('Invalid mu(l)', cS);
 end
 
 % Mu(c)
 dc = 1e-5;
-[~,~,util2V] = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS, cS);
+util2V = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS, cS);
 if max(abs(((util2V - utilV) ./ dc - muCV) ./ max(0.1, muCV))) > 1e-4
    error_bc1('Invalid mu(c)', cS);
 end
@@ -71,21 +73,28 @@ fprintf('l = ');
 fprintf('  %.2f', hoursV);
 fprintf('\n');
 
-fprintf('Euler deviation in college\n');
-kPrimeV = linspace(2, 3, length(cV))';
-eeDevV = hh_bc1.hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, j, iCohort, paramS, cS);
+
+% fprintf('Utility in college by c, k, j\n');
+% collUtilS = coll_util_ckj(paramS, cS);
+% collUtilS = coll_util_kkj(paramS, cS);
+
+% fprintf('Euler deviation in college (syntax only)\n');
+% kPrimeV = linspace(2, 3, length(cV))';
+% eeDevV = hh_bc1.hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, iAbil, vWorkS, paramS, cS);
 
 % fprintf('Corner solution in college; period 3 \n');
 % kMin = -0.5;
 % [eeDev, c, l] = hh_corner_coll3_bc1(k, wColl, pColl, kMin, iCohort, paramS, cS);
 % fprintf('c = %.3f    l = %.3f \n', c, l);
 
-fprintf('Hh in college; period 3 \n');
-[c, l, kPrime, vColl] = hh_bc1.coll_pd3(k, wColl, pColl, j, iCohort, paramS, cS);
-fprintf('c = %.3f    l = %.3f    kPrime: %3.f \n',  c, l, kPrime);
+% fprintf('Hh in college; period 3 \n');
+% [c, l, kPrime, vColl] = hh_bc1.coll_pd3(k, wColl, pColl, iAbil, vWorkS, paramS, cS);
+% fprintf('c = %.3f    l = %.3f    kPrime: %3.f \n',  c, l, kPrime);
 
-fprintf('hh solution\n');
-saveS = hh_bc1.hh_solve(iCohort, paramS, cS);
+fprintf('Hh solution\n');
+tic
+saveS = hh_bc1.hh_solve(paramS, cS);
+toc
 
 
 end

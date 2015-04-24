@@ -88,6 +88,11 @@ row_add('prefHS', '%.2f', []);
 ir = ir + 1;
 tbM{ir, cName} = 'Other';
 
+row_add_vector({'phiHSG', 'phiCG'},  'Returns to ability', '%.3f', []);
+if showCalibrated == 1
+   row_add_direct('$\hat_{e}_{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
+end
+
 % Prob grad(a)
 row_add_vector({'prGradMin', 'prGradMax', 'prGradMult', 'prGradExp', 'prGradPower', 'prGradABase'}, ...
    'Governing $\pi(a)$', '%.2f', []);

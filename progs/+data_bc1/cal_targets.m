@@ -2,13 +2,14 @@ function cal_targets(setNo)
 % Make and save calibration targets
 %{
 All targets are in model units
+Not all cohorts have all targets
 
 All dollar figures are scaled to be stationary
 
-Checked: 2015-Apr-3
+Checked: +++
 %}
 
-fprintf('Making calibration targets \n');
+fprintf('\nMaking calibration targets \n');
 
 
 cS = const_bc1(setNo);
@@ -37,6 +38,34 @@ n79S = n79S.all_targets;
 
 
 %% College outcomes
+
+% CPS data
+tgS.frac_scM = var_load_bc1(cS.vCohortSchooling, cS);
+
+
+tgS.fracEnter_qycM = nan([nIq, nYp, cS.nCohorts]);
+tgS.fracGrad_qycM  = nan([nIq, nYp, cS.nCohorts]);
+
+% Fraction enter / graduate by IQ
+%  frac grad not conditional on entry
+tgS.fracEnter_qcM = nan([nIq, cS.nCohorts]);
+tgS.fracGrad_qcM  = nan([nIq, cS.nCohorts]);
+tgS.fracEnter_ycM = nan([nYp, cS.nCohorts]);
+tgS.fracGrad_ycM  = nan([nYp, cS.nCohorts]);
+
+
+
+% ***  Project talent
+
+[~, iCohort] = min(abs(cS.bYearV - 1940));
+loadS = data_bc1.load_income_iq_college('flanagan 1971.csv', setNo);
+
+tgS.fracEnter_qycM(:,:,iCohort) = loadS.entry_qyM;
+tgS.fracGrad_qycM(:,:,iCohort)  = loadS.grad_qyM;
+tgS.fracEnter_qcM(:,iCohort) = loadS.entry_qV;
+tgS.fracEnter_ycM(:,iCohort) = loadS.entry_yV;
+tgS.fracGrad_qcM(:,iCohort) = loadS.grad_qV;
+tgS.fracGrad_ycM(:,iCohort) = loadS.grad_yV;
 
 % % Fraction in each school group by [iq, yp]
 % % invented data targets +++
@@ -71,58 +100,53 @@ n79S = n79S.all_targets;
 %    '>', 0', '<', 1, 'size', [cS.nSchool, nIq, nYp]})
 
 
-% Fraction enter / graduate by IQ
-%  frac grad not conditional on entry
-tgS.fracEnter_qcM = nan([nIq, cS.nCohorts]);
-tgS.fracGrad_qcM  = nan([nIq, cS.nCohorts]);
+% *****  Nlsy79
 
 tgS.fracEnter_qcM(:, icNlsy79) = n79S.attend_college_byafqt;
 tgS.fracGrad_qcM(:, icNlsy79)  = n79S.grad_college_byafqt;
 
-tgS.fracEnter_ycM = nan([nYp, cS.nCohorts]);
-tgS.fracGrad_ycM  = nan([nYp, cS.nCohorts]);
-
 tgS.fracEnter_ycM(:, icNlsy79) = n79S.attend_college_byinc;
 tgS.fracGrad_ycM(:, icNlsy79)  = n79S.grad_college_byinc;
 
-
-% Invented +++
-tgS.fracEnter_qcM = tgS.fracEnter_qcM(:, icNlsy79) * ones([1, cS.nCohorts]);
-tgS.fracGrad_qcM  = tgS.fracGrad_qcM(:, icNlsy79)  * ones([1, cS.nCohorts]);
-
-tgS.fracEnter_ycM = tgS.fracEnter_ycM(:, icNlsy79) * ones([1, cS.nCohorts]);
-tgS.fracGrad_ycM  = tgS.fracGrad_ycM(:, icNlsy79)  * ones([1, cS.nCohorts]);
-
-validateattributes(tgS.fracEnter_qcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   'positive', '<', 0.9})
-validateattributes(tgS.fracGrad_qcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   'positive', '<', 0.8})
+for iCohort = 1 : cS.nCohorts
+   if ~isnan(tgS.fracEnter_qcM(1,iCohort))
+      validateattributes(tgS.fracEnter_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+         'positive', '<', 0.9})
+      validateattributes(tgS.fracGrad_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+         'positive', '<', 0.8})
+   end
+end
 
 
-% *****  Implied
+% *****  Implied: Fraction by s
+% For samples with micro data
 
 % Fraction in each IQ group
 qFracV = diff([0; cS.iqUbV]);
-tgS.frac_scM = nan([cS.nSchool, cS.nCohorts]);
 for iCohort = 1 : cS.nCohorts
-   fracEnter = sum(tgS.fracEnter_qcM(:, iCohort) .* qFracV(:));
-   fracGrad  = sum(tgS.fracGrad_qcM(:, iCohort) .* qFracV(:));
-   tgS.frac_scM(:, iCohort) = [1-fracEnter,  fracEnter-fracGrad,  fracGrad];
+   % check consistency with cps data +++++
+   if ~isnan(tgS.fracEnter_qcM(1,iCohort))
+      fracEnter = sum(tgS.fracEnter_qcM(:, iCohort) .* qFracV(:));
+      fracGrad  = sum(tgS.fracGrad_qcM(:, iCohort) .* qFracV(:));
+      tgS.frac_scM(:, iCohort) = [1-fracEnter,  fracEnter-fracGrad,  fracGrad];
+
+      % Check
+      validateattributes(tgS.frac_scM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+         '<', 1, 'size', [cS.nSchool, 1]})
+      pSumV = sum(tgS.frac_scM(:,iCohort));
+      if any(abs(pSumV - 1) > 1e-6)
+         error('Invalid');
+      end
+   end
 end
 
-validateattributes(tgS.frac_scM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 1, 'size', [cS.nSchool, cS.nCohorts]})
-pSumV = sum(tgS.frac_scM);
-if any(abs(pSumV - 1) > 1e-6)
-   error('Invalid');
-end
 
 
 %% Construct a scale factor for each cohort
 %  Multiply all dollar figures by this factor to make model stationary
 
 % Load profiles (units of account, not scaled), by model age
-earn_ascM = var_load_bc1(cS.vCohortEarnProfiles, cS);
+earn_tscM = var_load_bc1(cS.vCohortEarnProfiles, cS);
 
 % Average earnings over this age range
 ageV = (30 : 50) - cS.age1 + 1;
@@ -136,7 +160,7 @@ validateattributes(wt_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 
 % Mean earnings by cohort, constant weights, constant prices
 meanEarn_cV = nan([cS.nCohorts, 1]);
 for iCohort = 1 : cS.nCohorts
-   earnM = earn_ascM(ageV, :, iCohort);
+   earnM = earn_tscM(ageV, :, iCohort);
    meanEarn_cV(iCohort) = sum(earnM(:) .* wt_asM(:)) ./ sum(wt_asM(:));
 end
 
@@ -148,13 +172,22 @@ tgS.dollarFactor_cV = meanEarn_cV(cS.iRefCohort) ./ meanEarn_cV;
 %% Earnings profiles by [a,s,c]
 % Made stationary
 
-tgS.earn_ascM = nan(size(earn_ascM));
+tgS.earn_tscM = nan(size(earn_tscM));
 for iCohort = 1 : cS.nCohorts
-   tgS.earn_ascM(:,:,iCohort) = earn_ascM(:,:,iCohort) .* tgS.dollarFactor_cV(iCohort);
+   tgS.earn_tscM(:,:,iCohort) = earn_tscM(:,:,iCohort) .* tgS.dollarFactor_cV(iCohort);
 end
 if cS.dbg > 10
-   validateattributes(tgS.earn_ascM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+   validateattributes(tgS.earn_tscM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [cS.ageMax, cS.nSchool, cS.nCohorts]})
+end
+
+% This could fail if R is calibrated +++
+tgS.pvEarn_scM = nan([cS.nSchool, cS.nCohorts]);
+for iCohort = 1 : cS.nCohorts
+   for iSchool = 1 : cS.nSchool
+      tgS.pvEarn_scM(iSchool,iCohort) = prvalue_bc1(tgS.earn_tscM(cS.ageWorkStart_sV(iSchool) : cS.ageMax, ...
+         iSchool,iCohort), cS.R);
+   end
 end
 
 
@@ -166,41 +199,41 @@ end
 tgS.logYpMean_qcM = nan([nIq, cS.nCohorts]);
 tgS.logYpMean_qcM(:, icNlsy79) = n79S.mean_parent_inc_byafqt - log(nlsyCpiFactor) - log(cS.unitAcct);
 
-
 tgS.logYpMean_ycM = nan([nYp, cS.nCohorts]);
 tgS.logYpMean_ycM(:, icNlsy79) = n79S.mean_parent_inc_byinc  - log(nlsyCpiFactor) - log(cS.unitAcct);
 
-% invented data targets +++
-% make stationary
-for iCohort = 1 : cS.nCohorts
-   tgS.logYpMean_qcM(:, iCohort) = tgS.logYpMean_qcM(:, icNlsy79);
-   tgS.logYpMean_ycM(:, iCohort) = tgS.logYpMean_ycM(:, icNlsy79);
-end
-
 if cS.dbg > 10
-   validateattributes(tgS.logYpMean_qcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-      '<', 10, 'size', [nIq, cS.nCohorts]})
+   idxV = find(~isnan(tgS.logYpMean_qcM(1,:)));
+   validateattributes(tgS.logYpMean_qcM(:,idxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+      '<', 10})
+   validateattributes(tgS.logYpMean_ycM(:,idxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+      '<', 10})
 end
 
 
 % Mean and std by cohort
 %  Directly sets the model params
-tgS.logYpMean_cV = nan([cS.nCohorts, 1]);
-tgS.logYpStd_cV  = nan([cS.nCohorts, 1]);
+% tgS.logYpMean_cV = nan([cS.nCohorts, 1]);
+% tgS.logYpStd_cV  = nan([cS.nCohorts, 1]);
 
-% Chris
 % Assumed time invariant
+tgS.logYpMean_cV = n79S.mean_parent_inc .* ones([cS.nCohorts, 1]) - log(nlsyCpiFactor) - log(cS.unitAcct);
+% Std log(yp) - no need to account for units
 tgS.logYpStd_cV  = n79S.sd_parent_inc .* ones([cS.nCohorts, 1]); 
 
-% Assumed time invariant (stationary transformation)
-for iCohort = 1 : cS.nCohorts
-   tgS.logYpMean_cV(iCohort) = mean(tgS.logYpMean_qcM(:,iCohort));
-end
+% % Assumed time invariant (stationary transformation)
+% for iCohort = 1 : cS.nCohorts
+%    tgS.logYpMean_cV(iCohort) = mean(tgS.logYpMean_qcM(:,iCohort));
+% end
+
+% Should perhaps construct mean from mean by q where feasible +++
+% for consistency
 
 validateattributes(tgS.logYpMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
 validateattributes(tgS.logYpStd_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>', 0.1, ...
    '<', 1})
 
+% Check consistency
 
 
 %% College costs
@@ -211,7 +244,7 @@ costS = var_load_bc1(cS.vCollCosts, cS);
 
 tgS.pMean_cV = nan([cS.nCohorts, 1]);
 tgS.pStd_cV  = nan([cS.nCohorts, 1]);
-tgS.pNobs_cV = nan([cS.nCohorts, 1]);
+% tgS.pNobs_cV = nan([cS.nCohorts, 1]);
 
 for iCohort = 1 : cS.nCohorts
    % Year from which college costs are taken
@@ -220,13 +253,15 @@ for iCohort = 1 : cS.nCohorts
 end
 
 % HS&B data, from gradpred, year 2 in college; men
-%  Mean is fairly close to Herrington series, so we keep it
-tgS.pMean_cV(icHSB) = 3892 ./ hsbCpiFactor ./ cS.unitAcct;
-tgS.pStd_cV(icHSB)  = 4397 ./ hsbCpiFactor ./ cS.unitAcct;
-% tgS.nObs_cV(icHSB)  = 1609;
+% %  Mean is fairly close to Herrington series
+% tgS.pMean_cV(icHSB) = 3892 ./ hsbCpiFactor ./ cS.unitAcct;
+% tgS.pStd_cV(icHSB)  = 4397 ./ hsbCpiFactor ./ cS.unitAcct;
+% % tgS.nObs_cV(icHSB)  = 1609;
+% Take ratio of std / mean
+hsbStdToMean = 4397 / 3892;
 
 % Assume std/mean stays constant over time
-tgS.pStd_cV = tgS.pStd_cV(icHSB) ./ tgS.pMean_cV(icHSB) .* tgS.pMean_cV;
+tgS.pStd_cV = hsbStdToMean .* tgS.pMean_cV;
 
 validateattributes(tgS.pMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
    '>', 100 ./ cS.unitAcct, '<', 1e4 ./ cS.unitAcct, 'size', [cS.nCohorts, 1]})
@@ -238,45 +273,15 @@ validateattributes(tgS.pStd_cV,  {'double'}, {'finite', 'nonnan', 'nonempty', 'r
 % NELS (gradpred, Table 17)
 pMeanV = [3550; 3362; 3449; 4119];
 tgS.pMean_qcM = nan([nIq, cS.nCohorts]);
-tgS.pMean_qcM = pMeanV(:) * ones([1, cS.nCohorts]) ./ hsbCpiFactor ./ cS.unitAcct;
+tgS.pMean_qcM(:,icHSB) = pMeanV(:) ./ hsbCpiFactor ./ cS.unitAcct;
 
 % Need to construct by yp +++
 tgS.pMean_ycM = nan([nYp, cS.nCohorts]);
 
 
 %% Hours in college
-% Average hours in college
 
-% Annual hours for total time endowment that is split between work and leisure
-% 16 hours per day - study time (Babcock Marks) -> 90 hours per week
-% tgS.timeEndow = 16 * 365 - 32 * 35.6
-% how to set this? +++
-tgS.timeEndow = 52 * 84;
-
-tgS.hoursMean_cV = nan([cS.nCohorts, 1]);
-
-% Chris
-tgS.hoursMean_cV(icHSB) = n79S.mean_hours ./ tgS.timeEndow;
-% invented +++
-tgS.hoursMean_cV = tgS.hoursMean_cV(icHSB) .* ones([cS.nCohorts, 1]);
-
-validateattributes(tgS.hoursMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 0.7})
-
-tgS.hoursMean_qcM = nan([nIq, cS.nCohorts]);
-tgS.hoursMean_qcM(:, icNlsy79) = n79S.mean_hours_byafqt ./ tgS.timeEndow;
-
-tgS.hoursMean_ycM = nan([nYp, cS.nCohorts]);
-tgS.hoursMean_ycM(:, icNlsy79) = n79S.mean_hours_byinc ./ tgS.timeEndow;
-
-% invented +++
-tgS.hoursMean_ycM = tgS.hoursMean_ycM(:,icNlsy79) * ones([1, cS.nCohorts]);
-tgS.hoursMean_qcM = tgS.hoursMean_qcM(:,icNlsy79) * ones([1, cS.nCohorts]);
-
-validateattributes(tgS.hoursMean_ycM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 1,  'size', [nYp, cS.nCohorts]})
-validateattributes(tgS.hoursMean_qcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 1,  'size', [nIq, cS.nCohorts]})
+tgS.hoursS = data_bc1.college_hours(n79S, tgS, cS);
 
 
 %% College earnings
@@ -289,10 +294,6 @@ collEarnS.mean_qcM(:, icNlsy79) = n79S.mean_earnings_byafqt ./ nlsyCpiFactor ./ 
 
 collEarnS.mean_ycM = nan([nYp, cS.nCohorts]);
 collEarnS.mean_ycM(:, icNlsy79) = n79S.mean_earnings_byinc ./ nlsyCpiFactor ./ cS.unitAcct;
-
-% invented +++
-collEarnS.mean_ycM = collEarnS.mean_ycM(:, icNlsy79) * ones([1, cS.nCohorts]);
-collEarnS.mean_qcM = collEarnS.mean_qcM(:, icNlsy79) * ones([1, cS.nCohorts]);
 
 
 % % Stats by [year in college, cohort]
@@ -319,40 +320,89 @@ collEarnS.mean_qcM = collEarnS.mean_qcM(:, icNlsy79) * ones([1, cS.nCohorts]);
 % validateattributes(collEarnS.std_tcM,  {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
 %    '>', 500 ./ cS.unitAcct,  '<', 1e4 ./ cS.unitAcct})
 
+
+% ********  Average earnings across all students
+
+collEarnS.mean_cV = mean_by_yp(collEarnS.mean_ycM, tgS.fracEnter_ycM, cS);
+
+% Check
+% Alternative calculation
+mean_cV = mean_by_yp(collEarnS.mean_qcM, tgS.fracEnter_qcM, cS);
+idxV = find(~isnan(collEarnS.mean_cV));
+for iCohort = idxV(:)'
+   validateattributes(collEarnS.mean_cV(iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
+   maxDiff = max(abs(mean_cV(idxV) - collEarnS.mean_cV(idxV)) ./ collEarnS.mean_cV(idxV));
+   if maxDiff > 2e-2
+      error_bc1('Mean earnings not consistent', cS);
+   end
+end
+
 tgS.collEarnS = collEarnS;
 
 
 %% Debt stats
 
+% Fraction with debt at end of college (cd, cg)
+tgS.debtFrac_scM = nan([2, cS.nCohorts]);
+% Mean debt (not conditional on having debt)
+tgS.debtMean_scM = nan([2, cS.nCohorts]);
+
+
+% ******  Nlsy79
+
 % Fraction in debt at end of college (dropouts, grads)
-tgS.debtFrac_scM = [n79S. dropouts_share_with_loans; n79S.grads_share_with_loans] * ones([1,cS.nCohorts]);
+tgS.debtFrac_scM(:,icNlsy79) = [n79S. dropouts_share_with_loans; n79S.grads_share_with_loans];
 % Mean debt at end of college (NOT conditional on being in debt)
-tgS.debtMean_scM = [n79S.mean_dropouts_loans; n79S.mean_grads_loans] * ones([1,cS.nCohorts]) ./ nlsyCpiFactor ./ cS.unitAcct;
+tgS.debtMean_scM(:,icNlsy79) = [n79S.mean_dropouts_loans; n79S.mean_grads_loans] ./ nlsyCpiFactor ./ cS.unitAcct;
 % Make not conditional 
-tgS.debtMean_scM = tgS.debtMean_scM .* tgS.debtFrac_scM;
+tgS.debtMean_scM(:,icNlsy79) = tgS.debtMean_scM(:,icNlsy79) .* tgS.debtFrac_scM(:,icNlsy79);
 
-
-validateattributes(tgS.debtFrac_scM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+validateattributes(tgS.debtFrac_scM(~isnan(tgS.debtFrac_scM)), {'double'}, {'nonempty', 'real', 'positive', ...
    '<', 0.8})
-validateattributes(tgS.debtMean_scM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+validateattributes(tgS.debtMean_scM(~isnan(tgS.debtMean_scM)), {'double'}, {'nonempty', 'real', ...
    'positive', '<', 2e4 ./ cS.unitAcct})
 
-% Fraction with debt by IQ
-%  chris
-tgS.debtFrac_qcM = n79S.share_with_loans_byafqt * ones([1, cS.nCohorts]);
+
+% ********  Fraction with debt by IQ
+
+tgS.debtFrac_qcM = nan([nIq, cS.nCohorts]);
+tgS.debtMean_qcM = nan([nIq, cS.nCohorts]);
+
+
+% *** Nlsy 79
+
+tgS.debtFrac_qcM(:,icNlsy79) = n79S.share_with_loans_byafqt;
 % Mean debt not conditional
 % debtV = [6900, 11200, 16300, 22000]' .* tgS.debtFrac_qcM(:,icNlsy79) ./ 17400 .* 10200;
-tgS.debtMean_qcM = n79S.mean_loans_byafqt(:) * ones([1, cS.nCohorts]) ./ nlsyCpiFactor ./ cS.unitAcct;
+tgS.debtMean_qcM(:,icNlsy79) = n79S.mean_loans_byafqt(:) ./ nlsyCpiFactor ./ cS.unitAcct;
 
-validateattributes(tgS.debtFrac_qcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 1, 'size', [nIq, cS.nCohorts]})
+validateattributes(tgS.debtFrac_qcM(~isnan(tgS.debtFrac_qcM)), {'double'}, {'nonempty', 'real', 'positive', '<', 2e4 ./ cS.unitAcct, ...
+   '<', 1})
 
-% Fraction with debt by yP
-%  chris
-tgS.debtFrac_ycM = n79S.share_with_loans_byinc * ones([1, cS.nCohorts]);
 
-% debtV = [14000; 17000; 18500; 19000] .* tgS.debtFrac_ycM(:,icNlsy79) ./ 17400 .* 10200;
-tgS.debtMean_ycM = n79S.mean_loans_byinc(:) * ones([1, cS.nCohorts]) ./ nlsyCpiFactor ./ cS.unitAcct;
+% **********  Fraction with debt by yP
+
+tgS.debtFrac_ycM = nan([nYp, cS.nCohorts]);
+tgS.debtMean_ycM = nan([nYp, cS.nCohorts]);
+
+tgS.debtFrac_ycM(:,icNlsy79) = n79S.share_with_loans_byinc;
+tgS.debtMean_ycM(:,icNlsy79) = n79S.mean_loans_byinc(:) ./ nlsyCpiFactor ./ cS.unitAcct;
+
+
+% *******  Average debt across all students
+% Not at end of college but across all enrolled students
+
+tgS.debtMean_cV = nan([cS.nCohorts, 1]);
+
+% Trends in student aid
+loadS = var_load_bc1(cS.vStudentDebtData, cS);
+% Take average debt at year 2 in college 
+%  Early cohorts have 0 debt (year 1)
+yrIdxV = max(1, cS.yearStartCollege_cV - loadS.yearV(1) + 3);
+tgS.debtMean_cV = loadS.avgDebtV(yrIdxV);
+
+validateattributes(tgS.debtMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, ...
+   'size', [cS.nCohorts, 1]})
 
 
 %% Parental transfers
@@ -378,10 +428,44 @@ transferV = [2264; 3678; 4649; 5386];
 tgS.transferMean_qcM = transferV * ones([1, cS.nCohorts]) ./ hsbCpiFactor ./ cS.unitAcct;
 
 
+% Average for all college students
+tgS.transferMean_cV = mean_by_yp(tgS.transferMean_ycM, tgS.fracEnter_ycM, cS);
+mean_cV = mean_by_yp(tgS.transferMean_qcM, tgS.fracEnter_qcM, cS);
+maxDiff = max(abs(mean_cV - tgS.transferMean_cV) ./ tgS.transferMean_cV);
+if maxDiff > 2e-2
+   warning('Mean transfers not consistent. Max diff %.3f', maxDiff);
+end
+
+
+%% Borrowing limits
+
+% Borrowing limits at start of each year in college, constant dollars
+% but not yet detrended, expressed as min assets (<= 0)
+tgS.kMin_acM = data_bc1.borrow_limits(cS);
+n1 = size(tgS.kMin_acM, 1);
+
+% Detrend
+tgS.kMin_acM = tgS.kMin_acM .* (ones([n1, 1]) * tgS.dollarFactor_cV(:)');
+
+validateattributes(tgS.kMin_acM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '<=', 0, ...
+   'size', [n1, cS.nCohorts]})
+
 
 %% Save
 
 var_save_bc1(tgS, cS.vCalTargets, cS);
 
+
+end
+
+
+%% Compute average of a variable for college entrants
+function mean_cV = mean_by_yp(in_ycM, fracEnter_ycM, cS)
+
+mean_cV = nan([cS.nCohorts, 1]);
+for iCohort = 1 : cS.nCohorts
+   mass_yV = fracEnter_ycM(:, iCohort) .* cS.pr_ypV;
+   mean_cV(iCohort) = sum(in_ycM(:,iCohort) .* mass_yV) ./ sum(mass_yV);
+end
 
 end

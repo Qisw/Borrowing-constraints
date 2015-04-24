@@ -3,7 +3,7 @@ function [c, hours] = hh_coll_c_from_kprime_bc1(kPrime, k, wColl, pColl, paramS,
 %{
 Hours from static condition
 
-If kPrime not feasible with positive consumption, return NaN
+If kPrime not feasible with positive consumption, return cFloor and leisure floor
 
 Checked: 2015-Mar-19
 %}
@@ -21,8 +21,8 @@ end
 devLow = devfct(cS.cFloor);
 if devLow < 0
    % If this falls short of kPrime: no solution
-   c = nan;
-   hours = nan;
+   c = cS.cFloor;
+   hours = 1 - cS.lFloor;
    
 else
    % Highest c that may be required (working all the time)

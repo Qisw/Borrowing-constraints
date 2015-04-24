@@ -21,12 +21,16 @@ end
 results_bc1.param_show(saveFigures, setNo, expNo);
 % Show policy functions
 results_bc1.hh_show(saveFigures, setNo, expNo);
+% Show value functions
+results_bc1.value_show(saveFigures, setNo, expNo);
 
 results_bc1.prob_show(saveFigures, setNo, expNo);
 
 
 
 %% Diagnostics
+
+calibr_bc1.check_solution(setNo, expNo);
 
 % Which params are close to bounds?
 cS.pvector.show_close_to_bounds(paramS, cS.doCalV);

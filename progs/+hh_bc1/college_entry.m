@@ -1,6 +1,12 @@
-function [vWork, vColl, zWork, zColl] = college_entry(v1S, j, iCohort, paramS, cS)
+function [vWork, vColl, zWork, zColl] = college_entry(v1S, vWorkS, j, paramS, cS)
 % College entry decision
 %{
+IN
+   v1S
+      value function in college at period 1
+   vWorkS
+      value of working
+
 OUT
    vWork, vColl
       value of work, college
@@ -8,6 +14,9 @@ OUT
    zWork, zColl
       parental transfers for both cases
       NOT annualized
+
+Inefficient +++
+   corners are hard to solve for
 %}
 
 % We think of the parent have collLength times earnings and consumption
@@ -41,6 +50,9 @@ vColl = -coll_value(zColl);
 
 %% Work option
 
+% Continuous approximation of value of working
+vWorkFct = griddedInterpolant(vWorkS.kGridV, vWorkS.value_ksjM(:,cS.iHSG,j), 'pchip', 'linear');
+
 [zWork, ~, exitFlag] = fminbnd(@work_value, zMin, zMax, cS.fminbndOptS);
 if exitFlag <= 0
    error_bc1('No solution found', cS);
@@ -67,8 +79,9 @@ The parent gives k1 = nPeriods * z
       % Parent utility
       cParent = yParent - z;
       [~, uParent] = hh_bc1.util_parent(cParent, paramS, cS);
-      [~, vWork] = hh_bc1.hh_work_bc1(nPeriods * z, cS.iHSG, j, iCohort, paramS, cS);
-      value = -(nPeriods * uParent + vWork);
+%      [~, vWork] = hh_bc1.hh_work_bc1(nPeriods * z, cS.iHSG, iAbil, paramS, cS);
+%      value = -(nPeriods * uParent + vWork);
+      value = -(nPeriods * uParent + vWorkFct(nPeriods * z));
    end
    
 end

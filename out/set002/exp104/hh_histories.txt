@@ -1,0 +1,90 @@
+
+    ---------    
+
+Life history of type 1
+
+Parents:  
+income (per year): 17.0 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 17.0  uPrime: 0.81 
+Child:   c: 23.7  uPrime: 0.65 
+
+Try college:
+Parent:  transfer: 0.0   c: 17.0  uPrime: 0.81 
+Child:   coll cost: 7.4 
+Child phase 1:  c: 13.4  uPrime: 0.56  earn: 14.2  save: -13.1 
+Child phase 2:  c: 12.6  uPrime: 0.63  earn: 15.5  save: -9.5 
+
+
+    ---------    
+
+Life history of type 21
+
+Parents:  
+income (per year): 30.2 
+
+Work as HSG:
+Parent:  transfer: 1.1   c: 29.1  uPrime: 0.67 
+Child:   c: 23.8  uPrime: 0.64 
+
+Try college:
+Parent:  transfer: 0.0   c: 30.2  uPrime: 0.66 
+Child:   coll cost: 3.2 
+Child phase 1:  c: 14.3  uPrime: 0.49  earn: 12.6  save: -9.6 
+Child phase 2:  c: 14.8  uPrime: 0.46  earn: 11.7  save: -13.0 
+
+
+    ---------    
+
+Life history of type 41
+
+Parents:  
+income (per year): 31.1 
+
+Work as HSG:
+Parent:  transfer: 1.6   c: 29.6  uPrime: 0.66 
+Child:   c: 23.9  uPrime: 0.64 
+
+Try college:
+Parent:  transfer: 0.0   c: 31.1  uPrime: 0.65 
+Child:   coll cost: 4.7 
+Child phase 1:  c: 13.8  uPrime: 0.52  earn: 13.5  save: -10.0 
+Child phase 2:  c: 14.2  uPrime: 0.50  earn: 12.8  save: -12.5 
+
+
+    ---------    
+
+Life history of type 60
+
+Parents:  
+income (per year): 16.2 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 16.2  uPrime: 0.82 
+Child:   c: 23.7  uPrime: 0.65 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.2  uPrime: 0.82 
+Child:   coll cost: 10.1 
+Child phase 1:  c: 12.4  uPrime: 0.65  earn: 15.9  save: -13.2 
+Child phase 2:  c: 11.6  uPrime: 0.74  earn: 17.3  save: -9.4 
+
+
+    ---------    
+
+Life history of type 80
+
+Parents:  
+income (per year): 16.8 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 16.8  uPrime: 0.81 
+Child:   c: 23.7  uPrime: 0.65 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.8  uPrime: 0.81 
+Child:   coll cost: -3.9 
+Child phase 1:  c: 14.1  uPrime: 0.50  earn: 12.9  save: 5.4 
+Child phase 2:  c: 18.4  uPrime: 0.30  earn: 5.4  save: -18.0 
+

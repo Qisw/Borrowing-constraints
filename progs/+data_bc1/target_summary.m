@@ -21,7 +21,7 @@ fprintf(fp, 'All in year %i prices\n', cS.cpiBaseYear);
 %% Unconditional stats
 
 age1 = 40;
-earn_sV = tgS.earn_ascM(age1 - cS.age1 + 1, :, iCohort);
+earn_sV = tgS.earn_tscM(age1 - cS.age1 + 1, :, iCohort);
 earn_sV = earn_sV(:);
 fprintf(fp, 'Mean earnings by schooling (age %i, thousands): ', age1);
 fprintf(fp, '  %.1f  ',  earn_sV .* dollarFactor ./ 1e3);
@@ -35,7 +35,7 @@ fprintf(fp, 'College cost: mean / std  %.1f / %.1f \n',  tgS.pMean_cV(iCohort) *
    tgS.pStd_cV(iCohort) * dollarFactor ./ 1e3);
 
 fprintf(fp, 'In college: mean hours: %.2f   mean earnings: %.1f \n', ...
-   tgS.hoursMean_cV(iCohort),  mean(tgS.collEarnS.mean_qcM(:,iCohort)) * dollarFactor ./ 1e3);
+   tgS.hoursS.hoursMean_cV(iCohort),  mean(tgS.collEarnS.mean_qcM(:,iCohort)) * dollarFactor ./ 1e3);
 
 
 

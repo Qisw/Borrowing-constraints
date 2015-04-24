@@ -23,7 +23,7 @@ guessV = cS.pvector.guess_make(paramS, doCalV);
 fprintf('  %i calibrated parameters \n', length(guessV));
 
 % Test guess extraction
-if rand_time < 0.1
+if rand_time < 0.05
    fprintf('Testing guess extraction \n');
    % Try running directly with paramS
    [dev, outS, hhS, aggrS] = calibr_bc1.cal_dev(tgS, paramS, cS);
@@ -101,7 +101,7 @@ results_all_bc1(cS.setNo, cS.expNo);
 
    % Same, but reject out of bounds guesses
    function [dev, param2S] = cal_dev_fminsearch(guessV)
-      if any(guessV < 1)  ||  any(guessV > 2)   % hard coded +++
+      if any(guessV < cS.pvector.guessMin)  ||  any(guessV > cS.pvector.guessMax)
          dev = 1e8;
          param2S = nan;
       else

@@ -40,7 +40,11 @@ fprintf('Regress pr(IQ|j) against simulated probs \n');
 fprintf('  Intercept: %.3f (%.3f)  slope: %.3f (%.3f) \n',  regrS.betaV(1), regrS.seBetaV(1), ...
    regrS.betaV(2), regrS.seBetaV(2));
 
-if 1
+if any(abs(regrS.betaV - [0; 1]) > abs(2 * regrS.seBetaV))
+   error_bc1('Should be 45 degree line', cS);
+end
+
+if 0
    fh = output_bc1.fig_new(saveFigures, []);
    plot(pr_q_jM(:),  paramS.prIq_jM(:), '.', 'color', figS.colorM(1,:));
    xlabel('Simulated pr(IQ|j)');

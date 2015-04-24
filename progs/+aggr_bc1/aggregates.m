@@ -1,4 +1,4 @@
-function aggrS = aggregates(iCohort, hhS, paramS, cS)
+function aggrS = aggregates(hhS, paramS, cS)
 % Compute aggregates
 %{
 
@@ -6,7 +6,9 @@ Checked: 2015-Apr-3
 %}
 
 
+dbg = cS.dbg;
 nIq = length(cS.iqUbV);
+% Pr(IQ | j)
 prIq_jM = paramS.prIq_jM(:, :);
 frac_qV = diff([0; cS.iqUbV]);
 % Scale factor
@@ -20,7 +22,7 @@ aggrS.prGrad_jV = nan([cS.nTypes, 1]);
 for j = 1 : cS.nTypes
    aggrS.prGrad_jV(j) = sum(paramS.prob_a_jM(:,j) .* paramS.prGrad_aV);
 end
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.prGrad_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'positive', '<', 1, 'size', [cS.nTypes, 1]})
 end
@@ -40,7 +42,7 @@ aggrS.mass_sjM(cS.iHSG,:) = aggrS.mass_jV .* (1 - hhS.v0S.probEnter_jV);
 aggrS.mass_sjM(cS.iCD,:) = aggrS.massColl_jV .* (1 - aggrS.prGrad_jV);
 aggrS.mass_sjM(cS.iCG,:) = aggrS.massColl_jV .* aggrS.prGrad_jV;
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.mass_sjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, 'size', sizeV})
    sumV = sum(aggrS.mass_sjM);
@@ -54,14 +56,41 @@ end
 aggrS.probS_jM = aggrS.mass_sjM ./ (ones([cS.nSchool,1]) * aggrS.mass_jV(:)');
 
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.massColl_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, 'size', [cS.nTypes, 1]})
 end
 
 
-%% By [school, abil, j]
+%% By [school, abil]
 
+aggrS.mass_asM = nan([cS.nAbil, cS.nSchool]);
+
+% HSG: Mass(HSG,j) * Pr(a | j)
+for iAbil = 1 : cS.nAbil
+   aggrS.mass_asM(iAbil, cS.iHSG) = aggrS.mass_sjM(cS.iHSG, :) * paramS.prob_a_jM(iAbil, :)';
+end
+
+% College: 
+for iAbil = 1 : cS.nAbil
+   % Mass college with this a
+   massColl = paramS.prob_a_jM(iAbil,:) * aggrS.massColl_jV;
+   %  CG: mass(college,a) * pr(grad|a)
+   aggrS.mass_asM(iAbil, cS.iCG) = paramS.prGrad_aV(iAbil) * massColl;
+   aggrS.mass_asM(iAbil, cS.iCD) = (1 - paramS.prGrad_aV(iAbil)) * massColl;
+end
+
+if dbg > 10
+   validateattributes(aggrS.mass_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      '>=', 0, 'size', [cS.nAbil, cS.nSchool]})
+   mass_aV = sum(aggrS.mass_asM, 2);
+   if any(abs(mass_aV(:) ./ (aggrS.totalMass .* paramS.prob_aV) - 1) > 1e-4)
+      error_bc1('Invalid sum', cS);
+   end
+end
+
+
+% 
 % aggrS.mass_sajM = zeros([cS.nSchool, cS.nAbil, cS.nTypes]);
 % 
 % for j = 1 : cS.nTypes
@@ -87,60 +116,76 @@ end
 %    end   
 % end
 % 
-% if cS.dbg > 10
+% if dbg > 10
 %    validateattributes(aggrS.mass_sajM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
 %       '>=', 0, 'size', [cS.nSchool, cS.nAbil, cS.nTypes]})
 % end
-
+% 
 
 
 
 %% By j - simulate histories in college
 
-% *******  Path of assets in college; at start, after periods 2, 4 in college
+% Path of assets in college; at start, after periods 2, 4 in college
 %  at START of each period
 %  restrict kPrime to be inside k grid for t+1
 aggrS.k_tjM = nan([3, cS.nTypes]);
+
+% Hours in college (first 2 years, 2nd 2 years)
+aggrS.hours_tjM = nan([2, cS.nTypes]);
+% Consumption phases 1 and 2 in college
+aggrS.cons_tjM = nan([2, cS.nTypes]);
+
 
 % Everyone starts with the parental transfer
 %  limited to inside of grid
 aggrS.k_tjM(1,:) = max(hhS.v1S.kGridV(1), min(hhS.v1S.kGridV(end), hhS.v0S.k1Coll_jV));
 
-% After 1st period in college
+
+% ******  Periods 1-2 (ability not known)
+
 kV = nan([cS.nTypes, 1]);
 for j = 1 : cS.nTypes
-   kV(j) = interp1(hhS.v1S.kGridV, hhS.v1S.kPrime_kjM(:,j), aggrS.k_tjM(1,j), 'linear', 'extrap');
+   % Current k
+   k = aggrS.k_tjM(1,j);
+   kV(j) = interp1(hhS.v1S.kGridV, hhS.v1S.kPrime_kjM(:,j), k, 'linear', 'extrap');
+   aggrS.hours_tjM(1,j) = interp1(hhS.v1S.kGridV, hhS.v1S.hours_kjM(:,j), k, 'linear', 'extrap');
+   aggrS.cons_tjM(1,j) = interp1(hhS.v1S.kGridV, hhS.v1S.c_kjM(:,j), k, 'linear', 'extrap');
 end
 % Restrict inside period 3 k grid
 aggrS.k_tjM(2,:) = max(hhS.vColl3S.kGridV(1), min(hhS.vColl3S.kGridV(end), kV));
 
 
-% After 2nd period in college
-%  No need to restrict k' to be inside a grid
-for j = 1 : cS.nTypes
-   aggrS.k_tjM(3,j) = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.kPrime_kjM(:,j), aggrS.k_tjM(2,j), 'linear', 'extrap');
-end
-
-
-% ******  Hours and earnings in college (first 2 years, 2nd 2 years)
-
-% Hours worked
-aggrS.hours_tjM = nan([2, cS.nTypes]);
-% Consumption phases 1 and 2 in college
-aggrS.cons_tjM = nan([2, cS.nTypes]);
+% *******  Periods 3-4 in college (ability known)
 
 for j = 1 : cS.nTypes
-   aggrS.hours_tjM(1,j) = interp1(hhS.v1S.kGridV, hhS.v1S.hours_kjM(:,j), aggrS.k_tjM(1,j), 'linear', 'extrap');
-   aggrS.hours_tjM(2,j) = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.hours_kjM(:,j), aggrS.k_tjM(2,j), 'linear', 'extrap');
-   % Consumption years 1-2 in college
-   aggrS.cons_tjM(1,j) = interp1(hhS.v1S.kGridV, hhS.v1S.c_kjM(:,j), aggrS.k_tjM(1,j), 'linear', 'extrap');
-   % Same in years 2-3
-   aggrS.cons_tjM(2,j) = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.c_kjM(:,j), aggrS.k_tjM(2,j), 'linear', 'extrap');
+   % Current k
+   k = aggrS.k_tjM(2,j);
+   
+   % Prob(a | j, college)
+   %  Prob(college | a) = prob(grad | a). Only those who graduate stay
+   prob_aV = paramS.prob_a_jM(:,j) .* paramS.prGrad_aV;
+   prob_aV = prob_aV ./ sum(prob_aV);
+   
+   kPrime_aV = nan([cS.nAbil, 1]);
+   hours_aV = nan([cS.nAbil, 1]);
+   cons_aV = nan([cS.nAbil, 1]);
+   for iAbil = 1 : cS.nAbil
+      kPrime_aV(iAbil) = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.kPrime_kajM(:,iAbil,j), k, 'linear', 'extrap');
+      hours_aV(iAbil)  = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.hours_kajM(:,iAbil,j), k, 'linear', 'extrap');
+      cons_aV(iAbil)   = interp1(hhS.vColl3S.kGridV, hhS.vColl3S.c_kajM(:,iAbil,j), k, 'linear', 'extrap');
+   end
+   
+   % Average choices for each j type (conditional on staying in college)
+   %  No need to restrict k' to be inside a grid
+   aggrS.k_tjM(3,j) = sum(prob_aV .* kPrime_aV);
+   aggrS.hours_tjM(2,j) = sum(prob_aV .* hours_aV);
+   aggrS.cons_tjM(2,j) = sum(prob_aV .* cons_aV);
 end
 
 aggrS.earn_tjM = aggrS.hours_tjM .* (ones([2,1]) * paramS.wColl_jV(:)');
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.k_tjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [3, cS.nTypes]})
    validateattributes(aggrS.hours_tjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, ...
@@ -180,7 +225,7 @@ aggrS.fracEnter_qV = 1 - aggrS.fracS_iqM(cS.iHSG, :)';
 aggrS.fracGrad_qV  = aggrS.fracS_iqM(cS.iCG, :)';
 
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.mass_sqjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, 'size', sizeV})
    validateattributes(aggrS.mass_sqM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
@@ -256,14 +301,22 @@ for iIq = 1 : nIq
    aggrS.debtFrac_qV(iIq) = sum(mass_tjM(:) .* (debt_tjM(:) > 0)) ./ sum(mass_tjM(:));
    % Meand debt (not conditional)
    aggrS.debtMean_qV(iIq) = sum(mass_tjM(:) .* debt_tjM(:)) ./ sum(mass_tjM(:));
-
 end
 
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.pMean_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nIq, 1]})
 end
+
+% Mass of entrants by q
+mass_qV = sum(aggrS.mass_sqM(cS.iCD : cS.nSchool, :));
+mass_qV = mass_qV(:) ./ sum(mass_qV);
+aggrS.debtMean = sum(aggrS.debtMean_qV .* mass_qV(:));
+aggrS.earnCollMean = sum(aggrS.earnCollMean_qV .* mass_qV(:));
+aggrS.transferMean = sum(aggrS.transfer_qV .* mass_qV(:));
+aggrS.hoursCollMean = sum(aggrS.hoursCollMean_qV .* mass_qV(:));
+aggrS.pMean = sum(aggrS.pMean_qV .* mass_qV(:));
 
 
 %% By [parental income class] (for those in college)
@@ -320,12 +373,34 @@ for iy = 1 : nyp
 end
 
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.pColl_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nyp,1]})
    validateattributes(aggrS.transfer_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, 'size', [nyp,1]})
 end
+
+
+% *******  Aggregates across groups (for consistency)
+if cS.dbg > 10
+   % Mass of entrants by y
+   mass_yV = aggrS.fracEnter_yV .* cS.pr_ypV;
+   mass_yV = mass_yV(:) ./ sum(mass_yV);
+   debtMean = sum(aggrS.debtMean_yV .* mass_yV);
+   earnCollMean = sum(aggrS.earnCollMean_yV .* mass_yV);
+   transferMean = sum(aggrS.transfer_yV .* mass_yV);
+   hoursCollMean = sum(aggrS.hoursCollMean_yV .* mass_yV);
+   pMean = sum(aggrS.pColl_yV .* mass_yV);
+   denomV = [aggrS.debtMean, aggrS.earnCollMean, aggrS.transferMean, aggrS.hoursCollMean, aggrS.pMean];
+   diffV = ([debtMean, earnCollMean, transferMean, hoursCollMean, pMean] - denomV) ./ ...
+      max(1, denomV);
+   maxDiff = max(abs(diffV));
+   if maxDiff > 5e-2    % why so imprecise? +++
+      disp(maxDiff)
+      error_bc1('Two ways of computing means do not match up', cS);
+   end
+end
+
 
 
 %% By school
@@ -334,6 +409,14 @@ aggrS.mass_sV = sum(aggrS.mass_sjM, 2);
 aggrS.mass_sV = aggrS.mass_sV(:);
 
 aggrS.frac_sV = aggrS.mass_sV ./ sum(aggrS.mass_sV);
+
+
+% Mean lifetime earnings
+aggrS.pvEarn_sV = nan([cS.nSchool, 1]);
+for iSchool = 1 : cS.nSchool
+   mass_aV = aggrS.mass_asM(:, iSchool);
+   aggrS.pvEarn_sV(iSchool) = sum(mass_aV .* paramS.pvEarn_asM(:,iSchool)) ./ sum(mass_aV);
+end
 
 
 %% By graduation status
@@ -374,7 +457,7 @@ end
 % Avoid rounding errors
 aggrS.debtFrac_sV = min(1, aggrS.debtFrac_sV);
 
-if cS.dbg > 10
+if dbg > 10
    validateattributes(aggrS.debtFrac_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, '<=', 1})
    validateattributes(aggrS.debtMean_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
@@ -382,7 +465,15 @@ if cS.dbg > 10
 end
 
 
+% *****  Mean debt per student
+
+frac_sV = aggrS.frac_sV(cS.iCD : cS.iCG);
+aggrS.debtMean = sum(aggrS.debtMean_sV .* frac_sV) ./ sum(frac_sV);
+
+
+
 %% For all college students
+% Mostly computed earlier from stats by iq or yp
 
 massColl = sum(aggrS.massColl_jV);
 if massColl <= 0
@@ -391,16 +482,16 @@ end
 
 % Mean and std of college costs (for those in college)
 if any(aggrS.massColl_jV > 1e-6)
-   [aggrS.pStd, aggrS.pMean] = stats_lh.std_w(paramS.pColl_jV, aggrS.massColl_jV, cS.dbg);
+   aggrS.pStd = stats_lh.std_w(paramS.pColl_jV, aggrS.massColl_jV, dbg);
 else
    aggrS.pStd = 0;
-   aggrS.pMean = 0;
+   %aggrS.pMean = 0;
 end
 
-% Average hours and earnings
-%  first 2 years in college
-aggrS.hoursCollMean = sum(aggrS.massColl_jV .* aggrS.hours_tjM(1,:)') ./ massColl;
-aggrS.earnCollMean  = sum(aggrS.massColl_jV .* aggrS.earn_tjM(1,:)')  ./ massColl;
+% % Average hours and earnings
+% %  first 2 years in college
+% aggrS.hoursCollMean = sum(aggrS.massColl_jV .* aggrS.hours_tjM(1,:)') ./ massColl;
+% aggrS.earnCollMean  = sum(aggrS.massColl_jV .* aggrS.earn_tjM(1,:)')  ./ massColl;
 
 
 end

@@ -27,27 +27,25 @@ end
 iCohort = cS.iCohort;
 
 % Solve equilibrium
-[hhS, aggrS] = equil_solve_bc1(iCohort, paramS, cS);
+[hhS, aggrS] = equil_solve_bc1(paramS, cS);
 
 
 %% Construct deviations from calibration targets
 
 % Scale factor for dollar amount deviations (arbitrary)
-dollarFactor = 25 ./ paramS.earn_asM(20, 1);
+dollarFactor = 25 ./ (35000 ./ cS.unitAcct);
 % Scale factor for percentiles (arbitrary)
 pctFactor = 10;
 
-% % Vector of scalar deviations (already squared and weighted)
-% devV = zeros([100,1]);
-% % Last used row index
-% irDev = 0;
-
 % Array with all deviations, so they can be displayed
 outS.devV = devvect(100);
-% outS.devLen = 0;
 
 
 %% College outcomes
+
+% Overall
+outS.devFracS = dev_add(tgS.frac_scM(:, iCohort), aggrS.frac_sV, 1, pctFactor, cS.tgFracS, ...
+   'frac s', 'Fraction by schooling', '%.2f');
 
 % by IQ
 outS.devFracEnterIq = dev_add(tgS.fracEnter_qcM(:, iCohort), aggrS.fracEnter_qV, 1, 1.5 * pctFactor, cS.tgFracEnterIq, ...
@@ -60,6 +58,12 @@ outS.devFracEnterYp = dev_add(tgS.fracEnter_ycM(:, iCohort), aggrS.fracEnter_yV,
    'enter/yp',  'Fraction entering college by y quartile', '%.2f');
 outS.devFracGradYp  = dev_add(tgS.fracGrad_ycM(:, iCohort),  aggrS.fracGrad_yV,  1, 1.5 * pctFactor, cS.tgFracGradYp , ...
    'grad/yp',  'Fraction graduating by y quartile', '%.2f');
+
+
+%% Lifetime earnings
+
+outS.devPvLty = dev_add(log(paramS.tgS.pvEarn_sV),  log(aggrS.pvEarn_sV), 1,  4, ...
+   cS.tgPvLty,  'pvLty',  'Lifetime earnings by s',  'dollar');
 
 
 %% Parental income
@@ -92,20 +96,19 @@ outS.devPMeanIq = dev_add(tgS.pMean_qcM(:,iCohort), aggrS.pMean_qV, 1, dollarFac
 %% Hours in College
 
 % Average hours and earnings (first 2 years in college)
-outS.devHours = dev_add(tgS.hoursMean_cV(iCohort),  aggrS.hoursCollMean, 1, pctFactor, cS.tgHours, 'hours', ...
+outS.devHours = dev_add(tgS.hoursS.hoursMean_cV(iCohort),  aggrS.hoursCollMean, 1, pctFactor, cS.tgHours, 'hours', ...
    'Mean hours in college', '%.2f');
 
-outS.devHoursIq = dev_add(tgS.hoursMean_qcM(:,iCohort),  aggrS.hoursCollMean_qV, 1, pctFactor, cS.tgHoursIq, 'hours/iq', ...
+outS.devHoursIq = dev_add(tgS.hoursS.hoursMean_qcM(:,iCohort),  aggrS.hoursCollMean_qV, 1, pctFactor, cS.tgHoursIq, 'hours/iq', ...
    'Mean hours in college by IQ', '%.2f');
-outS.devHoursYp = dev_add(tgS.hoursMean_ycM(:,iCohort),  aggrS.hoursCollMean_yV, 1, pctFactor, cS.tgHoursYp, 'hours/yp', ...
+outS.devHoursYp = dev_add(tgS.hoursS.hoursMean_ycM(:,iCohort),  aggrS.hoursCollMean_yV, 1, pctFactor, cS.tgHoursYp, 'hours/yp', ...
    'Mean hours in college by y', '%.2f');
 
 
 %% Earnings in college
 
-% tgEarn = mean(tgS.collEarnS.mean_tcM(1:2, iCohort));
-% outS.devEarn  = dev_add(tgEarn,  aggrS.earnCollMean, 1, dollarFactor, cS.tgEarn, 'earn', ...
-%    'Mean earnings in college', 'dollar');
+outS.devEarn  = dev_add(tgS.collEarnS.mean_cV(iCohort),  aggrS.earnCollMean, 1, dollarFactor, cS.tgEarn, 'earn', ...
+   'Mean earnings in college', 'dollar');
 
 outS.devEarnIq  = dev_add(tgS.collEarnS.mean_qcM(:, iCohort),  aggrS.earnCollMean_qV, 1, dollarFactor, ...
    cS.tgEarnIq, 'earn/iq',  'Mean earnings in college by IQ', 'dollar');
@@ -115,11 +118,16 @@ outS.devEarnYp  = dev_add(tgS.collEarnS.mean_ycM(:, iCohort),  aggrS.earnCollMea
 
 %% Debt at end of college
 
-outS.devDebtFrac = dev_add(tgS.debtFrac_scM(:,iCohort),  aggrS.debtFrac_sV, 1, 0.5 * pctFactor, cS.tgDebtFrac, ...
-   'debtFrac',  'Fraction with college debt', '%.2f');
+% Mean college debt across all students
+outS.devDebtMean = dev_add(tgS.debtMean_cV(iCohort),  aggrS.debtMean, 1, 0.5 * pctFactor, cS.tgDebtMean, ...
+   'debtMean',  'Mean college debt', '%.2f');
+
+
+outS.devDebtFracS = dev_add(tgS.debtFrac_scM(:,iCohort),  aggrS.debtFrac_sV, 1, 0.5 * pctFactor, cS.tgDebtFracS, ...
+   'debtFracS',  'Fraction with college debt', '%.2f');
 % Mean debt, not conditional on having debt
-outS.devDebtMean = dev_add(tgS.debtMean_scM(:,iCohort),  aggrS.debtMean_sV, 1, 0.5 * dollarFactor, ...
-   cS.tgDebtMean, 'debtMean', 'Mean college debt', 'dollar');
+outS.devDebtMeanS = dev_add(tgS.debtMean_scM(:,iCohort),  aggrS.debtMean_sV, 1, 0.5 * dollarFactor, ...
+   cS.tgDebtMeanS, 'debtMeanS', 'Mean college debt (CD, CG)', 'dollar');
 
 outS.devDebtFracIq = dev_add(tgS.debtFrac_qcM(:, iCohort),  aggrS.debtFrac_qV, 1, 0.5 * pctFactor, ...
    cS.tgDebtFracIq, 'debtFrac/iq', 'Fraction with college debt by IQ', '%.2f');
@@ -133,6 +141,9 @@ outS.devDebtMeanYp = dev_add(tgS.debtMean_ycM(:, iCohort),  aggrS.debtMean_yV, 1
 
 
 %% Transfers
+
+outS.devTransfer = dev_add(tgS.transferMean_cV(iCohort), aggrS.transferMean, 1, dollarFactor, ...
+   cS.tgTransfer, 'z mean', 'Mean transfer', 'dollar');
 
 % Mean transfer (per year)
 outS.devTransferYp = dev_add(tgS.transferMean_ycM(:, iCohort), aggrS.transfer_yV, 1, dollarFactor, ...
@@ -160,15 +171,6 @@ fprintf('\nDeviations    %s    %.2f \n',  datestr(now, 'HH:MM'),  outS.dev);
 
 if doShow == 1
    outS.devV.dev_display;
-%    nDev = outS.devV.n;
-%    for i1 = 1 : nDev
-%       ds = outS.devV.dsV{i1};
-%       shortStr = ds.short_display;
-%       fprintf('  %s  ', shortStr);
-%       if (rem(i1, 5) == 0)  ||  (i1 == nDev)
-%          fprintf('\n');
-%       end
-%    end
 
 
    fprintf('Calibrated params\n');
@@ -226,31 +228,7 @@ IN
       if isTarget == 1
          % Add to deviation vector
          outS.devV = outS.devV.devadd(ds);
-      end
-      
-%       % if weights are scalar, expand them
-%       if length(wtV) == 1
-%          wtV = wtV .* ones(size(modelV));
-%       end
-%       devNewV = wtV(:) ./ sum(wtV) .* (scaleFactor .* (modelV(:) - tgV(:))) .^ 2;
-%       scalarDev = sum(devNewV);
-%       if isTarget == 1
-%          % Add to deviation vector
-%          n = length(tgV);
-%          idxV = irDev + (1:n);
-%          devV(idxV) = devNewV;
-%          irDev = irDev + n;
-%          
-%          % Add to descriptive arrary
-%          clear devS;
-%          devS.shortStr = sprintf('  %s: %.3f  ', descrStr, scalarDev);
-%          devS.descrStr = longDescrStr;
-%          devS.tgV = tgV;
-%          devS.modelV = modelV;
-%          devS.fmtStr = fmtStr;
-%          outS.devLen = outS.devLen + 1;
-%          outS.devV{outS.devLen} = devS;
-%       end
+      end      
    end
 
 end

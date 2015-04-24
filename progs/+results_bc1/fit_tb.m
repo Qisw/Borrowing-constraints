@@ -1,6 +1,8 @@
 function fit_tb(setNo, expNo)
 % Table with model fit
 %{
+Only shows targeted moments
+
 Table structure
    Description | model | data
 %}

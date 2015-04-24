@@ -11,7 +11,7 @@ figOptS = figS.figOpt4S;
 
 tgS = var_load_bc1(cS.vCalTargets, cS);
 
-yMax = ceil(max(log(max(0.1, tgS.earn_ascM(:)))));
+yMax = ceil(max(log(max(0.1, tgS.earn_tscM(:)))));
 
 for iCohort = 1 : length(cS.bYearV)
    fh = output_bc1.fig_new(saveFigures, figOptS);
@@ -22,7 +22,7 @@ for iCohort = 1 : length(cS.bYearV)
       
       % Complete profile
       iLine = iSchool;
-      earnV = tgS.earn_ascM(ageV, iSchool, iCohort);
+      earnV = tgS.earn_tscM(ageV, iSchool, iCohort);
       idxV = find(earnV > 0);
       plot(cS.age1 - 1 + ageV(idxV), log(earnV(idxV)), figS.lineStyleDenseV{iLine}, 'color', figS.colorM(iLine,:));
       

@@ -1,7 +1,10 @@
 function cS = const_bc1(setNo, expNo)
 % Set constants
 %{
-Index order: age, school, iq, yp, abil, j, cohort
+Index order: k, age, school, iq, yp, abil, j, cohort
+   iq: q
+   age: t
+   ability: a
 
 Checked: 2015-Mar-18
 %}
@@ -28,7 +31,7 @@ cS.dbg = 111;
 cS.missVal = -9191;
 cS.pauseOnError = 1;
 % How often to run full debug mode during calibration?
-cS.dbgFreq = 1;
+cS.dbgFreq = 0.5;  
 
 
 %% Miscellaneous
@@ -67,6 +70,9 @@ cS.fminbndOptS.TolX = 1e-7;
 cS.guessLb = 1;
 cS.guessUb = 2;
 
+% Gross interest rate (if not calibrated)
+cS.R = 1.04;
+
 
 %% Default parameters: Demographics, Preferences
 
@@ -95,7 +101,7 @@ cS.cFloor = 500 ./ cS.unitAcct;
 cS.lFloor = 0.01;
 
 % Parental preferences
-cS.pvector = cS.pvector.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calNever);
+cS.pvector = cS.pvector.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
 % Time varying: to match transfer data
 cS.pvector = cS.pvector.change('puWeight', '\omega_{p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
 
@@ -119,6 +125,9 @@ cS.nCohorts = length(cS.bYearV);
 
 % Size of ability grid
 cS.nAbil = 9;
+% Earnings are determined by phi(s) * (a - aBar)
+%  aBar determines for which abilities earnings gains from schooling MUST be positive
+cS.aBar = 0;
 
 % Number of types
 cS.nTypes = 80;
@@ -128,7 +137,7 @@ cS.iqUbV = (0.25 : 0.25 : 1)';
 cS.nIQ = length(cS.iqUbV);
 
 % Parental income classes
-cS.ypUbV = 0.25 : 0.25 : 1;
+cS.ypUbV = (0.25 : 0.25 : 1)';
 
 % Endowment correlations
 cS.pvector = cS.pvector.change('alphaPY', '\alpha_{p,y}', 'Correlation, $p,y$', 0.3, -5, 5, cS.calBase);
@@ -180,11 +189,26 @@ cS.pvector = cS.pvector.change('wCollMean', 'Mean w_{coll}', 'Maximum earnings i
    2e4 ./ cS.unitAcct, 5e3 ./ cS.unitAcct, 1e5 ./ cS.unitAcct, cS.calBase);
 
 
+%% Defaults: work
+
+cS.abilAffectsEarnings = 1;
+
+% Earnings are determined by phi(s) * (a - aBar)
+%  phi(s) taken from gradpred
+cS.pvector = cS.pvector.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0.155,  0.02, 0.2, cS.calNever);
+cS.pvector = cS.pvector.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0.194, 0.02, 0.2, cS.calNever);
+
+% Scale factors of lifetime earnings (log)
+cS.pvector = cS.pvector.change('eHatCD', '\hat_{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
+cS.pvector = cS.pvector.change('dEHatHSG', 'd\hat_{e}_{HSG}', 'Skill price gap HSG', -0.1, -3, 0, cS.calBase);
+cS.pvector = cS.pvector.change('dEHatCG',  'd\hat_{e}_{CG}',  'Skill price gap CG',   0.1,  0, 3, cS.calBase);
+% cS.pvector = cS.pvector.change('eHatCG',  '\hat_{e_{CG}}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
+
 
 %% Default: other
 
 % Gross interest rate
-cS.pvector = cS.pvector.change('R', 'R', 'Interest rate', 1.04, 1, 1.1, cS.calNever);
+cS.pvector = cS.pvector.change('R', 'R', 'Interest rate', cS.R, 1, 1.1, cS.calNever);
 
 % Base year for prices
 cS.cpiBaseYear = 2010;
@@ -200,6 +224,9 @@ cS.cpsSetNo = 1;
 
 %% Which calibration targets to use?
 
+% PV of lifetime earnings by schooling
+cS.tgPvLty = 1;
+
 % College costs
    % add target by yp +++
 cS.tgPMean  = 1;
@@ -208,6 +235,7 @@ cS.tgPMeanIq = 1;
 
 
 % ***** College outcomes
+cS.tgFracS = 1;
 % fraction entering college
 cS.tgFracEnterIq = 1;
 % fraction graduating (not conditional on entry)
@@ -220,22 +248,26 @@ cS.tgYpIq = 1;
 cS.tgYpYp = 1;
 
 % *****  Hours and earnings
-cS.tgHours = 0;
+cS.tgHours = 1;
 cS.tgHoursIq = 1;
 cS.tgHoursYp = 1;
-cS.tgEarn = 0;
+cS.tgEarn = 1;
 cS.tgEarnIq = 1;
 cS.tgEarnYp = 1;
 
+% Debt at end of college by CD / CG
+cS.tgDebtFracS = 0;
+cS.tgDebtMeanS = 0;      
 % Debt at end of college
-cS.tgDebtFrac = 0;
-cS.tgDebtMean = 0;
 cS.tgDebtFracIq = 1;
 cS.tgDebtFracYp = 1;
 cS.tgDebtMeanIq = 1;
 cS.tgDebtMeanYp = 1;
+% Average debt per student
+cS.tgDebtMean = 0;
 
 % Mean transfer
+cS.tgTransfer = 1;
 cS.tgTransferYp = 1;
 cS.tgTransferIq = 1;
 
@@ -245,19 +277,31 @@ cS.tgTransferIq = 1;
 if setNo == cS.setDefault
    cS.setStr = 'Default';
    
+elseif setNo == 2
+   cS.setStr = 'Ability does not affect earnings';
+   cS.abilAffectsEarnings = 0;
+   
+elseif setNo == 3
+   % For testing. Calibrate to another cohort
+   cS.setStr = 'Test with another cohort';
+   [~, cS.iCohort] = min(abs(cS.bYearV - 1940));
+   
 else
    error('Invalid');
 end
 
 
 %% Experiment settings
+% For each param, specify from which cohort it is taken
+% []: take from the sets base cohort
 
 % Which data based parameters are from baseline cohort?
-% Earnings profiles
-expS.earnBaseCohort = 0;
+% Earnings profiles (sets targets if calibrated, otherwise takes paramS.pvEarn_asM from base cohort)
+expS.earnCohort = [];
 % expS.costBaseCohort = 0;
 % expS.ypBaseCohort = 0;
-expS.bLimitBaseCohort = 0;
+% Cohort from which borrowing limits are taken
+expS.bLimitCohort = [];
 % Does this experiment require recalibration?
 expS.doCalibrate = 1;
 
@@ -267,10 +311,11 @@ if expNo < 100
       cS.expStr = 'Baseline';
       % Parameters with these values of doCal are calibrated
       cS.doCalV = cS.calBase;
-      cS.iCohort = cS.iRefCohort;
+      cS.iCohort = cS.iRefCohort;      % change? +++++
    else
       error('Invalid');
    end
+   
    
 % *******  Counterfactuals
 % Nothing is calibrated. Just run exp_bc1
@@ -279,26 +324,36 @@ elseif expNo < 200
    expS.doCalibrate = 0;
    % Irrelevant
    cS.doCalV = cS.calExp;
-   cS.iCohort = cS.iRefCohort - 1;  % make one for each cohort +++++
+   % Taking parameters from this cohort
+   cS.iCohort = cS.iRefCohort;
+   % Taking counterfactuals from this cohort
+   cfCohort = find(cS.bYearV == 1940);
 
    if expNo == 103
       cS.expStr = 'Replicate base exper';    % for testing
       % Irrelevant
       cS.doCalV = cS.calExp;
       cS.iCohort = cS.iRefCohort;
-      expS.earnBaseCohort = 1;
-      expS.bLimitBaseCohort = 1;
+      expS.earnCohort = cS.iCohort;
+      expS.bLimitCohort = cS.iCohort;
 
    elseif expNo == 104
+      % This only works if ability does not affect earnings
+      if cS.abilAffectsEarnings ~= 0
+         error_bc1('Not implemented', cS);
+      end
       cS.expStr = 'Only change earn profiles'; 
-      expS.earnBaseCohort = 0;
-      expS.bLimitBaseCohort = 1;
+      expS.earnCohort = cfCohort;
 
    elseif expNo == 105
       cS.expStr = 'Only change bLimit';    % when not recalibrated
-      expS.earnBaseCohort = 1;
-      expS.bLimitBaseCohort = 0;
+      expS.bLimitCohort = cfCohort;
 
+   elseif expNo == 106
+      % Change college costs
+      cS.expStr = 'College costs';
+      % Need to calibrate everything for that cohort. Then impose pMean from there +++
+      
    else
       error('Invalid');
    end
@@ -313,8 +368,9 @@ elseif expNo < 300
    % Calibrate pMean, which is really a truncated data moment
    %  Should also do something about pStd +++
    cS.pvector = cS.pvector.calibrate('pMean', cS.calExp);
-   
+
    if expNo == 202
+      % Recalibrate all time-varying parameters
       cS.expStr = 'Time series';
       % Signal noise
       cS.pvector = cS.pvector.calibrate('alphaAM', cS.calExp);
@@ -350,8 +406,11 @@ cS.expS = expS;
 %% Derived constants
 
 cS.pr_iqV = diff([0; cS.iqUbV]);
+cS.pr_ypV = diff([0; cS.ypUbV]);
 
 cS.nCohorts = length(cS.bYearV);
+% Year each cohort start college (age 19)
+cS.yearStartCollege_cV = cS.bYearV + 18;
 
 % Lifespan
 cS.ageMax = cS.physAgeLast - cS.age1 + 1;
@@ -359,6 +418,14 @@ cS.ageMax = cS.physAgeLast - cS.age1 + 1;
 
 % Length of work phase by s
 cS.workYears_sV = cS.ageMax - cS.ageWorkStart_sV + 1;
+
+if cS.abilAffectsEarnings == 0   
+   cS.pvector = cS.pvector.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0,  0.02, 0.2, cS.calNever);
+   cS.pvector = cS.pvector.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0, 0.02, 0.2, cS.calNever);
+   cS.pvector = cS.pvector.change('eHatCD', [], [], 0, [], [], cS.calNever);
+   cS.pvector = cS.pvector.change('dEHatHSG', [], [], 0, [], [], cS.calNever);
+   cS.pvector = cS.pvector.change('dEHatCG', [], [], 0, [], [], cS.calNever);
+end
 
 
 
@@ -430,6 +497,10 @@ cS.vCalTargets = 403;
 % Cohort earnings profiles (data)
 cS.vCohortEarnProfiles = 404;
 
+cS.vCohortSchooling = 405;
+
+% Avg student debt by year
+cS.vStudentDebtData = 406;
 
 
 end

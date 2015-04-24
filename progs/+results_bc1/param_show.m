@@ -10,6 +10,31 @@ paramS = param_load_bc1(setNo, expNo);
 nIq = length(cS.iqUbV);
 
 
+
+%% Return to schooling by ability
+if 1
+   legendV = cell([2,1]);
+   % Log pv earn difference by [a,s]
+   dLogPv_asM = diff(log(paramS.pvEarn_asM), 1, 2);
+   
+   fh = output_bc1.fig_new(saveFigures, []);
+   hold on;
+   
+   for i1 = 1 : 2
+      iLine = i1;
+      plot(cumsum(paramS.prob_aV), dLogPv_asM(:,i1), figS.lineStyleDenseV{iLine}, 'color', figS.colorM(iLine,:));
+      legendV{iLine} = [cS.sLabelV{i1+1}, ' vs ', cS.sLabelV{i1}];
+   end
+   
+   hold off;
+   xlabel('Ability percentile');
+   ylabel('Log lifetime earnings gap');
+   legend(legendV, 'location', 'south');
+   output_bc1.fig_format(fh, 'line');
+   output_bc1.fig_save('lty_return_a', saveFigures, cS);
+end
+
+
 %% Endowment correlations
 % By simulation
 if 01
@@ -21,13 +46,11 @@ if 01
 
 
    % Correlation matrix
+   varNameV = {'a', 'm', 'IQ', 'p', '\ln(y)'};
    corrM = corrcoef([abilV, paramS.m_jV(jV), iqV, paramS.pColl_jV(jV), log(paramS.yParent_jV(jV))]);
 
-   fprintf('\nEndowment correlations: \n');
-   fprintf('[a, m, IQ, p, log(y)] \n');
-   
-   % Write a nice table +++
-   disp(corrM);   
+   [tbM, tbS] = latex_lh.corr_table(corrM, varNameV);
+   latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'endow_corr.tex'), tbM, 'Caption', 'Label', tbS);
 end
 
 

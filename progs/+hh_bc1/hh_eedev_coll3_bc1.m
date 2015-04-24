@@ -1,4 +1,4 @@
-function eeDevV = hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, j, iCohort, paramS, cS)
+function eeDevV = hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, iAbil, vWorkS, paramS, cS)
 % Euler equation deviation in college; periods 3-4
 %{
 eeDev > 0  implies  u'(c) > V_k  =>  raise c
@@ -16,11 +16,13 @@ end
 
 %% Main
 
-% Marginal value of capital, discounted to start of work
-muKV = nan(size(cV));
-for i1 = 1 : length(cV)
-   [~,~,~, muKV(i1)] = hh_bc1.hh_work_bc1(kPrimeV(i1), cS.iCG, j, iCohort, paramS, cS);
-end
+muKV = vWorkS.muFct_saM{cS.iCG, iAbil}(kPrimeV);
+
+% % Marginal value of capital, discounted to start of work
+% muKV = nan(size(cV));
+% for i1 = 1 : length(cV)
+%    [~,~,~, muKV(i1)] = hh_bc1.hh_work_bc1(kPrimeV(i1), cS.iCG, iAbil, paramS, cS);
+% end
 
 ucV = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV, paramS, cS);
 

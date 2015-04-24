@@ -1,4 +1,4 @@
-function [eeDevV, kPrimeV, hoursV] = hh_euler_coll3_bc1(cV, k, wColl, pColl, kMin, j, iCohort, paramS, cS)
+function [eeDevV, kPrimeV, hoursV] = hh_euler_coll3_bc1(cV, k, wColl, pColl, kMin, iAbil, vWorkS, paramS, cS)
 % Euler equation deviation in college; periods 3-4
 %{
 Input is c
@@ -31,7 +31,7 @@ kPrimeV = max(kMin, kPrimeV);
 
 % ***  EE dev
 
-eeDevV = hh_bc1.hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, j, iCohort, paramS, cS);
+eeDevV = hh_bc1.hh_eedev_coll3_bc1(cV, hoursV, kPrimeV, iAbil, vWorkS, paramS, cS);
 
 if cS.dbg > 10
    validateattributes(eeDevV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...

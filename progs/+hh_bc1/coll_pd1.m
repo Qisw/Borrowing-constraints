@@ -1,4 +1,4 @@
-function [c, hours, kPrime, vColl] = coll_pd1(k, wColl, pColl, iCohort, vmFct, paramS, cS)
+function [c, hours, kPrime, vColl] = coll_pd1(k, wColl, pColl, vmFct, paramS, cS)
 % Solve college decision periods 1-2
 %{
 If he cannot afford college, he gets cFloor and lFloor
@@ -21,6 +21,10 @@ Checked: 2015-Mar-20
 if cS.dbg > 10
    validateattributes(wColl, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', 'positive'})
 end
+
+R = paramS.R;
+onePlusBeta = 1 + paramS.prefBeta;
+betaSquared = paramS.prefBeta .^ 2;
 
 
 
@@ -78,7 +82,8 @@ if kPrime > paramS.kMax
 end
 
 if kPrime < kMin
-   if kPrime < kMin - 1e-5
+   if kPrime < kMin - 1e-4
+      disp([kPrime, kMin, kPrime - kMin]);
       error_bc1('should not happen', cS);
    else
       kPrime = kMin;
@@ -107,22 +112,27 @@ end
 
 
 %% Nested: negative RHS of bellman
-% function of c
+%{ 
+Must be extremely efficient
+%}
    function [vOutV, hoursV, kPrimeV] = bellman(cV)
-      % Get work hours from static condition
-      hoursV = hh_bc1.hh_static_bc1(cV, wColl, paramS, cS);
-      [~,~,utilV] = hh_bc1.hh_util_coll_bc1(cV, 1-hoursV, paramS, cS);
+      % Hours from static condition
+      hoursV = max(0, 1 - (cV .^ (paramS.prefSigma ./ paramS.prefRho)) .* ...
+         (paramS.prefWtLeisure ./ paramS.prefWt ./ wColl) .^ (1/paramS.prefRho));
+      %hoursV = hh_bc1.hh_static_bc1(cV, wColl, paramS, cS);
+
+      utilV = hh_bc1.hh_util_coll_bc1(cV, 1-hoursV, paramS, cS);
 
       % Get k' from budget constraint
-      kPrimeV = hh_bc1.hh_bc_coll_bc1(cV, hoursV, k, wColl, pColl, paramS.R, cS);
-      vmV = vmFct(kPrimeV);
+      kPrimeV = R * k + 2 * (wColl * hoursV - cV - pColl);
+      %       kPrimeV = hh_bc1.hh_bc_coll_bc1(cV, hoursV, k, wColl, pColl, paramS.R, cS);
+
+      vOutV = -(onePlusBeta .* utilV + betaSquared .* vmFct(kPrimeV));
       
-      vOutV = -((1 + paramS.prefBeta) .* utilV + (paramS.prefBeta .^ 2) .* vmV);
-      
-      if cS.dbg > 10
-         validateattributes(vOutV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-            'size', size(cV)})
-      end
+%       if cS.dbg > 10
+%          validateattributes(vOutV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+%             'size', size(cV)})
+%       end
    end
 
 end

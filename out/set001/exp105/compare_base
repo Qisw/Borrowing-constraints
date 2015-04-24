@@ -1,0 +1,12 @@
+\begin{tabular}{lrr}
+\hline
+Variable & Experiment  & Base  \\
+Drivers &   &   \\
+PV of lifetime earnings by s & 6.37, 6.58, 7.07  & 6.37, 6.58, 7.07  \\
+Premium relative to HSG & 0.22, 0.48  & 0.22, 0.48  \\
+Mean college cost & 6,383  & 6,383  \\
+Borrowing limit & -0  & -22,596  \\
+Outcomes &   &   \\
+Fraction dropouts / graduates & 0.28, 0.22  & 0.29, 0.23  \\
+\hline
+\end{tabular}%
