@@ -1,0 +1,90 @@
+
+    ---------    
+
+Life history of type 1
+
+Parents:  
+income (per year): 16.8 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 16.8  uPrime: 0.76 
+Child:   c: 23.7  uPrime: 0.64 
+
+Try college:
+Parent:  transfer: 0.3   c: 16.6  uPrime: 0.77 
+Child:   coll cost: 6.6 
+Child phase 1:  c: 11.6  uPrime: 0.74  earn: 17.7  save: -1.0 
+Child phase 2:  c: 11.4  uPrime: 0.77  earn: 18.0  save: -0.0 
+
+
+    ---------    
+
+Life history of type 21
+
+Parents:  
+income (per year): 29.8 
+
+Work as HSG:
+Parent:  transfer: 3.0   c: 26.8  uPrime: 0.65 
+Child:   c: 24.1  uPrime: 0.62 
+
+Try college:
+Parent:  transfer: 0.1   c: 29.7  uPrime: 0.62 
+Child:   coll cost: 3.2 
+Child phase 1:  c: 12.7  uPrime: 0.62  earn: 15.7  save: -0.4 
+Child phase 2:  c: 12.7  uPrime: 0.62  earn: 15.8  save: -0.0 
+
+
+    ---------    
+
+Life history of type 41
+
+Parents:  
+income (per year): 30.8 
+
+Work as HSG:
+Parent:  transfer: 3.5   c: 27.3  uPrime: 0.64 
+Child:   c: 24.2  uPrime: 0.62 
+
+Try college:
+Parent:  transfer: 0.9   c: 29.9  uPrime: 0.62 
+Child:   coll cost: 4.4 
+Child phase 1:  c: 12.9  uPrime: 0.60  earn: 15.5  save: -3.6 
+Child phase 2:  c: 12.2  uPrime: 0.67  earn: 16.6  save: 0.0 
+
+
+    ---------    
+
+Life history of type 60
+
+Parents:  
+income (per year): 16.0 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 16.0  uPrime: 0.78 
+Child:   c: 23.7  uPrime: 0.64 
+
+Try college:
+Parent:  transfer: 1.1   c: 14.9  uPrime: 0.79 
+Child:   coll cost: 8.9 
+Child phase 1:  c: 11.4  uPrime: 0.77  earn: 18.0  save: -4.3 
+Child phase 2:  c: 10.6  uPrime: 0.90  earn: 19.5  save: -0.0 
+
+
+    ---------    
+
+Life history of type 80
+
+Parents:  
+income (per year): 16.7 
+
+Work as HSG:
+Parent:  transfer: 0.0   c: 16.7  uPrime: 0.76 
+Child:   c: 23.7  uPrime: 0.64 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.7  uPrime: 0.76 
+Child:   coll cost: -2.6 
+Child phase 1:  c: 14.2  uPrime: 0.50  earn: 13.3  save: 3.4 
+Child phase 2:  c: 15.4  uPrime: 0.42  earn: 11.1  save: -3.4 
+

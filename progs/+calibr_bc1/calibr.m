@@ -87,6 +87,11 @@ var_save_bc1(aggrS, cS.vAggregates, cS);
 % Generate results
 results_all_bc1(cS.setNo, cS.expNo);
 
+% Run all experiments
+if ~strcmpi(solverStr, 'none')
+   exper_all_bc1(cS.setNo, cS.expNo);
+end
+
 
 %% Nested: objective function
    function [dev, param2S] = cal_dev_nested(guessV)

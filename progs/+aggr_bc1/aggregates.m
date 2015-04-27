@@ -434,7 +434,7 @@ if cS.dbg > 10
    diffV = ([debtMean, earnCollMean, transferMean, hoursCollMean, pMean] - denomV) ./ ...
       max(1, denomV);
    maxDiff = max(abs(diffV));
-   if maxDiff > 5e-2    % why so imprecise? +++
+   if maxDiff > 0.1    % why so imprecise? +++
       disp(maxDiff)
       error_bc1('Two ways of computing means do not match up', cS);
    end

@@ -74,6 +74,20 @@ for iSchool = 1 : cS.nSchool
 end
 
 
+%% College costs
+%{
+If not calibrated: copied from base expNo
+But can override by setting collCostExpNo
+%}
+
+if ~isempty(cS.expS.collCostExpNo)
+   c2S = const_bc1(cS.setNo, cS.expS.collCostExpNo);
+   param2S = var_load_bc1(c2S.vParams, c2S);
+   paramS.pMean = param2S.pMean;
+   paramS.pStd  = param2S.pStd;
+end
+
+
 %% Endowments
 
 
@@ -236,48 +250,37 @@ end
 
 %% Earnings by [model age, school]
 % Including skill price
-% This must work whether or not earnings are calibrated for this experiment +++
-%  currently it does not
-%  need to calibrate for another cohort; then copy paramS.pvEarn_asM
-
-% May be taken from base cohort
-if isempty(cS.expS.earnCohort)
-   eCohort = cS.iCohort;
-else
-   eCohort = cS.expS.earnCohort;
-end
-
-% Targets
-paramS.tgS.pvEarn_sV = tgS.pvEarn_scM(:,eCohort);
-
-% % Mean log earnings in the data
-% paramS.earn_tsM = tgS.earn_tscM(:,:,eCohort);
-% if cS.dbg > 10
-%    validateattributes(paramS.earn_tsM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-%       'size', [cS.ageMax, cS.nSchool]})
-% end
-
-
-% ***  Present value of earnings
-% discounted to work start; in the data
 
 % Returns to ability by s
 paramS.phi_sV = [paramS.phiHSG; paramS.phiHSG; paramS.phiCG];
 paramS.eHat_sV = paramS.eHatCD + [paramS.dEHatHSG; 0; paramS.dEHatCG];
 
-% Present value by [ability, school]
-if cS.abilAffectsEarnings == 0
-   % Ability does not affect earnings
-   paramS.pvEarn_asM = ones([cS.nAbil, 1]) * paramS.tgS.pvEarn_sV';
-else
-   dAbilV = (paramS.abilGrid_aV - cS.aBar);
-   paramS.pvEarn_asM = nan([cS.nAbil, cS.nSchool]);
-   for iSchool = 1 : cS.nSchool
-      paramS.pvEarn_asM(:,iSchool) = paramS.tgS.pvEarn_sV(cS.iHSG) * ...
-         exp(paramS.eHat_sV(iSchool) + dAbilV .* paramS.phi_sV(iSchool));
-   end
-end
+if isempty(cS.expS.earnExpNo)
+   % Targets
+   paramS.tgS.pvEarn_sV = tgS.pvEarn_scM(:, cS.iCohort);
 
+   % Present value by [ability, school]
+   %  discounted to work start age
+   if cS.abilAffectsEarnings == 0
+      % Ability does not affect earnings
+      paramS.pvEarn_asM = ones([cS.nAbil, 1]) * paramS.tgS.pvEarn_sV';
+   else
+      dAbilV = (paramS.abilGrid_aV - cS.aBar);
+      paramS.pvEarn_asM = nan([cS.nAbil, cS.nSchool]);
+      for iSchool = 1 : cS.nSchool
+         paramS.pvEarn_asM(:,iSchool) = paramS.tgS.pvEarn_sV(cS.iHSG) * ...
+            exp(paramS.eHat_sV(iSchool) + dAbilV .* paramS.phi_sV(iSchool));
+      end
+   end
+
+else
+   % Copy from another experiment
+   c2S = const_bc1(cS.setNo, cS.expS.earnExpNo);
+   param2S = var_load_bc1(cS.vParams, c2S);
+   paramS.tgS.pvEarn_sV = param2S.tgS.pvEarn_sV;
+   paramS.pvEarn_asM = param2S.pvEarn_asM;
+end
+   
 if cS.dbg > 10
    validateattributes(paramS.pvEarn_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'positive', 'size', [cS.nAbil, cS.nSchool]})

@@ -2,14 +2,16 @@ function outS = load_income_iq_college(sourceFn, setNo)
 % Load college entry / grad rates by [income, iq]
 %{
 Using csv files for each source
+Not all years have graduation rates
 
 OUT
-   entryInt_yqM, gradInt_yqM
+   entry_yqM, grad_yqM
       entry and graduation rates (not conditional on entry)
       by [y parent, iq] quartile
    ypUbV, iqUbV
       ORIGINAL bounds in dataset
 
+Plot raw and interpolated data +++
 Add self-test code +++
 %}
 
@@ -23,36 +25,48 @@ nYp = length(cS.ypUbV);
 gradDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college grad';
 entryDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college';
 
-% sourceFn = 'flanagan 1971.csv';
-
+% Entry rates
 entryS = load_table(fullfile(entryDir, sourceFn), cS);
 % Graduation rates are still conditional on entry
-gradS  = load_table(fullfile(gradDir, sourceFn), cS);
+gradFn = fullfile(gradDir, sourceFn);
+if exist(gradFn, 'file')
+   gradS  = load_table(gradFn, cS);
+else
+   gradS = [];
+end
 
 
 % Interpolate to match cS.iqUbV and cS.ypUbV
-outS.entry_qyM = interpolate(entryS.perc_coll_qyM, entryS.iqUbV, entryS.ypUbV, cS);
-outS.grad_qyM  = interpolate(gradS.prob_grad_qyM, gradS.iqUbV, gradS.ypUbV, cS);
 mass_qyM  = interpolate(entryS.perc_qyM, entryS.iqUbV, entryS.ypUbV, cS);
 outS.mass_qyM  = mass_qyM ./ sum(mass_qyM(:));
+outS.entry_qyM = interpolate(entryS.perc_coll_qyM, entryS.iqUbV, entryS.ypUbV, cS);
 
-% Make prob grad not conditional on entry
-outS.grad_qyM = outS.grad_qyM .* outS.entry_qyM;
+if ~isempty(gradS)
+   outS.grad_qyM  = interpolate(gradS.prob_grad_qyM, gradS.iqUbV, gradS.ypUbV, cS);
+   % Make prob grad not conditional on entry
+   outS.grad_qyM = outS.grad_qyM .* outS.entry_qyM;
+else
+   outS.grad_qyM = [];
+end
+
 
 
 % Construct marginal distributions
 [outS.entry_qV, outS.entry_yV] = marginals(outS.entry_qyM, outS.mass_qyM, cS);
-[outS.grad_qV,  outS.grad_yV] = marginals(outS.grad_qyM, outS.mass_qyM, cS);
-
 validateattributes(outS.entry_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
    '<', 0.9, 'size', [nq, 1]})
 validateattributes(outS.entry_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
    '<', 0.9, 'size', [nYp, 1]})
-validateattributes(outS.grad_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 0.9, 'size', [nq, 1]})
-validateattributes(outS.grad_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 0.9, 'size', [nYp, 1]})
 
+if ~isempty(gradS)
+   [outS.grad_qV,  outS.grad_yV] = marginals(outS.grad_qyM, outS.mass_qyM, cS);
+   validateattributes(outS.grad_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+      '<', 0.9, 'size', [nq, 1]})
+   validateattributes(outS.grad_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+      '<', 0.9, 'size', [nYp, 1]})
+end
+
+   
 
 end
 
@@ -73,11 +87,11 @@ function outS = load_table(loadFn, cS)
    nObs = length(idxV);
 
    % Upper bounds of family income groups
-   [valueV, idxV] = unique(round(loadM.upper_fam));
+   [~, idxV] = unique(round(loadM.upper_fam));
    ypUbV = loadM.upper_fam(idxV) ./ 100;
-   if length(ypUbV) ~= length(cS.ypUbV)
-      error('Not implemented');
-   end
+%    if length(ypUbV) ~= length(cS.ypUbV)
+%       error('Not implemented');
+%    end
 
    % Recode as index values
    iYpV = nan([nObs,1]);
@@ -88,11 +102,11 @@ function outS = load_table(loadFn, cS)
       'size', [nObs,1]})
 
    % Upper bounds of IQ groups
-   [valueV, idxV] = unique(round(loadM.upper_ac));
+   [~, idxV] = unique(round(loadM.upper_ac));
    iqUbV = loadM.upper_ac(idxV) ./ 100;
-   if length(iqUbV) ~= length(cS.iqUbV)
-      error('Not implemented');
-   end
+%    if length(iqUbV) ~= length(cS.iqUbV)
+%       error('Not implemented');
+%    end
 
    % Recode as index values
    iIqV = nan([nObs,1]);
@@ -118,15 +132,18 @@ end
 function int_qyM = interpolate(m_qyM, iqUbV, ypUbV, cS)
    nIq = length(iqUbV);
    nYp = length(ypUbV);
-
    yp_qyM = ones([nIq, 1]) * ypUbV(:)';
    iq_qyM = iqUbV(:) * ones([1, nYp]);
-   yp2_qyM = ones([nIq, 1]) * cS.ypUbV(:)';
-   iq2_qyM = cS.iqUbV(:) * ones([1, nYp]);
+   
+   nIq2 = length(cS.iqUbV);
+   nYp2 = length(cS.ypUbV);
+   yp2_qyM = ones([nIq2, 1]) * cS.ypUbV(:)';
+   iq2_qyM = cS.iqUbV(:) * ones([1, nYp2]);
 
-   intS = scatteredInterpolant([iq_qyM(:), yp_qyM(:)], m_qyM(:), 'linear');
+   % Change: interpolation for values outside the grid in the data +++
+   intS = scatteredInterpolant([iq_qyM(:), yp_qyM(:)], m_qyM(:), 'linear', 'nearest');
    int_qyM = intS([iq2_qyM(:), yp2_qyM(:)]);
-   int_qyM = reshape(int_qyM, [nIq, nYp]);
+   int_qyM = reshape(int_qyM, [nIq2, nYp2]);
 end
 
 

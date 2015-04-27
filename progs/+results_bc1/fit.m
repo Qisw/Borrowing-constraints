@@ -21,13 +21,16 @@ if 1
       end
       ds = outS.devV.dev_by_name(nameStr);
       
-      fh = output_bc1.fig_new(saveFigures, []);
-      bar(1 : nIq, [ds.modelV(:), ds.dataV(:)]);
-      xlabel('IQ group');
-      ylabel(yStr);
-      figures_lh.axis_range_lh([NaN NaN 0 1]);
-      output_bc1.fig_format(fh, 'bar');
-      output_bc1.fig_save(figFn, saveFigures, cS);
+      if ~isempty(ds)
+         % Not all cohorts have this target
+         fh = output_bc1.fig_new(saveFigures, []);
+         bar(1 : nIq, [ds.modelV(:), ds.dataV(:)]);
+         xlabel('IQ group');
+         ylabel(yStr);
+         figures_lh.axis_range_lh([NaN NaN 0 1]);
+         output_bc1.fig_format(fh, 'bar');
+         output_bc1.fig_save(figFn, saveFigures, cS);
+      end
    end
 end
 

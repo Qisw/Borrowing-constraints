@@ -76,6 +76,15 @@ cS.R = 1.04;
 
 %% Default parameters: Demographics, Preferences
 
+% Cohorts modeled
+cS.bYearV = [1915, 1940, 1961, 1979]';
+% Counterfactual expNo that go with each cohort
+cS.bYearExpNoV = [203, 202, NaN, NaN];
+% Cross sectional calibration for this cohort
+cS.iRefCohort = find(cS.bYearV == 1961);
+cS.nCohorts = length(cS.bYearV);
+
+
 % Age at model age 1
 cS.age1 = 18;
 % Last physical age
@@ -113,12 +122,6 @@ cS.pvector = cS.pvector.change('prefHS', '\bar{\eta}', 'Preference for HS', 0, -
 % % Tax on HS earnings (a preference shock). 2 parameters. Intercept and slope. Both in (-1,1)
 % cS.pvector = cS.pvector.change('taxHSzero', '\tau{0}', 'Tax on college earnings',   0, -0.6, 0.6, cS.calNever);
 % cS.pvector = cS.pvector.change('taxHSslope',  '\tau{1}', 'Tax on college earnings', 0, -0.8, 0.8, cS.calNever);
-
-% Cohorts modeled
-cS.bYearV = [1920, 1940, 1961, 1979]';
-% Cross sectional calibration for this cohort
-cS.iRefCohort = find(cS.bYearV == 1961);
-cS.nCohorts = length(cS.bYearV);
 
 
 %% Default: endowments
@@ -223,6 +226,7 @@ cS.cpsSetNo = 1;
 
 
 %% Which calibration targets to use?
+% These are targets we would like to match. Targets that are NaN are ignored.
 
 % PV of lifetime earnings by schooling
 cS.tgPvLty = 1;
@@ -232,6 +236,7 @@ cS.tgPvLty = 1;
 cS.tgPMean  = 1;
 cS.tgPStd   = 1;
 cS.tgPMeanIq = 1;
+cS.tgPMeanYp = 0;
 
 
 % ***** College outcomes
@@ -276,6 +281,7 @@ cS.tgTransferIq = 1;
 
 if setNo == cS.setDefault
    cS.setStr = 'Default';
+   cS.iCohort = cS.iRefCohort;
    
 elseif setNo == 2
    cS.setStr = 'Ability does not affect earnings';
@@ -292,13 +298,17 @@ end
 
 
 %% Experiment settings
-% For each param, specify from which cohort it is taken
-% []: take from the sets base cohort
+%{
+By default, non-calibrated params are copied from base expNo
+Can override this by setting switches such as expS.earnExpNo
+Then pvEarn_asM is taken from that experiment (which would usually be the experiment
+that calibrates everything for a particular cohort)
+%}
 
 % Which data based parameters are from baseline cohort?
 % Earnings profiles (sets targets if calibrated, otherwise takes paramS.pvEarn_asM from base cohort)
-expS.earnCohort = [];
-% expS.costBaseCohort = 0;
+expS.earnExpNo = [];
+expS.collCostExpNo = [];
 % expS.ypBaseCohort = 0;
 % Cohort from which borrowing limits are taken
 expS.bLimitCohort = [];
@@ -311,14 +321,15 @@ if expNo < 100
       cS.expStr = 'Baseline';
       % Parameters with these values of doCal are calibrated
       cS.doCalV = cS.calBase;
-      cS.iCohort = cS.iRefCohort;      % change? +++++
+      cS.iCohort = cS.iRefCohort;  
+      
    else
       error('Invalid');
    end
    
    
 % *******  Counterfactuals
-% Nothing is calibrated. Just run exp_bc1
+% Nothing is calibrated. Just run exper_bc1
 % Params are copied from base
 elseif expNo < 200
    expS.doCalibrate = 0;
@@ -326,24 +337,22 @@ elseif expNo < 200
    cS.doCalV = cS.calExp;
    % Taking parameters from this cohort
    cS.iCohort = cS.iRefCohort;
-   % Taking counterfactuals from this cohort
-   cfCohort = find(cS.bYearV == 1940);
+   % Taking counterfactuals from this cohort (expNo)
+   [~,cfCohort] = min(abs(cS.bYearV - 1940)); % Project talent
+   cfExpNo = cS.bYearExpNoV(cfCohort); 
+   %  also make these for other cohorts +++++
 
    if expNo == 103
       cS.expStr = 'Replicate base exper';    % for testing
       % Irrelevant
       cS.doCalV = cS.calExp;
       cS.iCohort = cS.iRefCohort;
-      expS.earnCohort = cS.iCohort;
+      expS.earnExpNo = cS.expBase;
       expS.bLimitCohort = cS.iCohort;
 
    elseif expNo == 104
-      % This only works if ability does not affect earnings
-      if cS.abilAffectsEarnings ~= 0
-         error_bc1('Not implemented', cS);
-      end
       cS.expStr = 'Only change earn profiles'; 
-      expS.earnCohort = cfCohort;
+      expS.earnExpNo = cfExpNo;
 
    elseif expNo == 105
       cS.expStr = 'Only change bLimit';    % when not recalibrated
@@ -352,7 +361,8 @@ elseif expNo < 200
    elseif expNo == 106
       % Change college costs
       cS.expStr = 'College costs';
-      % Need to calibrate everything for that cohort. Then impose pMean from there +++
+      % Need to calibrate everything for that cohort. Then impose pMean from there
+      expS.collCostExpNo = cfExpNo;
       
    else
       error('Invalid');
@@ -364,24 +374,29 @@ elseif expNo < 200
 elseif expNo < 300
    % Now fewer parameters are calibrated
    cS.doCalV = cS.calExp;
-   cS.iCohort = cS.iRefCohort - 1;  % make one for each cohort +++++
    % Calibrate pMean, which is really a truncated data moment
    %  Should also do something about pStd +++
    cS.pvector = cS.pvector.calibrate('pMean', cS.calExp);
 
-   if expNo == 202
-      % Recalibrate all time-varying parameters
-      cS.expStr = 'Time series';
+   if any(expNo == cS.bYearExpNoV)
+      % ******  Calibrate all time varying params
+      cS.iCohort = find(expNo == cS.bYearExpNoV);
+      cS.expStr = sprintf('Cohort %i', cS.bYearV(cS.iCohort));
+      
       % Signal noise
       cS.pvector = cS.pvector.calibrate('alphaAM', cS.calExp);
       % Match transfers
       cS.pvector = cS.pvector.calibrate('puWeight', cS.calExp);
       % Match overall college entry
       cS.pvector = cS.pvector.calibrate('prefHS', cS.calExp);
+      cS.pvector = cS.pvector.calibrate('wCollMean', cS.calExp);
+      
 
-   elseif expNo == 203
+   elseif expNo == 211
       % This changes earnings, borrowing limits, pMean
+      error('Not updated'); % +++++
       cS.expStr = 'Only change observables';   
+      cS.iCohort = cS.iRefCohort - 1;  % make one for each cohort +++
 %       % Take all calibrated params from base
 %       for i1 = 1 : cS.pvector.np
 %          ps = cS.pvector.valueV{i1};

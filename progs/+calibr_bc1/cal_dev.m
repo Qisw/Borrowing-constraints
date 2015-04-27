@@ -198,6 +198,10 @@ end
 
 %% Nested: add deviation
 %{
+Add a deviation to the deviation vector (a vector of devstruct)
+If all targets are NaN: ignore (data not available)
+   and return missVal deviation
+
 IN
    wtV
       relative weights of the different deviations
@@ -215,6 +219,14 @@ IN
       'dollar'
 %}
    function scalarDev = dev_add(tgV, modelV, wtV, scaleFactor, isTarget, descrStr, longDescrStr, fmtStr)
+      if all(isnan(tgV))
+         scalarDev = cS.missVal;
+         return;
+      end
+      if any(isnan(tgV))
+         error_bc1('Targets are NaN', cS);
+      end
+      
       % For display of dollar values
       if strcmp(fmtStr, 'dollar')
          modelV = modelV .* dollarFactor;

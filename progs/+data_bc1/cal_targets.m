@@ -55,29 +55,32 @@ tgS.fracGrad_ycM  = nan([nYp, cS.nCohorts]);
 
 
 
-% ***  Project talent
+% ***  Early cohorts
 
-[~, iCohort] = min(abs(cS.bYearV - 1940));
-loadS = data_bc1.load_income_iq_college('flanagan 1971.csv', setNo);
+for iCohort = 1 : 2
+   bYear = cS.bYearV(iCohort);
+   if abs(bYear - 1940) < 3
+      % Project talent
+      dataFn = 'flanagan 1971.csv';
+   elseif abs(bYear - 1915) < 3
+      % Updegraff
+      dataFn = 'updegraff 1936.csv';
+   else
+      error('Invalid');
+   end
+   
+   loadS = data_bc1.load_income_iq_college(dataFn, setNo);
 
-tgS.fracEnter_qycM(:,:,iCohort) = loadS.entry_qyM;
-tgS.fracGrad_qycM(:,:,iCohort)  = loadS.grad_qyM;
-tgS.fracEnter_qcM(:,iCohort) = loadS.entry_qV;
-tgS.fracEnter_ycM(:,iCohort) = loadS.entry_yV;
-tgS.fracGrad_qcM(:,iCohort) = loadS.grad_qV;
-tgS.fracGrad_ycM(:,iCohort) = loadS.grad_yV;
+   tgS.fracEnter_qycM(:,:,iCohort) = loadS.entry_qyM;
+   tgS.fracEnter_qcM(:,iCohort) = loadS.entry_qV;
+   tgS.fracEnter_ycM(:,iCohort) = loadS.entry_yV;
+   if ~isempty(loadS.grad_qyM)
+      tgS.fracGrad_qycM(:,:,iCohort)  = loadS.grad_qyM;
+      tgS.fracGrad_qcM(:,iCohort) = loadS.grad_qV;
+      tgS.fracGrad_ycM(:,iCohort) = loadS.grad_yV;
+   end
+end
 
-% % Fraction in each school group by [iq, yp]
-% % invented data targets +++
-% tgS.fracS_qycM = repmat(cS.missVal, [cS.nSchool, nIq, nYp, cS.nCohorts]);
-% for iCohort = 1 : cS.nCohorts
-%    for iYp = 1 : nYp
-%       for iIq = 1 : nIq
-%          sFracV = ones([cS.nSchool,1]) ./ cS.nSchool;
-%          tgS.fracS_qycM(:,iIq,iYp,iCohort) = sFracV;
-%       end
-%    end
-% end
 % 
 % % HSB data, hsb_fam_income.xlsx
 % fracEnter_yqM = [0.1910305	0.3404084	0.4616973	0.7431248
@@ -112,6 +115,8 @@ for iCohort = 1 : cS.nCohorts
    if ~isnan(tgS.fracEnter_qcM(1,iCohort))
       validateattributes(tgS.fracEnter_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
          'positive', '<', 0.9})
+   end
+   if ~isnan(tgS.fracGrad_qcM(1,iCohort))
       validateattributes(tgS.fracGrad_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
          'positive', '<', 0.8})
    end
@@ -125,7 +130,7 @@ end
 qFracV = diff([0; cS.iqUbV]);
 for iCohort = 1 : cS.nCohorts
    % check consistency with cps data +++++
-   if ~isnan(tgS.fracEnter_qcM(1,iCohort))
+   if ~isnan(tgS.fracGrad_qcM(1,iCohort))
       fracEnter = sum(tgS.fracEnter_qcM(:, iCohort) .* qFracV(:));
       fracGrad  = sum(tgS.fracGrad_qcM(:, iCohort) .* qFracV(:));
       tgS.frac_scM(:, iCohort) = [1-fracEnter,  fracEnter-fracGrad,  fracGrad];
@@ -197,9 +202,10 @@ end
 
 % Mean log parental income by IQ quartile
 tgS.logYpMean_qcM = nan([nIq, cS.nCohorts]);
-tgS.logYpMean_qcM(:, icNlsy79) = n79S.mean_parent_inc_byafqt - log(nlsyCpiFactor) - log(cS.unitAcct);
-
 tgS.logYpMean_ycM = nan([nYp, cS.nCohorts]);
+
+% NLSY 79
+tgS.logYpMean_qcM(:, icNlsy79) = n79S.mean_parent_inc_byafqt - log(nlsyCpiFactor) - log(cS.unitAcct);
 tgS.logYpMean_ycM(:, icNlsy79) = n79S.mean_parent_inc_byinc  - log(nlsyCpiFactor) - log(cS.unitAcct);
 
 if cS.dbg > 10
@@ -221,19 +227,18 @@ tgS.logYpMean_cV = n79S.mean_parent_inc .* ones([cS.nCohorts, 1]) - log(nlsyCpiF
 % Std log(yp) - no need to account for units
 tgS.logYpStd_cV  = n79S.sd_parent_inc .* ones([cS.nCohorts, 1]); 
 
-% % Assumed time invariant (stationary transformation)
-% for iCohort = 1 : cS.nCohorts
-%    tgS.logYpMean_cV(iCohort) = mean(tgS.logYpMean_qcM(:,iCohort));
-% end
 
 % Should perhaps construct mean from mean by q where feasible +++
 % for consistency
+% for iCohort = 1 : cS.nCohorts
+%    tgS.logYpMean_cV(iCohort) = mean(tgS.logYpMean_qcM(:,iCohort));
+% end
 
 validateattributes(tgS.logYpMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
 validateattributes(tgS.logYpStd_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>', 0.1, ...
    '<', 1})
 
-% Check consistency
+% Check consistency with values by iq, yp
 
 
 %% College costs
@@ -409,29 +414,27 @@ validateattributes(tgS.debtMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty',
 
 % Mean transfer by parental income, conditional on college
 % Ref cohort only
-tgS.transferMean_ycM = repmat(cS.missVal, [nYp, cS.nCohorts]);
+tgS.transferMean_ycM = nan([nYp, cS.nCohorts]);
+tgS.transferMean_qcM = nan([nIq, cS.nCohorts]);
 
 % HSB, hsb_fam_income.xlsx
 %  Transfer PER YEAR
 tgS.transferMean_ycM(:, icHSB) = [2358.477; 3589.882; 5313.561; 7710.767] ...
    ./ hsbCpiFactor ./ cS.unitAcct;
 
-% Invented +++
-tgS.transferMean_ycM = tgS.transferMean_ycM(:, icHSB) * ones([1, cS.nCohorts]);
-
-validateattributes(tgS.transferMean_ycM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   '>', 500 ./ cS.unitAcct,  '<', 2e4 ./ cS.unitAcct})
-
+% validateattributes(tgS.transferMean_ycM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+%    '>', 500 ./ cS.unitAcct,  '<', 2e4 ./ cS.unitAcct})
 
 % NELS
 transferV = [2264; 3678; 4649; 5386];
-tgS.transferMean_qcM = transferV * ones([1, cS.nCohorts]) ./ hsbCpiFactor ./ cS.unitAcct;
+tgS.transferMean_qcM(:,icHSB) = transferV ./ hsbCpiFactor ./ cS.unitAcct;
 
 
 % Average for all college students
 tgS.transferMean_cV = mean_by_yp(tgS.transferMean_ycM, tgS.fracEnter_ycM, cS);
 mean_cV = mean_by_yp(tgS.transferMean_qcM, tgS.fracEnter_qcM, cS);
-maxDiff = max(abs(mean_cV - tgS.transferMean_cV) ./ tgS.transferMean_cV);
+idxV = find(~isnan(tgS.transferMean_cV));
+maxDiff = max(abs(mean_cV(idxV) - tgS.transferMean_cV(idxV)) ./ tgS.transferMean_cV(idxV));
 if maxDiff > 2e-2
    warning('Mean transfers not consistent. Max diff %.3f', maxDiff);
 end

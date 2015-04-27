@@ -1,0 +1,90 @@
+
+    ---------    
+
+Life history of type 1
+
+Parents:  
+income (per year): 16.8 
+
+Work as HSG:
+Parent:  transfer: 3.7   c: 13.1  uPrime: 0.83 
+Child:   c: 21.3  uPrime: 0.80 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.8  uPrime: 0.76 
+Child:   coll cost: 3.4 
+Child phase 1:  c: 13.7  uPrime: 0.53  earn: 14.0  save: -6.2 
+Child phase 2:  c: 15.6  uPrime: 0.41  earn: 10.9  save: -16.4 
+
+
+    ---------    
+
+Life history of type 21
+
+Parents:  
+income (per year): 29.8 
+
+Work as HSG:
+Parent:  transfer: 11.8   c: 17.9  uPrime: 0.74 
+Child:   c: 22.5  uPrime: 0.71 
+
+Try college:
+Parent:  transfer: 0.0   c: 29.8  uPrime: 0.62 
+Child:   coll cost: 0.1 
+Child phase 1:  c: 15.0  uPrime: 0.44  earn: 11.8  save: -6.5 
+Child phase 2:  c: 16.7  uPrime: 0.36  earn: 8.9  save: -16.1 
+
+
+    ---------    
+
+Life history of type 41
+
+Parents:  
+income (per year): 30.8 
+
+Work as HSG:
+Parent:  transfer: 12.4   c: 18.3  uPrime: 0.74 
+Child:   c: 22.6  uPrime: 0.71 
+
+Try college:
+Parent:  transfer: 0.0   c: 30.8  uPrime: 0.61 
+Child:   coll cost: 1.3 
+Child phase 1:  c: 13.7  uPrime: 0.53  earn: 14.1  save: -1.8 
+Child phase 2:  c: 17.2  uPrime: 0.34  earn: 8.1  save: -20.8 
+
+
+    ---------    
+
+Life history of type 60
+
+Parents:  
+income (per year): 16.0 
+
+Work as HSG:
+Parent:  transfer: 3.2   c: 12.9  uPrime: 0.83 
+Child:   c: 21.2  uPrime: 0.80 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.0  uPrime: 0.77 
+Child:   coll cost: 5.6 
+Child phase 1:  c: 13.5  uPrime: 0.55  earn: 14.4  save: -9.4 
+Child phase 2:  c: 14.1  uPrime: 0.50  earn: 13.3  save: -13.2 
+
+
+    ---------    
+
+Life history of type 80
+
+Parents:  
+income (per year): 16.6 
+
+Work as HSG:
+Parent:  transfer: 3.5   c: 13.0  uPrime: 0.83 
+Child:   c: 21.3  uPrime: 0.80 
+
+Try college:
+Parent:  transfer: 0.0   c: 16.6  uPrime: 0.76 
+Child:   coll cost: -5.6 
+Child phase 1:  c: 13.9  uPrime: 0.51  earn: 13.7  save: 10.6 
+Child phase 2:  c: 21.9  uPrime: 0.21  earn: 0.2  save: -31.8 
+
