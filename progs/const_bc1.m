@@ -337,28 +337,37 @@ elseif expNo < 200
    cS.doCalV = cS.calExp;
    % Taking parameters from this cohort
    cS.iCohort = cS.iRefCohort;
+   
+   % Pick out cohort from which counterfactuals are taken
+   if expNo < 110
+      cfBYear = 1940;   % Project talent
+   elseif expNo < 120
+      cfBYear = 1915;   % Updegraff
+   else
+      error('Invalid');
+   end
+   
    % Taking counterfactuals from this cohort (expNo)
-   [~,cfCohort] = min(abs(cS.bYearV - 1940)); % Project talent
+   [~,cfCohort] = min(abs(cS.bYearV - cfBYear)); 
    cfExpNo = cS.bYearExpNoV(cfCohort); 
-   %  also make these for other cohorts +++++
 
-   if expNo == 103
+   if any(expNo == [103, 113])
       cS.expStr = 'Replicate base exper';    % for testing
       % Irrelevant
       cS.doCalV = cS.calExp;
-      cS.iCohort = cS.iRefCohort;
       expS.earnExpNo = cS.expBase;
       expS.bLimitCohort = cS.iCohort;
+      expS.collCostExpNo = cS.expBase;
 
-   elseif expNo == 104
+   elseif any(expNo == [104, 114])
       cS.expStr = 'Only change earn profiles'; 
       expS.earnExpNo = cfExpNo;
 
-   elseif expNo == 105
+   elseif any(expNo == [105, 115])
       cS.expStr = 'Only change bLimit';    % when not recalibrated
       expS.bLimitCohort = cfCohort;
 
-   elseif expNo == 106
+   elseif any(expNo == [106, 116])
       % Change college costs
       cS.expStr = 'College costs';
       % Need to calibrate everything for that cohort. Then impose pMean from there

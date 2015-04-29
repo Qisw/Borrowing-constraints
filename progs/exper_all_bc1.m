@@ -4,7 +4,7 @@ function exper_all_bc1(setNo, expNo)
 cS = const_bc1(setNo, expNo);
 
 if expNo == cS.expBase
-   for expNo2 = 104 : 106   % Hard coded +++
+   for expNo2 = [104 : 106, 114 : 116]   % Hard coded +++
       exper_bc1(setNo, expNo2);
    end
 end

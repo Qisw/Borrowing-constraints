@@ -13,6 +13,10 @@ OUT
 
 Plot raw and interpolated data +++
 Add self-test code +++
+   check that sum(entryS.perc_qyM) is close to entryS.ypUbV
+interpolation is wrong +++++
+   these are not cdfs
+   need to compute fraction by quartile somehow
 %}
 
 cS = const_bc1(setNo);
@@ -27,6 +31,21 @@ entryDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college
 
 % Entry rates
 entryS = load_table(fullfile(entryDir, sourceFn), cS);
+
+% Consistency check
+frac_yV = sum(entryS.perc_qyM);
+cumFrac_yV = cumsum(frac_yV);
+diffV = cumFrac_yV(:) - entryS.ypUbV;
+if any(abs(diffV) > 0.05) 
+   error_bc1('Inconsistent', cS);
+end
+frac_qV = sum(entryS.perc_qyM, 2);
+cumFrac_qV = cumsum(frac_qV);
+diffV = cumFrac_qV(:) - entryS.iqUbV;
+if any(abs(diffV) > 0.05) 
+   error_bc1('Inconsistent', cS);
+end
+
 % Graduation rates are still conditional on entry
 gradFn = fullfile(gradDir, sourceFn);
 if exist(gradFn, 'file')
@@ -66,7 +85,6 @@ if ~isempty(gradS)
       '<', 0.9, 'size', [nYp, 1]})
 end
 
-   
 
 end
 

@@ -337,17 +337,22 @@ elseif expNo < 200
    cS.doCalV = cS.calExp;
    % Taking parameters from this cohort
    cS.iCohort = cS.iRefCohort;
+   
+   % Pick out cohort from which counterfactuals are taken
+   if expNo < 110
+      
    % Taking counterfactuals from this cohort (expNo)
-   cfCohort = find(cS.bYearV == 1940);
-   cfExpNo = 202; 
+   [~,cfCohort] = min(abs(cS.bYearV - 1940)); % Project talent
+   cfExpNo = cS.bYearExpNoV(cfCohort); 
+   %  also make these for other cohorts +++++
 
    if expNo == 103
       cS.expStr = 'Replicate base exper';    % for testing
       % Irrelevant
       cS.doCalV = cS.calExp;
-      cS.iCohort = cS.iRefCohort;
       expS.earnExpNo = cS.expBase;
       expS.bLimitCohort = cS.iCohort;
+      expS.collCostExpNo = cS.expBase;
 
    elseif expNo == 104
       cS.expStr = 'Only change earn profiles'; 
@@ -380,7 +385,7 @@ elseif expNo < 300
    if any(expNo == cS.bYearExpNoV)
       % ******  Calibrate all time varying params
       cS.iCohort = find(expNo == cS.bYearExpNoV);
-      cS.expStr = sprintf('Cohort %i', cS.bYearV(cS.iCohort);
+      cS.expStr = sprintf('Cohort %i', cS.bYearV(cS.iCohort));
       
       % Signal noise
       cS.pvector = cS.pvector.calibrate('alphaAM', cS.calExp);
