@@ -26,11 +26,15 @@ nPeriods = cS.collLength;
 yParent = paramS.yParent_jV(j);
 
 % Range for z (annual)
-zMin = 0;
+zMin = 1e-4;
 zMax = min((yParent - cS.cFloor), paramS.kMax ./ nPeriods);
 if zMax <= 0
    error_bc1('Not feasible', cS);
 end
+
+% For numerical purposes: penalize very small z
+%  how to set this weight? +++
+utilWtZ = 1;
 
 
 %% College option
@@ -69,8 +73,8 @@ The parent gives k1 = nPeriods * z
    function value = coll_value(z)
       % Parent utility per period
       cParent = yParent - z;
-      [~, uParent] = hh_bc1.util_parent(cParent, paramS, cS);
-      value = -(nPeriods * uParent + v1Fct(nPeriods * z));
+      uParent = hh_bc1.util_parent(cParent, paramS, cS);
+      value = -(nPeriods * uParent + v1Fct(nPeriods * z) + utilWtZ * log(z));
    end
 
 
@@ -78,10 +82,8 @@ The parent gives k1 = nPeriods * z
    function value = work_value(z)
       % Parent utility
       cParent = yParent - z;
-      [~, uParent] = hh_bc1.util_parent(cParent, paramS, cS);
-%      [~, vWork] = hh_bc1.hh_work_bc1(nPeriods * z, cS.iHSG, iAbil, paramS, cS);
-%      value = -(nPeriods * uParent + vWork);
-      value = -(nPeriods * uParent + vWorkFct(nPeriods * z));
+      uParent = hh_bc1.util_parent(cParent, paramS, cS);
+      value = -(nPeriods * uParent + vWorkFct(nPeriods * z) + utilWtZ * log(z));
    end
    
 end

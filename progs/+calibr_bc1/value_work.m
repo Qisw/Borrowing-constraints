@@ -1,5 +1,9 @@
 function vWorkS = value_work(paramS, cS)
 % Value of working. Presolve and make continuous approximations
+%{
+Test:
+   test_bc1.work
+%}
 
 nk = 50;
 vWorkS.kGridV = linspace(min(paramS.kMin_aV), paramS.kMax, nk)';
@@ -14,10 +18,8 @@ vWorkS.vFct_saM = cell([cS.nSchool, cS.nAbil]);
 % vWorkS.muFct_saM = cell([cS.nSchool, cS.nAbil]);
 for iSchool = 1 : cS.nSchool
    for iAbil = 1 : cS.nAbil
-      for ik = 1 : nk
-         [~, vWorkS.value_ksaM(ik,iSchool,iAbil)] = ...
-            hh_bc1.hh_work_bc1(vWorkS.kGridV(ik), iSchool, iAbil, paramS, cS);
-      end
+      vWorkS.value_ksaM(:,iSchool,iAbil) = ...
+         hh_bc1.hh_work_bc1(vWorkS.kGridV, iSchool, iAbil, paramS, cS);
       vWorkS.vFct_saM{iSchool,iAbil} = griddedInterpolant(vWorkS.kGridV, vWorkS.value_ksaM(:,iSchool,iAbil), ...
          'pchip', 'linear');
       % not needed 

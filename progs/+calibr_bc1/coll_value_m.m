@@ -4,6 +4,7 @@ function vmS = coll_value_m(vColl3S, vWorkS, paramS, cS)
 vmS.kGridV = vColl3S.kGridV;
 nk = length(vmS.kGridV);
 vmS.value_kjM = nan([nk, cS.nTypes]);
+vmS.vmFct_jV = cell([cS.nTypes, 1]);
 
 % Value of dropping out by [k,a]
 vDrop_kaM = nan([nk, cS.nAbil]);
@@ -31,7 +32,13 @@ for j = 1 : cS.nTypes
          end
       end
    end
+   
+   % Continuous approx of V_m(k', j) (continuation value)
+   vmS.vmFct_jV{j} = griddedInterpolant(vmS.kGridV, vmS.value_kjM(:,j), 'pchip', 'linear');
 end
+
+
+
 
 % for ik = 1 : nk
 %    % Assumes that the grid is the same as for work
@@ -55,7 +62,7 @@ end
 %    end
 % end
 
-saveS.vmS = vmS;
+% saveS.vmS = vmS;
 
 if cS.dbg > 10
    validateattributes(vmS.value_kjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...

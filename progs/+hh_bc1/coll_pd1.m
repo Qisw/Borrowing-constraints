@@ -22,10 +22,14 @@ if cS.dbg > 10
    validateattributes(wColl, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', 'positive'})
 end
 
+% Extract fields for speed
 R = paramS.R;
 onePlusBeta = 1 + paramS.prefBeta;
 betaSquared = paramS.prefBeta .^ 2;
-
+prefSigma = paramS.prefSigma;
+prefRho = paramS.prefRho;
+prefWtLeisure = paramS.prefWtLeisure;
+prefWt = paramS.prefWt;
 
 
 %% Find c and l
@@ -103,7 +107,7 @@ if cS.dbg > 10
    
    % Check budget constraint
    if c > cS.cFloor + 1e-6
-      kPrime2 = hh_bc1.hh_bc_coll_bc1(c, hours, k, wColl, pColl, paramS.R, cS);
+      kPrime2 = hh_bc1.coll_bc_kprime(c, hours, k, wColl, pColl, paramS.R, cS);
       if abs(kPrime2 - kPrime) > 1e-5
          error_bc1('bc violated', cS);
       end
@@ -114,18 +118,20 @@ end
 %% Nested: negative RHS of bellman
 %{ 
 Must be extremely efficient
+Repeats code for periods 3-4, but hard to avoid
 %}
    function [vOutV, hoursV, kPrimeV] = bellman(cV)
       % Hours from static condition
-      hoursV = max(0, 1 - (cV .^ (paramS.prefSigma ./ paramS.prefRho)) .* ...
-         (paramS.prefWtLeisure ./ paramS.prefWt ./ wColl) .^ (1/paramS.prefRho));
+      hoursV = max(0, 1 - (cV .^ (prefSigma ./ prefRho)) .* ...
+         (prefWtLeisure ./ prefWt ./ wColl) .^ (1/prefRho));
       %hoursV = hh_bc1.hh_static_bc1(cV, wColl, paramS, cS);
 
-      utilV = hh_bc1.hh_util_coll_bc1(cV, 1-hoursV, paramS, cS);
+      utilV = hh_bc1.hh_util_coll_bc1(cV, 1-hoursV, prefWt, prefSigma, ...
+         prefWtLeisure, prefRho);
 
       % Get k' from budget constraint
       kPrimeV = R * k + 2 * (wColl * hoursV - cV - pColl);
-      %       kPrimeV = hh_bc1.hh_bc_coll_bc1(cV, hoursV, k, wColl, pColl, paramS.R, cS);
+      %       kPrimeV = hh_bc1.coll_bc_kprime(cV, hoursV, k, wColl, pColl, paramS.R, cS);
 
       vOutV = -(onePlusBeta .* utilV + betaSquared .* vmFct(kPrimeV));
       

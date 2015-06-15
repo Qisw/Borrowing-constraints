@@ -9,11 +9,14 @@ Table structure
 
 cS = const_bc1(setNo, expNo);
 % tgS = var_load_bc1(cS.vCalTargets, cS);
+% This contains a vector of devstruct
+%  Each element describes a deviation from targets
 outS = var_load_bc1(cS.vCalResults, cS);
 
 
 %% Table structure
 
+% Each row is a devation
 nr = 1 + outS.devV.n;
 nc = 3;
 
@@ -23,10 +26,13 @@ tbS.rowUnderlineV = zeros([nr,1]);
 tbM(1,:) = {'Description', 'Model', 'Data'};
 tbS.rowUnderlineV(1) = 1;
 
+
+
 %% Body
 
 ir = 1;
 
+% Loop over deviations
 for i1 = 1 : outS.devV.n
    % Get deviation structure
    devS = outS.devV.dsV{i1};

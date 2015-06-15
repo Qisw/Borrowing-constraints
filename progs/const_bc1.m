@@ -63,9 +63,6 @@ cS.fminbndOptS.TolX = 1e-7;
 
 % cS.raceWhite = 23;
 
-% Set some constants. For this we need to create a dummy pstruct object
-% p = pstruct('temp', 'temp', 'temp', 1, 0, 2, 0);
-
 % Bounds for transformed guesses
 cS.guessLb = 1;
 cS.guessUb = 2;
@@ -92,15 +89,20 @@ cS.physAgeLast = 75;
 % Retirement age
 % cS.physAgeRetire = 65;
 
+% Is curvature of u(c) the same in college / at work?
+cS.ucCurvatureSame = 1;
+
 % Discount factor
 cS.pvector = cS.pvector.change('prefBeta', '\beta', 'Discount factor', 0.98, 0.8, 1.1, cS.calNever);
+% Curvature of u(c) at work
+cS.pvector = cS.pvector.change('workSigma', '\varphi_{w}', 'Curvature of utility', 2, 1, 5, cS.calNever);
 % Weight on u(c) at work. To prevent overconsumption
 cS.pvector = cS.pvector.change('prefWtWork', '\omega_{w}', 'Weight on u(c) at work', 3, 1, 10, cS.calBase);
 % Same for college. Normalize to 1
 cS.pvector = cS.pvector.change('prefWt', '\omega_{c}', 'Weight on u(c)', 1, 0.01, 1.1, cS.calNever);
-% Curvature of u(c)
+% Curvature of u(c) in college
 cS.pvector = cS.pvector.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 2, 1, 5, cS.calNever);
-% Curvature of u(leisure)
+% Curvature of u(leisure) in college
 cS.pvector = cS.pvector.change('prefRho', '\varphi_{l}', 'Curvature of utility', 2, 1, 5, cS.calNever);
 % Weight on leisure
 cS.pvector = cS.pvector.change('prefWtLeisure', '\omega_{l}', 'Weight on leisure', 0.5, 0.01, 5, cS.calBase);
@@ -183,7 +185,8 @@ cS.ageWorkStart_sV = [1; 3; cS.collLength+1];
 cS.pvector = cS.pvector.change('prGradMin', '\pi_{0}', 'Min $\pi_{a}$', 0.1, 0.01, 0.5, cS.calBase);
 cS.pvector = cS.pvector.change('prGradMax', '\pi_{1}', 'Max $\pi_{a}$', 0.8, 0.7, 0.99, cS.calBase);
 cS.pvector = cS.pvector.change('prGradMult', '\pi_{a}', 'In $\pi_{a}$', 0.7, 0.1, 5, cS.calBase);
-cS.pvector = cS.pvector.change('prGradExp', '\pi_{b}', 'In $\pi_{a}$',  1, 0.1, 5, cS.calBase);
+% Governs how steep the curve is. Don't allow too low. Algorithm will get stuck
+cS.pvector = cS.pvector.change('prGradExp', '\pi_{b}', 'In $\pi_{a}$',  1, 0.3, 5, cS.calBase);
 cS.pvector = cS.pvector.change('prGradPower', '\pi_{c}', 'In $\pi_{a}$', 1, 0.1, 2, cS.calNever);
 cS.pvector = cS.pvector.change('prGradABase', 'a_{0}', 'In $\pi_{a}$', 0, 0, 0.3, cS.calNever);
 
@@ -292,6 +295,13 @@ elseif setNo == 3
    cS.setStr = 'Test with another cohort';
    [~, cS.iCohort] = min(abs(cS.bYearV - 1940));
    
+elseif setNo == 4
+   % Higher curvature of u(c) during college
+   % Is curvature of u(c) the same in college / at work?
+   cS.ucCurvatureSame = 0;
+    % Curvature of u(c) in college
+   cS.pvector = cS.pvector.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 4, 1, 5, cS.calNever);
+
 else
    error('Invalid');
 end
@@ -451,6 +461,11 @@ if cS.abilAffectsEarnings == 0
    cS.pvector = cS.pvector.change('dEHatCG', [], [], 0, [], [], cS.calNever);
 end
 
+if cS.ucCurvatureSame == 1
+   % Do not calibrate curvature of work utility
+   % It is the same as college utility
+   cS.pvector = cS.pvector.calibrate('workSigma', cS.calNever);
+end
 
 
 %% Directories

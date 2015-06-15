@@ -83,6 +83,7 @@ end
 %% Value at end of period 2, before learning ability
 
 vmS = calibr_bc1.coll_value_m(vColl3S, vWorkS, paramS, cS);
+saveS.vmS = vmS;
 
 
 %% Periods 1-2 in college
@@ -97,7 +98,8 @@ v1S.kPrime_kjM = nan(sizeV);
 
 for j = 1 : cS.nTypes
    % Continuous approx of V_m(k', j) (continuation value)
-   vmFct = griddedInterpolant(vmS.kGridV, vmS.value_kjM(:,j), 'pchip', 'linear');
+   % vmFct = griddedInterpolant(vmS.kGridV, vmS.value_kjM(:,j), 'pchip', 'linear');
+   vmFct = vmS.vmFct_jV{j};
    for ik = 1 : nk
       [v1S.c_kjM(ik,j), v1S.hours_kjM(ik,j), v1S.kPrime_kjM(ik,j), v1S.value_kjM(ik,j)] = ...
          hh_bc1.coll_pd1(vmS.kGridV(ik), paramS.wColl_jV(j), paramS.pColl_jV(j), ...

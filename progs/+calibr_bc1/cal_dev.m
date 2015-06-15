@@ -202,6 +202,8 @@ Add a deviation to the deviation vector (a vector of devstruct)
 If all targets are NaN: ignore (data not available)
    and return missVal deviation
 
+Only targeted data moments are added to outS.devV
+
 IN
    wtV
       relative weights of the different deviations

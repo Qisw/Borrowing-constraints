@@ -4,7 +4,7 @@ function hoursV = hh_static_bc1(cV, wColl, paramS, cS)
 Possible corner: leisure = 1.
 
 OUT: 
-   lV
+   hoursV
       work hours (NOT leisure)
 
 Checked: 2015-Feb-24
@@ -29,7 +29,8 @@ if cS.dbg > 10
       '<=', 1, 'size', size(cV)})
    
    % Direct EE equation
-   [~, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV, paramS, cS);
+   [~, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV, paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
    eeDevV = (muCV .* wColl - muLV) ./ max(1e-2, muLV);
    if any(eeDevV > 1e-4)
       error_bc1('eeDev > 0', cS);

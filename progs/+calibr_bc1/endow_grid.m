@@ -1,6 +1,9 @@
 function gridM = endow_grid(muV, stdV, wtM, cS)
 % Construct the endowment grid
 %{
+Realized means and std can be quite far off the target ones for reasonably large numbers of types 
+(e.g. 80)
+
 IN
    muV(iVar), stdV(iVar)
       mean and std dev of marginals
@@ -16,6 +19,13 @@ nVar = length(muV);
 rng(3);
 randM = randn([n, nVar]);
 
+% Try: scale random vars to get realized distribution of endowments closer to target
+rMeanV = mean(randM);
+rStdV  = std(randM);
+for iVar = 1 : nVar
+   randM(:, iVar) = (randM(:, iVar) - rMeanV(iVar)) / rStdV(iVar);
+end
+
 
 %% Input check
 if cS.dbg > 10
@@ -27,7 +37,6 @@ end
 
 
 % Make wt matrix to get N(0,1) marginals
-%wt2M = zeros([nVar, nVar]);
 gridM = zeros([n, nVar]);
 for iVar = 1 : nVar
    wtV = wtM(iVar,:);

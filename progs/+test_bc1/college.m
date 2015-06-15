@@ -17,6 +17,12 @@ wColl = paramS.wColl_jV(j);
 pColl = paramS.pColl_jV(j);
 
 
+% Test saved hh solution
+test_entry(paramS, cS);
+test_saved12(paramS, cS);
+test_saved34(paramS, cS);
+
+
 %% Budget constraint
 
 hoursV = rand([3,1]);
@@ -24,7 +30,7 @@ kPrimeV = randn([3,1]);
 kV = rand([3,1]);
 cV = hh_bc1.coll_bc(kPrimeV, hoursV, kV, wColl, pColl, paramS.R, cS);
 
-kPrime2V = hh_bc1.hh_bc_coll_bc1(cV, hoursV, kV, wColl, pColl, paramS.R, cS);
+kPrime2V = hh_bc1.coll_bc_kprime(cV, hoursV, kV, wColl, pColl, paramS.R, cS);
 
 if any(abs(kPrime2V - kPrimeV) > 1e-6)
    error_bc1('Invalid bc', cS);
@@ -37,7 +43,8 @@ fprintf('Test hh utility in college\n');
 n = 5;
 cV = linspace(1, 2, n);
 leisureV = linspace(0.1, 0.9, n);
-[utilV, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS, cS);
+[utilV, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
 
 % Inverse of u(c)
 c2V = hh_bc1.hh_uprimec_inv_bc1(muCV, paramS, cS);
@@ -47,14 +54,16 @@ end
 
 % MU(l)
 dLeisure = 1e-5;
-util2V = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS, cS);
+util2V = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
 if max(abs(((util2V - utilV) ./ dLeisure - muLV) ./ max(0.1, muLV))) > 1e-4
    error_bc1('Invalid mu(l)', cS);
 end
 
 % Mu(c)
 dc = 1e-5;
-util2V = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS, cS);
+util2V = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
 if max(abs(((util2V - utilV) ./ dc - muCV) ./ max(0.1, muCV))) > 1e-4
    error_bc1('Invalid mu(c)', cS);
 end
@@ -91,10 +100,102 @@ fprintf('\n');
 % [c, l, kPrime, vColl] = hh_bc1.coll_pd3(k, wColl, pColl, iAbil, vWorkS, paramS, cS);
 % fprintf('c = %.3f    l = %.3f    kPrime: %3.f \n',  c, l, kPrime);
 
-fprintf('Hh solution\n');
-tic
-saveS = hh_bc1.hh_solve(paramS, cS);
-toc
 
+if 0
+   fprintf('Hh solution\n');
+   tic
+   saveS = hh_bc1.hh_solve(paramS, cS);
+   toc
+end
+
+
+end
+
+
+%% Test entry
+function test_entry(paramS, cS)
+   [hhS, success] = var_load_bc1(cS.vHhSolution, cS);
+   if success == 0
+      return;
+   end
+   fprintf('Testing college entry \n');
+   v0S = hhS.v0S;
+
+   % Budget constraint
+   if any((v0S.zWork_jV .* cS.collLength - v0S.k1Work_jV) > 1e-4)
+      error('Wrong k1 work');
+   end
+   if any(abs(v0S.zColl_jV .* cS.collLength - v0S.k1Coll_jV) > 1e-4)
+      error('Wrong k1 college');
+   end
+end
+
+
+%% Test saved solution: periods 1-2
+function test_saved12(paramS, cS)
+   [hhS, success] = var_load_bc1(cS.vHhSolution, cS);
+   if success == 0
+      return;
+   end
+   fprintf('Testing saved hh solution for college period 1-2 \n');
+   
+   for j = 1 : cS.nTypes
+      cV = hhS.v1S.c_kjM(:,j);
+      hoursV = hhS.v1S.hours_kjM(:,j);
+      kV = hhS.v1S.kGridV;
+
+      % RHS of Bellman by ik
+      rhsV = hh_bc1.bellman_coll1(j, cV, hoursV, kV, hhS, paramS, cS);
+      lhsV = hhS.v1S.value_kjM(:, j);
+      if any(abs(rhsV - lhsV) > 1e-4)
+         error_bc1('Wrong value', cS);
+      end
+
+      % Check optimization
+      dcV = [1e-4, -1e-4, 0, 0];
+      dhV = [0, 0, 1e-4, -1e4];
+      for iCase = 1 : 4
+         rhs2V = hh_bc1.bellman_coll1(j, cV + dcV(iCase), hoursV + dhV(iCase), kV, hhS, paramS, cS);
+         if any(rhs2V - rhsV > 1e-5)
+            error_bc1('Invalid', cS);
+         end
+      end
+   end
+
+end
+
+
+%% Test saved hh solution: periods 3-4
+function test_saved34(paramS, cS)
+   [hhS, success] = var_load_bc1(cS.vHhSolution, cS);
+   if success == 0
+      return;
+   end
+   fprintf('Testing saved hh solution for college period 3-4 \n');
+   
+   for j = 1 : cS.nTypes
+      for iAbil = 1 : cS.nAbil
+         cV = hhS.vColl3S.c_kajM(:,iAbil,j);
+         hoursV = hhS.vColl3S.hours_kajM(:,iAbil,j);
+         kV = hhS.vColl3S.kGridV;
+
+         % RHS of Bellman by ik
+         rhsV = hh_bc1.bellman_coll3(iAbil,j, cV, hoursV, kV, hhS, paramS, cS);
+         lhsV = hhS.vColl3S.value_kajM(:, iAbil, j);
+         if any(abs(rhsV - lhsV) > 1e-4)
+            error_bc1('Wrong value', cS);
+         end
+         
+         % Check optimization
+         dcV = [1e-4, -1e-4, 0, 0];
+         dhV = [0, 0, 1e-4, -1e4];
+         for iCase = 1 : 4
+            rhs2V = hh_bc1.bellman_coll3(iAbil,j, cV + dcV(iCase), hoursV + dhV(iCase), kV, hhS, paramS, cS);
+            if any(rhs2V - rhsV > 1e-5)
+               error_bc1('Invalid', cS);
+            end
+         end
+      end
+   end
 
 end

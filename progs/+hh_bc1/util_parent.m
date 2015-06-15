@@ -1,4 +1,4 @@
-function [muV, utilV] = util_parent(cV, paramS, cS)
+function [utilV, muV] = util_parent(cV, paramS, cS)
 % Parental utility, per period
 
 uWt = paramS.puWeight;

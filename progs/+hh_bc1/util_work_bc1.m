@@ -9,6 +9,9 @@ OUT
    utilLifetime
       lifetime utility
 
+Test:
+   directly implements model equations. No test.
+
 Checked: 2015-Feb-18
 %}
 
@@ -20,13 +23,16 @@ end
 
 %% Main
 
-if paramS.prefSigma == 1
+pSigma = paramS.workSigma;
+pWt = paramS.prefWtWork;
+
+if pSigma == 1
    utilV = paramS.prefWtWork .* log(cV);
-   muV = paramS.prefWtWork ./ cV;
+   muV = pWt ./ cV;
 else
-   sig1 = 1 - paramS.prefSigma;
-   utilV = paramS.prefWtWork .* (cV .^ sig1) ./ sig1 - 1;
-   muV = paramS.prefWtWork .* cV .^ (-paramS.prefSigma);
+   sig1 = 1 - pSigma;
+   utilV = pWt .* (cV .^ sig1) ./ sig1 - 1;
+   muV = pWt .* cV .^ (-pSigma);
 end
 
 % Lifetime utility

@@ -9,7 +9,7 @@ test_bc1.calibr(setNo);
 t_pvector;
 t_devvect;
 t_devstruct;
-calibr_bc1.t_endow_grid(setNo);
+
 
 dbclear all;
 

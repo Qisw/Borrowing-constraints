@@ -10,6 +10,10 @@ paramS = param_load_bc1(setNo, expNo);
 nIq = length(cS.iqUbV);
 
 
+% Mean ability by m
+mean_abil_j(saveFigures, paramS, cS);
+
+
 
 %% Return to schooling by ability
 if 1
@@ -46,7 +50,7 @@ if 01
 
 
    % Correlation matrix
-   varNameV = {'a', 'm', 'IQ', 'p', '\ln(y)'};
+   varNameV = {'$a$', '$m$', '$IQ$', '$p$', '$\ln(y)$'};
    corrM = corrcoef([abilV, paramS.m_jV(jV), iqV, paramS.pColl_jV(jV), log(paramS.yParent_jV(jV))]);
 
    [tbM, tbS] = latex_lh.corr_table(corrM, varNameV);
@@ -72,7 +76,7 @@ if 1
    hold off;
    xlabel('Ability signal');
    ylabel('Pr(IQ | m)');
-   legend(legendV, 'location', 'south');
+   legend(legendV, 'location', 'north');
    output_bc1.fig_format(fh, 'line');
    output_bc1.fig_save('endow_pr_iq_m', saveFigures, cS);
 end
@@ -137,4 +141,26 @@ end
 
 
 
+end
+
+
+%% E(a|j)
+function mean_abil_j(saveFigures, paramS, cS)
+   figS = const_fig_bc1;
+   
+   % Compute E(a | j)
+   meanA_jV = nan([cS.nTypes, 1]);
+   for j = 1 : cS.nTypes
+      meanA_jV(j) = sum(paramS.prob_a_jM(:, j) .* paramS.abilGrid_aV);
+   end
+   
+   fh = output_bc1.fig_new(saveFigures, []);
+   hold on
+   plot(paramS.m_jV,  meanA_jV, 'o', 'color', figS.colorM(1,:));
+   plot([-2,2], [-2,2], 'k-');
+   hold off;
+   xlabel('m');
+   ylabel('E(a|j)');
+   output_bc1.fig_format(fh, 'line');
+   output_bc1.fig_save('endow_eOfa_j', saveFigures, cS);
 end

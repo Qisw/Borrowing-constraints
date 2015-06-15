@@ -1,4 +1,5 @@
-function [utilV, muCV, muLV] = hh_util_coll_bc1(cV, leisureV, paramS, cS)
+function [utilV, muCV, muLV] = hh_util_coll_bc1(cV, leisureV, prefWt, prefSigma, ...
+   prefWtLeisure, prefRho)
 % Utility in college
 %{
 Must be extremely efficient
@@ -19,17 +20,17 @@ Test: test_bc1.college
 
 muCV = 0;
 
-if paramS.prefSigma == 1
+if prefSigma == 1
    % Log utility
-   utilCV = paramS.prefWt .* log(cV);
+   utilCV = prefWt .* log(cV);
    if nargout > 1
-      muCV = paramS.prefWt ./ cV;
+      muCV = prefWt ./ cV;
    end
 else
-   sig1 = 1 - paramS.prefSigma;
-   utilCV = paramS.prefWt .* cV .^ sig1 ./ sig1 - 1;
+   sig1 = 1 - prefSigma;
+   utilCV = prefWt .* cV .^ sig1 ./ sig1 - 1;
    if nargout > 1
-      muCV = paramS.prefWt .* cV .^ (-paramS.prefSigma);
+      muCV = prefWt .* cV .^ (-prefSigma);
    end
 end
 
@@ -38,16 +39,16 @@ end
 
 muLV = 0;
 
-if paramS.prefRho == 1
-   utilLV = paramS.prefWtLeisure .* log(leisureV);
+if prefRho == 1
+   utilLV = prefWtLeisure .* log(leisureV);
    if nargout > 2
-      muLV = paramS.prefWtLeisure ./ leisureV;
+      muLV = prefWtLeisure ./ leisureV;
    end
 else
-   sig2 = 1 - paramS.prefRho;
-   utilLV = paramS.prefWtLeisure .* ((leisureV .^ sig2) ./ sig2 - 1);
+   sig2 = 1 - prefRho;
+   utilLV = prefWtLeisure .* ((leisureV .^ sig2) ./ sig2 - 1);
    if nargout > 2
-      muLV = paramS.prefWtLeisure .* leisureV .^ (-paramS.prefRho);
+      muLV = prefWtLeisure .* leisureV .^ (-prefRho);
    end
 end
 

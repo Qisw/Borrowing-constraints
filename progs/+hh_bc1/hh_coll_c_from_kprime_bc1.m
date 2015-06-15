@@ -17,6 +17,13 @@ end
 
 %% Main
 
+% For speed
+prefSigma = paramS.prefSigma;
+prefRho = paramS.prefRho;
+prefWtLeisure = paramS.prefWtLeisure;
+prefWt = paramS.prefWt;
+R = paramS.R;
+
 % Try cFloor
 devLow = devfct(cS.cFloor);
 if devLow < 0
@@ -49,15 +56,23 @@ end
 
 
 %% Nested: deviation: k'(c) - k'(target)
-   function [devV, hoursV] = devfct(cGuessV)
-      % static foc => hours
-      hoursV = hh_bc1.hh_static_bc1(cGuessV, wColl, paramS, cS);
-      kPrimeV = hh_bc1.hh_bc_coll_bc1(cGuessV, hoursV, k, wColl, pColl, paramS.R, cS);
+%{
+Must be very efficient
+%}
+   function [devV, hoursV] = devfct(cV)
+      % static condition => hours
+      hoursV = max(0, 1 - (cV .^ (prefSigma ./ prefRho)) .* ...
+         (prefWtLeisure ./ prefWt ./ wColl) .^ (1/prefRho));
+      % hoursV = hh_bc1.hh_static_bc1(cGuessV, wColl, paramS, cS);
+      
+      % Budget constraint
+      kPrimeV = R * k + 2 * (wColl * hoursV - cV - pColl);
+      % kPrimeV = hh_bc1.coll_bc_kprime(cGuessV, hoursV, k, wColl, pColl, paramS.R, cS);
       devV = kPrimeV - kPrime;
       
-      if cS.dbg > 10
-         validateattributes(devV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(cGuessV)})
-      end
+      %if cS.dbg > 10
+      %   validateattributes(devV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(cGuessV)})
+      %end
    end
 
 

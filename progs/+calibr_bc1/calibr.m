@@ -16,7 +16,7 @@ doCalV = cS.doCalV;
 fprintf('\nCalibration %i / %i\n', setNo, expNo);
 
 
-%% Optimization
+%% Make guesses (and test them)
 
 % Make guesses from param vector
 guessV = cS.pvector.guess_make(paramS, doCalV);
@@ -56,6 +56,9 @@ if 0
    end
    keyboard;  
 end
+
+
+%% Optimization
 
 if strcmpi(solverStr, 'fminsearch');
    optS = optimset('fminsearch');

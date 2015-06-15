@@ -7,18 +7,39 @@ hhS = var_load_bc1(cS.vHhSolution, cS);
 aggrS = var_load_bc1(cS.vAggregates, cS);
 
 
-%% Entry probabilities by type
+% Collect info and sort by ability signal
+dataM = table(paramS.m_jV, paramS.prob_jV, hhS.v0S.probEnter_jV, aggrS.prGrad_jV, ...
+   hhS.v0S.zColl_jV,  aggrS.cons_tjM(1,:)',  aggrS.cons_tjM(2,:)',  aggrS.hours_tjM(1,:)', aggrS.hours_tjM(2,:)');
+dataM.Properties.VariableNames = {'m', 'probJ', 'probEnter', 'prGradJ', ...
+   'zColl', 'c1', 'c2', 'hours1', 'hours2'};
+dataM = sortrows(dataM, 1);
+dataM.cumProbJ = cumsum(dataM.probJ);
+
+
+%% Simple x-y plots
 if 1
-   sortM = sortrows([hhS.v0S.probEnter_jV, paramS.prob_jV]);
-   fh = output_bc1.fig_new(saveFigures, []);
-   hold on;
-   plot(cumsum(sortM(:,2)),  sortM(:,1), 'o', 'color', figS.colorM(1,:));
-   xlabel('Ability signal');
-   ylabel('College entry rate');
-   output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('entry_m', saveFigures, cS);
+   xStrV = {'m',     'm',     'm',     'm',     'm',     'm',   ...
+      'c1',    'c2'};
+   yStrV = {'entry', 'c1',    'c2', 'leisure1',  'leisure2', 'prGradJ', ...
+      'leisure1', 'leisure2'};
+   for iPlot = 1 : length(xStrV)
+      [xV, xLabelStr, xFigStr] = fig_data(xStrV{iPlot}, dataM);
+      [yV, yLabelStr, yFigStr] = fig_data(yStrV{iPlot}, dataM);
+      
+      
+      fh = output_bc1.fig_new(saveFigures, []);
+      hold on;
+      plot(xV,  yV, 'o', 'color', figS.colorM(1,:));
+      xlabel(xLabelStr);
+      ylabel(yLabelStr);
+      output_bc1.fig_format(fh, 'line');
+      output_bc1.fig_save(['hh_', yFigStr, '_', xFigStr], saveFigures, cS);
+   end
 end
 
+
+
+return   % +++++
 
 %% Transfers and parental income
 if 1
@@ -42,7 +63,8 @@ if 1
          workStudyStr = 'college';
          transfer_jV = hhS.v0S.zColl_jV;
          t = 1;
-         [~,uPrimeChild_jV] = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:), 1 - aggrS.hours_tjM(t,:), paramS, cS);
+         [~,uPrimeChild_jV] = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:), 1 - aggrS.hours_tjM(t,:), ...
+            paramS.prefWt, paramS.prefSigma, paramS.prefWtLeisure, paramS.prefRho);
 
       else
          % Kids work as HSG
@@ -53,7 +75,7 @@ if 1
             k1 = hhS.v0S.k1Work_jV(j);
             % Use ability level with highest probability
             [~, iAbil] = max(paramS.prob_a_jM(:,j));
-            cV = hh_bc1.hh_work_bc1(k1, cS.iHSG, iAbil, paramS, cS);
+            [~,~,cV] = hh_bc1.hh_work_bc1(k1, cS.iHSG, iAbil, paramS, cS);
             cChild = cV(1);
             [~, uPrimeChild_jV(j)] = hh_bc1.util_work_bc1(cChild, paramS, cS);
          end
@@ -61,7 +83,7 @@ if 1
       
       % Parent
       cParent_jV = paramS.yParent_jV - transfer_jV;
-      uPrimeParent_jV = hh_bc1.util_parent(cParent_jV, paramS, cS);
+      [~, uPrimeParent_jV] = hh_bc1.util_parent(cParent_jV, paramS, cS);
       
       
       fh = output_bc1.fig_new(saveFigures, []);
@@ -90,9 +112,10 @@ if 1
    np = 50;
    cV = linspace(5e3, 5e4, np) ./ cS.unitAcct;
    
-   mupV = hh_bc1.util_parent(cV, paramS, cS);
+   [~, mupV] = hh_bc1.util_parent(cV, paramS, cS);
    [~, muWorkV] = hh_bc1.util_work_bc1(cV, paramS, cS);
-   [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS, cS);
+   [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
    
    iLine = 1;
    plot(cV,  mupV, figS.lineStyleDenseV{iLine}, 'color', figS.colorM(iLine,:));
@@ -114,3 +137,40 @@ end
 
 
 end
+
+
+%% Get info for figures
+   function [dataV, labelStr, figStr] = fig_data(inStr, dataM)
+      if strcmp(inStr, 'm')
+         labelStr = 'Ability signal (cum pct)';
+         dataV = dataM.cumProbJ;
+         figStr = 'm';
+      elseif strcmp(inStr, 'c1')
+         labelStr = 'Cons period 1';
+         dataV = dataM.c1;
+         figStr = 'c1';
+      elseif strcmp(inStr, 'c2')
+         labelStr = 'Cons period 2';
+         dataV = dataM.c2;
+         figStr = 'c2';
+      elseif strcmp(inStr, 'leisure1')
+         labelStr = 'Leisure period 1';
+         dataV = 1 - dataM.hours1;
+         figStr = 'leisure1';
+      elseif strcmp(inStr, 'leisure2')
+         labelStr = 'Leisure period 2';
+         dataV = 1 - dataM.hours2;
+         figStr = 'leisure2';
+      elseif strcmp(inStr, 'entry')
+         labelStr = 'College entry rate';
+         dataV = dataM.probEnter;
+         figStr = 'probEnter';
+      elseif strcmp(inStr, 'prGradJ')
+         labelStr = 'Prob grad';
+         dataV = dataM.prGradJ;
+         figStr = 'probGrad';
+      else
+         error('Invalid');
+      end
+      
+   end

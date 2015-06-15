@@ -12,7 +12,10 @@ end
 
 preamble_lh.initialize(var_fn_bc1(cS.vPreambleData, cS), cS.preambleFn);
 
+% Fit
+% Figures
 results_bc1.fit(saveFigures, setNo, expNo);
+% Table with all deviations from cal targets
 results_bc1.fit_tb(setNo, expNo);
 
 for showCalibrated = [0 1]
@@ -23,6 +26,8 @@ results_bc1.param_show(saveFigures, setNo, expNo);
 results_bc1.hh_show(saveFigures, setNo, expNo);
 % Show value functions
 results_bc1.value_show(saveFigures, setNo, expNo);
+% Show aggregates
+results_bc1.aggr_show(saveFigures, setNo, expNo);
 
 results_bc1.prob_show(saveFigures, setNo, expNo);
 
@@ -35,9 +40,8 @@ calibr_bc1.check_solution(setNo, expNo);
 % Which params are close to bounds?
 cS.pvector.show_close_to_bounds(paramS, cS.doCalV);
 
-% For a given j: show history
-jV = round(linspace(1, cS.nTypes, 5));
-results_bc1.history_show(jV, setNo, expNo);
+% For given j: show history
+results_bc1.history_show(setNo, expNo);
 
 results_bc1.preamble_make(setNo, expNo);
 

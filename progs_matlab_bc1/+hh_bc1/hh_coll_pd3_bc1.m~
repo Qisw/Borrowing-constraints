@@ -1,0 +1,103 @@
+function [c, hours, kPrime, vColl] = hh_coll_pd3_bc1(k, wColl, pColl, iCohort, paramS, cS)
+% Solve college decision periods 3-4
+%{
+Student will graduate with certainty
+
+OUT
+   c, hours
+      consumption , hours
+   vColl
+      lifetime utility
+%}
+
+
+%% Find c and l
+
+% Borrowing limit
+kMin = paramS.kMin_acM(cS.ageWorkStart_sV(cS.iCG), iCohort);
+
+% *****  Try k' corner
+
+% Get (c, l) that attain kMin = kPrime
+[c, hours] = hh_coll_c_from_kprime_bc1(kMin, k, wColl, pColl, paramS, cS);
+
+if isnan(c)
+   kPrime = kMin;
+   c = cS.cFloor;
+   hours = 1 - cS.lFloor;
+   
+else
+   % Euler equation
+   eeDev = hh_eedev_coll3_bc1(c, hours, kMin, iCohort, paramS, cS);
+   if eeDev >= 0
+      % Corner solution
+      kPrime = kMin;
+
+   else
+      % ******  Interior solution
+
+      % Find range
+      cMin = cS.cFloor;
+      cMax = c;
+   %    [~,~,~, muK] = hh_work_bc1(kMin, cS.iCG, iCohort, paramS, cS);
+   %    uc = (cS.prefBeta .^ 2) * 2 / (1 + cS.prefBeta) * muK;
+   %    cMax = hh_uprimec_inv_bc1(uc, cS);
+
+      if cS.dbg > 10
+         devMin = devfct(cMin);
+         devMax = devfct(cMax);
+         if sign(devMin) == sign(devMax)
+            error_bc1('No sign change', cS);
+         end
+      end
+
+      c = fzero(@devfct, [cMin, cMax]);
+
+      [~,kPrime,hours] = devfct(c);
+   end
+end
+
+
+%% Value
+
+[~,~, util] = hh_util_coll_bc1(c, 1 - hours, paramS, cS);
+[~, utilWork] = hh_work_bc1(kPrime, cS.iCG, iCohort, paramS, cS);
+vColl = util + (cS.prefBeta .^ 2) * utilWork;
+
+
+%% Self test
+if cS.dbg > 10
+   validateattributes(c, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', ...
+      '>=', cS.cFloor})
+   validateattributes(hours, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', ...
+      '>=', 0, '<', 1})
+   validateattributes(kPrime, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      'scalar', '>=', kMin})
+   validateattributes(vColl, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+   
+   % Check budget constraint
+   if c > cS.cFloor + 1e-6
+      kPrime2 = hh_bc_coll_bc1(c, hours, k, wColl, pColl, cS);
+      if abs(kPrime2 - kPrime) > 1e-5
+         error_bc1('bc violated', cS);
+      end
+      % Euler
+      eeDev = hh_eedev_coll3_bc1(c, hours, kPrime, iCohort, paramS, cS);
+      if kPrime > kMin + 1e-5
+         if abs(eeDev) > 1e-4
+            error_bc1('Euler violated', cS);
+         end
+      elseif kPrime <= kMin
+         if eeDev < -1e-6
+            error_bc1('Should be corner', cS);
+         end
+      end
+end
+
+
+%% Nested: Euler dev
+   function [eeDev, kPrimeV, hoursV] = devfct(cV)
+      [eeDev, kPrimeV, hoursV] = hh_euler_coll3_bc1(cV, k, wColl, pColl, kMin, iCohort, paramS, cS);
+   end
+
+end

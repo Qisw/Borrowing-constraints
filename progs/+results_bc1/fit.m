@@ -27,6 +27,7 @@ if 1
          bar(1 : nIq, [ds.modelV(:), ds.dataV(:)]);
          xlabel('IQ group');
          ylabel(yStr);
+         legend({'Model', 'Data'}, 'location', 'northwest');
          figures_lh.axis_range_lh([NaN NaN 0 1]);
          output_bc1.fig_format(fh, 'bar');
          output_bc1.fig_save(figFn, saveFigures, cS);

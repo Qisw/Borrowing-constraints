@@ -186,7 +186,11 @@ if cS.dbg > 10
       'size', [cS.ageMax, cS.nSchool, cS.nCohorts]})
 end
 
-% This could fail if R is calibrated +++
+% This could fail if R is calibrated
+ps = cS.pvector.retrieve('R');
+if ps.doCal ~= 0
+   error('R cannot be calibrated for this to work');
+end
 tgS.pvEarn_scM = nan([cS.nSchool, cS.nCohorts]);
 for iCohort = 1 : cS.nCohorts
    for iSchool = 1 : cS.nSchool

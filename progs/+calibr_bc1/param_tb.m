@@ -74,6 +74,9 @@ tbM{ir, cName} = 'Preferences';
 
 row_add('prefBeta', '%.2f', []);
 row_add('prefSigma', '%.2f', [])
+if cS.ucCurvatureSame == 0
+   row_add('workSigma', '%.2f', [])
+end
 row_add('prefWt', '%.2f', []);
 row_add('prefRho', '%.2f', []);
 row_add('prefWtLeisure', '%.2f', []);

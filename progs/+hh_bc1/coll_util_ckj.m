@@ -22,11 +22,12 @@ for j = 1 : cS.nTypes
    hours_ckM = collUtilS.hours_cjM(:,j) * ones([1, nk]);   
    
    % k' implied by budget constraint
-   collUtilS.kPrime_ckjM(:,:,j) = hh_bc1.hh_bc_coll_bc1(c_ckM, hours_ckM, ones([nc,1]) * collUtilS.kGridV', ...
+   collUtilS.kPrime_ckjM(:,:,j) = hh_bc1.coll_bc_kprime(c_ckM, hours_ckM, ones([nc,1]) * collUtilS.kGridV', ...
       paramS.wColl_jV(j), paramS.pColl_jV(j), paramS.R, cS);
 
    % Utility in college
-   collUtilS.util_ckjM(:,:,j) = hh_bc1.hh_util_coll_bc1(c_ckM, 1 - hours_ckM, paramS, cS);
+   collUtilS.util_ckjM(:,:,j) = hh_bc1.hh_util_coll_bc1(c_ckM, 1 - hours_ckM, paramS.prefWt, paramS.prefSigma, ...
+      paramS.prefWtLeisure, paramS.prefRho);
 end
 
 
