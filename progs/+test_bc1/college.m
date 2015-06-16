@@ -17,10 +17,16 @@ wColl = paramS.wColl_jV(j);
 pColl = paramS.pColl_jV(j);
 
 
+% Test beliefs in college
+hh_bc1.prob_a_jgrad_test;
+
 % Test saved hh solution
 test_entry(paramS, cS);
 test_saved12(paramS, cS);
 test_saved34(paramS, cS);
+
+% Syntax test
+hh_bc1.coll_pd3_test(setNo);
 
 
 %% Budget constraint
@@ -43,8 +49,9 @@ fprintf('Test hh utility in college\n');
 n = 5;
 cV = linspace(1, 2, n);
 leisureV = linspace(0.1, 0.9, n);
-[utilV, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+j = round(cS.nTypes / 2);
+[utilV, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, leisureV, paramS.cColl_jV(j), paramS.lColl_jV(j),  ...
+   paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
 
 % Inverse of u(c)
 c2V = hh_bc1.hh_uprimec_inv_bc1(muCV, paramS, cS);
@@ -54,16 +61,16 @@ end
 
 % MU(l)
 dLeisure = 1e-5;
-util2V = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+util2V = hh_bc1.hh_util_coll_bc1(cV, leisureV + dLeisure, paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+   paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
 if max(abs(((util2V - utilV) ./ dLeisure - muLV) ./ max(0.1, muLV))) > 1e-4
    error_bc1('Invalid mu(l)', cS);
 end
 
 % Mu(c)
 dc = 1e-5;
-util2V = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+util2V = hh_bc1.hh_util_coll_bc1(cV + dc, leisureV, paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+   paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
 if max(abs(((util2V - utilV) ./ dc - muCV) ./ max(0.1, muCV))) > 1e-4
    error_bc1('Invalid mu(c)', cS);
 end
@@ -71,13 +78,13 @@ end
 
 fprintf('hh college, c from kPrime \n');
 kPrime = k - 0.1;
-c = hh_bc1.hh_coll_c_from_kprime_bc1(kPrime, k, wColl, pColl, paramS, cS);
+c = hh_bc1.hh_coll_c_from_kprime_bc1(kPrime, k, wColl, pColl, j, paramS, cS);
 
 
 
 fprintf('Static condition in college \n');
 cV = linspace(0.05, 5, 10);
-hoursV = hh_bc1.hh_static_bc1(cV, wColl, paramS, cS);
+hoursV = hh_bc1.hh_static_bc1(cV, wColl, j, paramS, cS);
 fprintf('l = ');
 fprintf('  %.2f', hoursV);
 fprintf('\n');
@@ -147,16 +154,16 @@ function test_saved12(paramS, cS)
       % RHS of Bellman by ik
       rhsV = hh_bc1.bellman_coll1(j, cV, hoursV, kV, hhS, paramS, cS);
       lhsV = hhS.v1S.value_kjM(:, j);
-      if any(abs(rhsV - lhsV) > 1e-4)
+      if any(abs(rhsV - lhsV) > 1e-3)
          error_bc1('Wrong value', cS);
       end
 
       % Check optimization
       dcV = [1e-4, -1e-4, 0, 0];
-      dhV = [0, 0, 1e-4, -1e4];
+      dhV = [0, 0, 1e-4, -1e-4];
       for iCase = 1 : 4
          rhs2V = hh_bc1.bellman_coll1(j, cV + dcV(iCase), hoursV + dhV(iCase), kV, hhS, paramS, cS);
-         if any(rhs2V - rhsV > 1e-5)
+         if any(rhs2V - rhsV > 1e-3)
             error_bc1('Invalid', cS);
          end
       end
@@ -175,12 +182,13 @@ function test_saved34(paramS, cS)
    
    for j = 1 : cS.nTypes
       for iAbil = 1 : cS.nAbil
+         % No longer depends on ability +++
          cV = hhS.vColl3S.c_kajM(:,iAbil,j);
          hoursV = hhS.vColl3S.hours_kajM(:,iAbil,j);
          kV = hhS.vColl3S.kGridV;
 
          % RHS of Bellman by ik
-         rhsV = hh_bc1.bellman_coll3(iAbil,j, cV, hoursV, kV, hhS, paramS, cS);
+         rhsV = hh_bc1.bellman_coll3(j, cV, hoursV, kV, hhS, paramS, cS);
          lhsV = hhS.vColl3S.value_kajM(:, iAbil, j);
          if any(abs(rhsV - lhsV) > 1e-4)
             error_bc1('Wrong value', cS);
@@ -188,10 +196,10 @@ function test_saved34(paramS, cS)
          
          % Check optimization
          dcV = [1e-4, -1e-4, 0, 0];
-         dhV = [0, 0, 1e-4, -1e4];
+         dhV = [0, 0, 1e-4, -1e-4];
          for iCase = 1 : 4
-            rhs2V = hh_bc1.bellman_coll3(iAbil,j, cV + dcV(iCase), hoursV + dhV(iCase), kV, hhS, paramS, cS);
-            if any(rhs2V - rhsV > 1e-5)
+            rhs2V = hh_bc1.bellman_coll3(j, cV + dcV(iCase), hoursV + dhV(iCase), kV, hhS, paramS, cS);
+            if any(rhs2V - rhsV > 1e-4)
                error_bc1('Invalid', cS);
             end
          end

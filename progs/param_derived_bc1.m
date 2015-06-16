@@ -109,6 +109,13 @@ paramS.pColl_jV      = gridM(:,1);
 paramS.yParent_jV    = exp(gridM(:,2));
 paramS.m_jV          = gridM(:,3);
 
+% Free consumption / leisure in college 
+%  Proportional to m. Range 0 to cCollMax
+mMin = min(paramS.m_jV);
+mMax = max(paramS.m_jV);
+paramS.cColl_jV = (paramS.m_jV - mMin) .* paramS.cCollMax ./ (mMax - mMin);
+paramS.lColl_jV = (paramS.m_jV - mMin) .* paramS.cCollMax ./ (mMax - mMin);
+
 if cS.dbg > 10
    % Moments of marginal distributions are checked in test fct for endow_grid
    validateattributes(paramS.yParent_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
@@ -257,6 +264,10 @@ if cS.dbg > 10
    validateattributes(paramS.prGrad_aV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, '<=', 1, 'size', [cS.nAbil, 1]})
 end
+
+
+% Prob(a | j, graduation shock positive)
+paramS.prA_jgradM = hh_bc1.prob_a_jgrad(paramS.prGrad_aV, paramS.prob_jV, paramS.prob_a_jM, cS.dbg);
 
 
 

@@ -60,6 +60,10 @@ end
 
 %% Optimization
 
+if cS.runParallel == 1
+   pPool = parpool(cS.nNodes);
+end
+
 if strcmpi(solverStr, 'fminsearch');
    optS = optimset('fminsearch');
    optS.TolFun = 1e-2;
@@ -78,6 +82,10 @@ end
 
 
 fprintf('Calibration done. Terminal deviation: %.3f \n', dev);
+
+
+% If a parallel pool is open: close it
+delete(gcp('nocreate'));
 
 
 %% Save

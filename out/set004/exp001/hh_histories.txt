@@ -31,8 +31,8 @@ Child:   c: 21.6  EuPrime: 1.58
 Try college:
 Parent:  transfer: 1.3   c: 36.9  uPrime: 19.51 
 Child:   coll cost: 3.6    probGrad: 0.34 
-Child phase 1:   c: 3.5  uPrime: 0.68  earn: 12.9  save: 11.8  kPrime: 17.1 
-Child phase 2:   c: 3.9  uPrime: 0.42  earn: 8.4  save: 2.5  kPrime: 19.7 
+Child phase 1:   c: 3.5  uPrime: 0.68  earn: 12.9  save: 11.8  kPrime: 17.2 
+Child phase 2:   c: 3.9  uPrime: 0.42  earn: 8.7  save: 3.0  kPrime: 20.2 
 
 
     ---------    
@@ -50,7 +50,7 @@ Try college:
 Parent:  transfer: 1.5   c: 49.0  uPrime: 17.34 
 Child:   coll cost: 2.6    probGrad: 0.36 
 Child phase 1:   c: 3.6  uPrime: 0.57  earn: 11.4  save: 10.6  kPrime: 16.6 
-Child phase 2:   c: 4.1  uPrime: 0.34  earn: 6.5  save: 0.2  kPrime: 16.7 
+Child phase 2:   c: 4.1  uPrime: 0.35  earn: 6.7  save: 0.7  kPrime: 17.2 
 
 
     ---------    
@@ -68,7 +68,7 @@ Try college:
 Parent:  transfer: 2.1   c: 113.0  uPrime: 12.25 
 Child:   coll cost: 2.5    probGrad: 0.38 
 Child phase 1:   c: 3.8  uPrime: 0.50  earn: 10.4  save: 8.5  kPrime: 17.0 
-Child phase 2:   c: 4.3  uPrime: 0.31  earn: 5.1  save: -2.7  kPrime: 14.3 
+Child phase 2:   c: 4.2  uPrime: 0.31  earn: 5.3  save: -2.2  kPrime: 14.8 
 
 
     ---------    
@@ -86,7 +86,7 @@ Try college:
 Parent:  transfer: 0.9   c: 14.2  uPrime: 29.02 
 Child:   coll cost: -0.4    probGrad: 0.39 
 Child phase 1:   c: 3.8  uPrime: 0.47  earn: 9.8  save: 12.9  kPrime: 16.4 
-Child phase 2:   c: 4.3  uPrime: 0.28  earn: 4.2  save: 1.1  kPrime: 17.5 
+Child phase 2:   c: 4.3  uPrime: 0.29  earn: 4.4  save: 1.6  kPrime: 18.0 
 
 
     ---------    
@@ -104,7 +104,7 @@ Try college:
 Parent:  transfer: 2.2   c: 129.3  uPrime: 11.58 
 Child:   coll cost: 6.9    probGrad: 0.40 
 Child phase 1:   c: 3.9  uPrime: 0.44  earn: 9.1  save: -3.0  kPrime: 6.0 
-Child phase 2:   c: 4.4  uPrime: 0.27  earn: 3.4  save: -15.4  kPrime: -9.5 
+Child phase 2:   c: 4.4  uPrime: 0.27  earn: 3.7  save: -15.0  kPrime: -9.0 
 
 
     ---------    
@@ -122,7 +122,7 @@ Try college:
 Parent:  transfer: 1.2   c: 32.9  uPrime: 20.47 
 Child:   coll cost: 2.2    probGrad: 0.43 
 Child phase 1:   c: 4.0  uPrime: 0.37  earn: 7.3  save: 2.4  kPrime: 7.3 
-Child phase 2:   c: 4.6  uPrime: 0.22  earn: 1.5  save: -10.4  kPrime: -3.0 
+Child phase 2:   c: 4.6  uPrime: 0.22  earn: 1.2  save: -10.9  kPrime: -3.6 
 
 
     ---------    
@@ -139,6 +139,6 @@ Child:   c: 21.5  EuPrime: 0.80
 Try college:
 Parent:  transfer: 0.8   c: 12.4  uPrime: 30.72 
 Child:   coll cost: 5.9    probGrad: 0.45 
-Child phase 1:   c: 4.1  uPrime: 0.34  earn: 6.4  save: -7.2  kPrime: -3.9 
-Child phase 2:   c: 4.6  uPrime: 0.23  earn: 1.6  save: -17.9  kPrime: -21.8 
+Child phase 1:   c: 4.1  uPrime: 0.34  earn: 6.3  save: -7.4  kPrime: -4.1 
+Child phase 2:   c: 4.6  uPrime: 0.23  earn: 1.4  save: -18.4  kPrime: -22.5 
 

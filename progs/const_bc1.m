@@ -27,7 +27,7 @@ cS.expNo = expNo;
 setStr = sprintf('set%03i', setNo);
 expStr = sprintf('exp%03i', expNo);
 
-cS.dbg = 111;
+cS.dbg = 1;    % +++++
 cS.missVal = -9191;
 cS.pauseOnError = 1;
 % How often to run full debug mode during calibration?
@@ -194,6 +194,14 @@ cS.pvector = cS.pvector.change('prGradABase', 'a_{0}', 'In $\pi_{a}$', 0, 0, 0.3
 cS.pvector = cS.pvector.change('wCollMean', 'Mean w_{coll}', 'Maximum earnings in college', ...
    2e4 ./ cS.unitAcct, 5e3 ./ cS.unitAcct, 1e5 ./ cS.unitAcct, cS.calBase);
 
+% Free college consumption and leisure
+% Specified as: how much does the highest m type get? The lowest m type gets 0
+% In between: linear in m
+cS.pvector = cS.pvector.change('cCollMax', 'Max cColl', 'Max free consumption', ...
+   0,  0,  1e4 ./ cS.unitAcct, cS.calNever);
+cS.pvector = cS.pvector.change('lCollMax', 'Max lColl', 'Max free leisure', ...
+   0, 0, 0.5, cS.calNever);
+
 
 %% Defaults: work
 
@@ -301,6 +309,11 @@ elseif setNo == 4
    cS.ucCurvatureSame = 0;
     % Curvature of u(c) in college
    cS.pvector = cS.pvector.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 4, 1, 5, cS.calNever);
+   
+elseif setNo == 5
+   cS.setStr = 'Free college consumption / leisure';
+   cS.pvector = cS.pvector.calibrate('cCollMax', cS.calBase);
+   cS.pvector = cS.pvector.calibrate('lCollMax', cS.calBase);
 
 else
    error('Invalid');
@@ -439,6 +452,17 @@ cS.expS = expS;
 
 %% Derived constants
 
+if exist('/Users/lutz', 'dir')
+   cS.runLocal = 1;
+   cS.runParallel = 1; 
+   cS.nNodes = 4;
+else
+   cS.runLocal = 0;
+   cS.runParallel = 1;
+   cS.nNodes = 4;
+end
+
+
 cS.pr_iqV = diff([0; cS.iqUbV]);
 cS.pr_ypV = diff([0; cS.ypUbV]);
 
@@ -469,12 +493,6 @@ end
 
 
 %% Directories
-
-if exist('/Users/lutz', 'dir')
-   cS.runLocal = 1;
-else
-   cS.runLocal = 0;
-end
 
 if cS.runLocal == 1
    cS.baseDir = fullfile('/users', 'lutz', 'dropbox', 'hc', 'borrow_constraints');

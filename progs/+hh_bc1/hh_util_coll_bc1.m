@@ -1,4 +1,4 @@
-function [utilV, muCV, muLV] = hh_util_coll_bc1(cV, leisureV, prefWt, prefSigma, ...
+function [utilV, muCV, muLV] = hh_util_coll_bc1(cV, leisureV, cBarV, lBarV, prefWt, prefSigma, ...
    prefWtLeisure, prefRho)
 % Utility in college
 %{
@@ -22,15 +22,15 @@ muCV = 0;
 
 if prefSigma == 1
    % Log utility
-   utilCV = prefWt .* log(cV);
+   utilCV = prefWt .* log(cV + cBarV);
    if nargout > 1
-      muCV = prefWt ./ cV;
+      muCV = prefWt ./ (cV + cBarV);
    end
 else
    sig1 = 1 - prefSigma;
-   utilCV = prefWt .* cV .^ sig1 ./ sig1 - 1;
+   utilCV = prefWt .* (cV + cBarV) .^ sig1 ./ sig1 - 1;
    if nargout > 1
-      muCV = prefWt .* cV .^ (-prefSigma);
+      muCV = prefWt .* (cV + cBarV) .^ (-prefSigma);
    end
 end
 
@@ -40,15 +40,15 @@ end
 muLV = 0;
 
 if prefRho == 1
-   utilLV = prefWtLeisure .* log(leisureV);
+   utilLV = prefWtLeisure .* log(leisureV + lBarV);
    if nargout > 2
-      muLV = prefWtLeisure ./ leisureV;
+      muLV = prefWtLeisure ./ (leisureV + lBarV);
    end
 else
    sig2 = 1 - prefRho;
-   utilLV = prefWtLeisure .* ((leisureV .^ sig2) ./ sig2 - 1);
+   utilLV = prefWtLeisure .* (((leisureV + lBarV) .^ sig2) ./ sig2 - 1);
    if nargout > 2
-      muLV = prefWtLeisure .* leisureV .^ (-prefRho);
+      muLV = prefWtLeisure .* (leisureV + lBarV) .^ (-prefRho);
    end
 end
 

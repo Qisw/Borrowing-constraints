@@ -10,6 +10,8 @@ Checked: 2015-Mar-20
 %}
 % -----------------------------------------
 
+nAbil = cS.nAbil;
+
 
 %% Value of work
 % Approx on k grid
@@ -58,15 +60,37 @@ vColl3S.kGridV = linspace(paramS.kMin_aV(age), paramS.kMax, nk)';
 
 % Compute on a k grid. 
 sizeV = [nk, cS.nAbil, cS.nTypes];
-vColl3S.c_kajM = nan(sizeV);
-vColl3S.hours_kajM = nan(sizeV);
-vColl3S.kPrime_kajM = nan(sizeV);
-vColl3S.value_kajM = nan(sizeV);
+c_kajM = nan(sizeV);
+hours_kajM = nan(sizeV);
+kPrime_kajM = nan(sizeV);
+value_kajM = nan(sizeV);
+kMin = paramS.kMin_aV(cS.ageWorkStart_sV(cS.iCG));
 
-for j = 1 : cS.nTypes
-   [vColl3S.c_kajM(:,:,j), vColl3S.hours_kajM(:,:,j), vColl3S.kPrime_kajM(:,:,j), vColl3S.value_kajM(:,:,j)] = ...
-      hh_bc1.coll_pd3(vColl3S.kGridV, paramS.wColl_jV(j), paramS.pColl_jV(j), vWorkS, paramS, cS);
+kGridV = vColl3S.kGridV;
+evWorkCG_jV = vWorkS.evWorkCG_jV;
+wColl_jV = paramS.wColl_jV;
+pColl_jV = paramS.pColl_jV;
+
+% if cS.runParallel == 1
+%    matlabpool open 4;
+% end
+
+parfor j = 1 : cS.nTypes
+   % Currently, choices and values do not depend on ability
+   [cV, hoursV, kPrimeV, valueV] = ...
+      hh_bc1.coll_pd3(kGridV, wColl_jV(j), pColl_jV(j), kMin, ...
+      evWorkCG_jV{j}, j, paramS, cS);
+   
+   c_kajM(:,:,j) = cV(:) * ones([1, nAbil]);
+   hours_kajM(:,:,j) = hoursV(:) * ones([1, nAbil]);
+   kPrime_kajM(:,:,j) = kPrimeV(:) * ones([1, nAbil]);
+   value_kajM(:,:,j) = valueV(:) * ones([1, nAbil]);
 end
+
+vColl3S.c_kajM = c_kajM;
+vColl3S.hours_kajM = hours_kajM;
+vColl3S.kPrime_kajM = kPrime_kajM;
+vColl3S.value_kajM = value_kajM;
 
 saveS.vColl3S = vColl3S;
 
@@ -90,39 +114,58 @@ saveS.vmS = vmS;
 
 sizeV = [nk, cS.nTypes];
 v1S.kGridV = vmS.kGridV;
-v1S.value_kjM = nan(sizeV);   % Does not include pref shocks
-v1S.c_kjM = nan(sizeV);
-v1S.hours_kjM = nan(sizeV);
-v1S.kPrime_kjM = nan(sizeV);
+value_kjM = nan(sizeV);   % Does not include pref shocks
+c_kjM = nan(sizeV);
+hours_kjM = nan(sizeV);
+kPrime_kjM = nan(sizeV);
 
+% Borrowing limit
+kMin = paramS.kMin_aV(cS.ageWorkStart_sV(cS.iCD));
+kGridV = v1S.kGridV;
+vmFct_jV = vmS.vmFct_jV;
 
-for j = 1 : cS.nTypes
+parfor j = 1 : cS.nTypes
    % Continuous approx of V_m(k', j) (continuation value)
    % vmFct = griddedInterpolant(vmS.kGridV, vmS.value_kjM(:,j), 'pchip', 'linear');
-   vmFct = vmS.vmFct_jV{j};
-   for ik = 1 : nk
-      [v1S.c_kjM(ik,j), v1S.hours_kjM(ik,j), v1S.kPrime_kjM(ik,j), v1S.value_kjM(ik,j)] = ...
-         hh_bc1.coll_pd1(vmS.kGridV(ik), paramS.wColl_jV(j), paramS.pColl_jV(j), ...
-         vmFct, paramS, cS);
-   end
+   %vmFct = vmS.vmFct_jV{j};
+   [c_kjM(:,j), hours_kjM(:,j), kPrime_kjM(:,j), value_kjM(:,j)] = ...
+      hh_bc1.coll_pd3(kGridV, wColl_jV(j), pColl_jV(j), kMin, ...
+      vmFct_jV{j}, j, paramS, cS);
 end
+
+v1S.value_kjM = value_kjM;   % Does not include pref shocks
+v1S.c_kjM = c_kjM;
+v1S.hours_kjM = hours_kjM;
+v1S.kPrime_kjM = kPrime_kjM;
 
 saveS.v1S = v1S;
 
 
+% if cS.runParallel == 1
+%    matlabpool close;
+% end
+
 
 %% College entry decision
 
-v0S.vWork_jV = nan([cS.nTypes, 1]); % does not include pref for HS
-v0S.vColl_jV = nan([cS.nTypes, 1]);
+vWork_jV = nan([cS.nTypes, 1]); % does not include pref for HS
+vColl_jV = nan([cS.nTypes, 1]);
 % Transfers (per year)
-v0S.zWork_jV = nan([cS.nTypes, 1]);
-v0S.zColl_jV = nan([cS.nTypes, 1]);
+zWork_jV = nan([cS.nTypes, 1]);
+zColl_jV = nan([cS.nTypes, 1]);
 
 for j = 1 : cS.nTypes
-   [v0S.vWork_jV(j), v0S.vColl_jV(j), v0S.zWork_jV(j), v0S.zColl_jV(j)] = ...
+   [vWork_jV(j), vColl_jV(j), zWork_jV(j), zColl_jV(j)] = ...
       hh_bc1.college_entry(v1S, vWorkS, j, paramS, cS);
 end
+
+
+v0S.vWork_jV = vWork_jV; % does not include pref for HS
+v0S.vColl_jV = vColl_jV;
+% Transfers (per year)
+v0S.zWork_jV = zWork_jV;
+v0S.zColl_jV = zColl_jV;
+
 
 % Capital endowments
 %  Restricted to lie inside kGrid

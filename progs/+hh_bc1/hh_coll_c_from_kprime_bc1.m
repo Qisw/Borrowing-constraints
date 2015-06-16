@@ -1,4 +1,4 @@
-function [c, hours] = hh_coll_c_from_kprime_bc1(kPrime, k, wColl, pColl, paramS, cS)
+function [c, hours] = hh_coll_c_from_kprime_bc1(kPrime, k, wColl, pColl, j, paramS, cS)
 % Hh in college. Find c from k'
 %{
 Hours from static condition
@@ -23,6 +23,10 @@ prefRho = paramS.prefRho;
 prefWtLeisure = paramS.prefWtLeisure;
 prefWt = paramS.prefWt;
 R = paramS.R;
+cBar = paramS.cColl_jV(j); 
+lBar = paramS.lColl_jV(j);
+lFloor = cS.lFloor;
+
 
 % Try cFloor
 devLow = devfct(cS.cFloor);
@@ -33,12 +37,13 @@ if devLow < 0
    
 else
    % Highest c that may be required (working all the time)
-   cMax = hh_bc1.coll_bc(kPrime, 1, k, wColl, pColl, paramS.R, cS);
+   cMax = hh_bc1.coll_bc(kPrime, 1 - cS.lFloor, k, wColl, pColl, paramS.R, cS);
    if cMax < cS.cFloor
+      fprintf('cMax: %.3f \n', cMax);
       error_bc1('Should not happen', cS);
    end
 
-   [c, fVal] = fzero(@devfct, [cS.cFloor, cMax], cS.fzeroOptS);   
+   [c, fVal] = fzero(@devfct, [cS.cFloor, cMax + 0.1], cS.fzeroOptS);   
    
    if abs(fVal) > 1e-3
       error_bc1('Cannot solve for c', cS);
@@ -61,9 +66,9 @@ Must be very efficient
 %}
    function [devV, hoursV] = devfct(cV)
       % static condition => hours
-      hoursV = max(0, 1 - (cV .^ (prefSigma ./ prefRho)) .* ...
-         (prefWtLeisure ./ prefWt ./ wColl) .^ (1/prefRho));
-      % hoursV = hh_bc1.hh_static_bc1(cGuessV, wColl, paramS, cS);
+      hoursV = max(0, min(1 - lFloor, 1 + lBar - ((cV + cBar) .^ (prefSigma ./ prefRho)) .* ...
+         (prefWtLeisure ./ prefWt ./ wColl) .^ (1/prefRho)));
+      % hoursV = hh_bc1.hh_static_bc1(cGuessV, wColl, j, paramS, cS);
       
       % Budget constraint
       kPrimeV = R * k + 2 * (wColl * hoursV - cV - pColl);

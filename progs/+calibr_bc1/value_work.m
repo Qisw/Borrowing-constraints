@@ -34,6 +34,7 @@ end
 
 
 %%  Value function before learning ability
+% This is before learning graduation shock
 
 vWorkS.value_ksjM = nan([nk, cS.nSchool, cS.nTypes]);
 % Continuous approximation
@@ -54,6 +55,27 @@ end
 if cS.dbg > 10
    validateattributes(vWorkS.value_ksjM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nk, cS.nSchool, cS.nTypes]})
+end
+
+
+%% Value of work as CG, after learning graduation shock
+
+% E V(k | j,CG)
+vWorkS.evWorkCG_jV = cell([cS.nTypes, 1]);
+iSchool = cS.iCG;
+
+for j = 1 : cS.nTypes
+   % Make value on a grid
+   value_kV = nan([nk, 1]);
+   for ik = 1 : nk
+      vWork_aV = vWorkS.value_ksaM(ik,iSchool,:);
+      % Use Pr(a | j, grad)
+      value_kV(ik) = sum(paramS.prA_jgradM(:, j) .* vWork_aV(:));
+   end
+   
+   % Function approximation
+   vWorkS.evWorkCG_jV{j} = griddedInterpolant(vWorkS.kGridV, value_kV, ...
+      'pchip', 'linear');
 end
 
 

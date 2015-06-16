@@ -18,7 +18,7 @@ c_ckM = collUtilS.cGridV * ones([1,nk]);
 
 for j = 1 : cS.nTypes
    % Hours implied by static condition
-   collUtilS.hours_cjM(:,j) = hh_bc1.hh_static_bc1(collUtilS.cGridV, paramS.wColl_jV(j), paramS, cS);
+   collUtilS.hours_cjM(:,j) = hh_bc1.hh_static_bc1(collUtilS.cGridV, paramS.wColl_jV(j), j, paramS, cS);
    hours_ckM = collUtilS.hours_cjM(:,j) * ones([1, nk]);   
    
    % k' implied by budget constraint
@@ -26,8 +26,8 @@ for j = 1 : cS.nTypes
       paramS.wColl_jV(j), paramS.pColl_jV(j), paramS.R, cS);
 
    % Utility in college
-   collUtilS.util_ckjM(:,:,j) = hh_bc1.hh_util_coll_bc1(c_ckM, 1 - hours_ckM, paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+   collUtilS.util_ckjM(:,:,j) = hh_bc1.hh_util_coll_bc1(c_ckM, 1 - hours_ckM, paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+      paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
 end
 
 

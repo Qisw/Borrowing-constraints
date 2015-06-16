@@ -1,6 +1,10 @@
 function hh_show(saveFigures, setNo, expNo)
 
 cS = const_bc1(setNo, expNo);
+if cS.runLocal == 0
+   warning('Cannot run hh_show on served. Matlab version outdated.');
+   return
+end
 figS = const_fig_bc1;
 paramS = param_load_bc1(setNo, expNo);
 hhS = var_load_bc1(cS.vHhSolution, cS);
@@ -39,7 +43,6 @@ end
 
 
 
-return   % +++++
 
 %% Transfers and parental income
 if 1
@@ -63,8 +66,8 @@ if 1
          workStudyStr = 'college';
          transfer_jV = hhS.v0S.zColl_jV;
          t = 1;
-         [~,uPrimeChild_jV] = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:), 1 - aggrS.hours_tjM(t,:), ...
-            paramS.prefWt, paramS.prefSigma, paramS.prefWtLeisure, paramS.prefRho);
+         [~,uPrimeChild_jV] = hh_bc1.hh_util_coll_bc1(aggrS.cons_tjM(t,:)', 1 - aggrS.hours_tjM(t,:)', ...
+            paramS.cColl_jV, paramS.lColl_jV, paramS.prefWt, paramS.prefSigma, paramS.prefWtLeisure, paramS.prefRho);
 
       else
          % Kids work as HSG
@@ -110,12 +113,13 @@ if 1
    hold on;
 
    np = 50;
+   j = round(cS.nTypes / 2);
    cV = linspace(5e3, 5e4, np) ./ cS.unitAcct;
    
    [~, mupV] = hh_bc1.util_parent(cV, paramS, cS);
    [~, muWorkV] = hh_bc1.util_work_bc1(cV, paramS, cS);
-   [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+   [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+      paramS.prefWt, paramS.prefSigma,  paramS.prefWtLeisure, paramS.prefRho);
    
    iLine = 1;
    plot(cV,  mupV, figS.lineStyleDenseV{iLine}, 'color', figS.colorM(iLine,:));

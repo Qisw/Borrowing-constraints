@@ -11,6 +11,9 @@ IN:
 
 init_bc1;
 
+% Need to run this once (only) for parallel
+configCluster;    % +++++
+
 cS = const_bc1(setNoV(1), expNo);
 if cS.runLocal == 1
    error('Can only run on kure');

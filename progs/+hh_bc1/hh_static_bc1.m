@@ -1,7 +1,11 @@
-function hoursV = hh_static_bc1(cV, wColl, paramS, cS)
+function hoursV = hh_static_bc1(cV, wColl, j, paramS, cS)
 % Solve static hh condition while in college
 %{
 Possible corner: leisure = 1.
+
+IN:
+   cBarV, lBarV
+      free college consumption and leisure
 
 OUT: 
    hoursV
@@ -19,8 +23,8 @@ end
 
 %% Main
 
-hoursV = max(0, 1 - (cV .^ (paramS.prefSigma ./ paramS.prefRho)) .* ...
-   (paramS.prefWtLeisure ./ paramS.prefWt ./ wColl) .^ (1/paramS.prefRho));
+hoursV = max(0, min(1 - cS.lFloor, 1 + paramS.lColl_jV(j) - ((cV + paramS.cColl_jV(j)) .^ (paramS.prefSigma ./ paramS.prefRho)) .* ...
+   (paramS.prefWtLeisure ./ paramS.prefWt ./ wColl) .^ (1/paramS.prefRho)));
 
 
 %% Self test
@@ -29,8 +33,8 @@ if cS.dbg > 10
       '<=', 1, 'size', size(cV)})
    
    % Direct EE equation
-   [~, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV, paramS.prefWt, paramS.prefSigma, ...
-      paramS.prefWtLeisure, paramS.prefRho);
+   [~, muCV, muLV] = hh_bc1.hh_util_coll_bc1(cV, 1 - hoursV,  paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+      paramS.prefWt, paramS.prefSigma,  paramS.prefWtLeisure, paramS.prefRho);
    eeDevV = (muCV .* wColl - muLV) ./ max(1e-2, muLV);
    if any(eeDevV > 1e-4)
       error_bc1('eeDev > 0', cS);

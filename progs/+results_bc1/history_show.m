@@ -72,8 +72,8 @@ for j = jV(:)'
       cChild = aggrS.cons_tjM(t,j);
       hours = aggrS.hours_tjM(t,j);
       dissave = aggrS.k_tjM(t+1,j) - aggrS.k_tjM(t,j);
-      [~,uPrime] = hh_bc1.hh_util_coll_bc1(cChild, 1 - hours, paramS.prefWt, paramS.prefSigma, ...
-         paramS.prefWtLeisure, paramS.prefRho);
+      [~,uPrime] = hh_bc1.hh_util_coll_bc1(cChild, 1 - hours, paramS.cColl_jV(j), paramS.lColl_jV(j), ...
+         paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
       fprintf(fp, 'c: %.1f  uPrime: %.2f  earn: %.1f  save: %.1f  kPrime: %.1f \n',  ...
          cChild, 100 * uPrime, aggrS.earn_tjM(t,j), dissave, aggrS.k_tjM(t+1,j));
    end
