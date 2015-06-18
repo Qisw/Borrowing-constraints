@@ -42,8 +42,8 @@ for i1 = 1 : outS.devV.n
    modelV = devS.modelV;
    if length(modelV) <= 4  && isvector(modelV)
       % Show directly
-      tbM{ir,2} = formatted_vector(modelV, devS.fmtStr, cS);
-      tbM{ir,3} = formatted_vector(devS.dataV, devS.fmtStr, cS);
+      tbM{ir,2} = output_bc1.formatted_vector(modelV, devS.fmtStr, cS);
+      tbM{ir,3} = output_bc1.formatted_vector(devS.dataV, devS.fmtStr, cS);
    end
 end
 
@@ -52,21 +52,5 @@ end
 
 latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'fit.tex'), tbM, 'Caption', 'Label', tbS);
 
-
-end
-
-
-%% Local: Format a vector
-function outStr = formatted_vector(dataV, fmtStr, cS)
-   if strcmpi(fmtStr, 'dollar')
-      [numStringV, numString1] = string_lh.dollar_format(dataV .* cS.unitAcct, ',', 0);
-      if length(dataV) == 1
-         outStr = numString1;
-      else
-         outStr = strjoin(numStringV, ', ');
-      end
-   else
-      outStr = string_lh.string_from_vector(dataV, fmtStr);
-   end
 
 end

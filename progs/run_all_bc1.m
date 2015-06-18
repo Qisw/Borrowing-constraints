@@ -42,6 +42,10 @@ end
 if 0
    % Calibration runs this
    results_all_bc1(setNo, cS.expBase);
+   
+   % Compare experiments
+   expNoV = [cS.expBase, 202, 203];   % hard coded +++
+   exper_bc1.compare(setNo .* ones(size(expNoV)), expNoV, 'cohort_compare')
 end
 
 

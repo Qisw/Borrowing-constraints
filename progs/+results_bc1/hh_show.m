@@ -36,6 +36,10 @@ if 1
       plot(xV,  yV, 'o', 'color', figS.colorM(1,:));
       xlabel(xLabelStr);
       ylabel(yLabelStr);
+      % Scale y axis for leisure plots
+      if strncmpi(yLabelStr, 'leisure', 7)
+         figures_lh.axis_range_lh([NaN NaN 0.5 1]);
+      end
       output_bc1.fig_format(fh, 'line');
       output_bc1.fig_save(['hh_', yFigStr, '_', xFigStr], saveFigures, cS);
    end
