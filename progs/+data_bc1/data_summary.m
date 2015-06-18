@@ -81,12 +81,12 @@ for iCohort = 1 : cS.nCohorts
    
    ir = ir + 1;
    tbM{ir,1} = 'Fraction with college debt';
-   debtFrac = sum(frac_qV .* tgS.debtFrac_qcM(:,iCohort));
+   debtFrac = sum(frac_qV .* tgS.debtS.debtFracEndOfCollege_qcM(:,iCohort));
    tbM{ir,ic} = sprintf('%.2f', debtFrac);
    
    ir = ir + 1;
    tbM{ir,1} = 'Mean college debt';
-   debtMean = sum(frac_qV .* tgS.debtMean_qcM(:, iCohort));
+   debtMean = sum(frac_qV .* tgS.debtS.debtMeanEndOfCollege_qcM(:, iCohort));
    tbM{ir,ic} = sprintf('%.1f',  debtMean * dollarFactor);
 end
 

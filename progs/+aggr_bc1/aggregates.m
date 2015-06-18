@@ -11,22 +11,25 @@ nIq = length(cS.iqUbV);
 % Scale factor
 aggrS.totalMass = 100;
 
+% Holds debt stats
+debtS.setNo = cS.setNo;
+% Debt stats, assuming transfers paid out each period
+%  Currently does not contain all debt stats
+debtAltS.setNo = cS.setNo;
+% Debt stats: all college students
+debtAllS.setNo = cS.setNo;
+% Debt stats: end of college
+debtEndOfCollegeS.setNo = cS.setNo;
+
 
 %%  By j,  [s,j],  [s,a]
 
-[aggrS.prGrad_jV, aggrS.mass_jV] = aggr_j(aggrS, paramS, cS);
-
-% Mass in college by j
-aggrS.massColl_jV = aggrS.mass_jV .* hhS.v0S.probEnter_jV;
-if dbg > 10
-   validateattributes(aggrS.massColl_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-      '>=', 0, 'size', [cS.nTypes, 1]})
-end
+% By j
+[aggrS.prGrad_jV, aggrS.mass_jV, aggrS.massColl_jV] = aggr_j(aggrS, hhS, paramS, cS);
 
 
 % By [s,j]
-
-[aggrS.mass_sjM, aggrS.probS_jM] = aggr_sj(aggrS, hhS, paramS, cS);
+[aggrS.mass_sjM, aggrS.probS_jM] = aggr_sj(aggrS, cS);
 
 
 % By [s,a]
@@ -36,98 +39,81 @@ aggrS.mass_asM = aggr_as(aggrS, paramS, cS);
 % By j - simulate histories in college
 [aggrS.k_tjM, aggrS.hours_tjM, aggrS.cons_tjM, aggrS.earn_tjM, aggrS.kTrue_tjM] = ...
    sim_histories(hhS, paramS, cS);
+% Debt levels (0 for those with positive k)
+%  at end of years 2 and 4 in college
+debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
+
 
 % By [school, IQ, j]
 [aggrS.mass_sqjM, aggrS.mass_sqM, aggrS.fracS_iqM, aggrS.fracEnter_qV, aggrS.fracGrad_qV] = ...
    aggr_sqj(aggrS, hhS, paramS, cS);
 
 
+% By IQ quartile
+[aggrS.logYpMean_qV, aggrS.pMean_qV, aggrS.hoursCollMean_qV, aggrS.earnCollMean_qV, aggrS.transfer_qV, ...
+   debtEndOfCollegeS.frac_qV, debtEndOfCollegeS.mean_qV, debtAltS.debtFrac_qV, debtAltS.debtMean_qV, ...
+   debtS.fracYear2_qV, debtS.meanYear2_qV] = aggr_iq(aggrS, hhS, paramS, cS);
 
 
-%% By IQ quartile
-
-
-% Mean parental income by IQ quartile
-aggrS.logYpMean_qV = nan([nIq, 1]);
-% Mean college cost
-aggrS.pMean_qV = nan([nIq, 1]);
-% Average hours, first 2 years in college
-aggrS.hoursCollMean_qV = nan([nIq, 1]);
-% Average earnings, first 2 years in college
-aggrS.earnCollMean_qV = nan([nIq, 1]);
-% Average annual transfer
-aggrS.transfer_qV = nan([nIq, 1]);
-
-% Fraction in debt at end of college
-aggrS.debtFrac_qV = nan([nIq, 1]);
-% Mean debt, NOT conditional on being in debt
-aggrS.debtMean_qV = nan([nIq, 1]);
-% Same assuming that transfers are paid out each period
-aggrS.debtFracTrue_qV = nan([nIq, 1]);
-aggrS.debtMeanTrue_qV = nan([nIq, 1]);
-
-for iIq = 1 : nIq
-   % *******  All
-
-   % Mass by j for this IQ
-   wtV = aggrS.mass_jV .* paramS.prIq_jM(iIq, :)';
-   
-   aggrS.logYpMean_qV(iIq) = sum(wtV .* log(paramS.yParent_jV)) ./ sum(wtV);
-
-   
-   % *******  In college
-   
-   % Mass with IQ and j in college
-   wtV = aggrS.massColl_jV .* paramS.prIq_jM(iIq, :)';
-   totalWt = sum(wtV);
-   
-   aggrS.pMean_qV(iIq) = sum(wtV .* paramS.pColl_jV) ./ totalWt;
-   
-   aggrS.hoursCollMean_qV(iIq) = sum(wtV .* aggrS.hours_tjM(1,:)') ./ totalWt;
-   
-   aggrS.earnCollMean_qV(iIq) = sum(wtV .* aggrS.earn_tjM(1,:)') ./ totalWt;
-   
-   % Need to annualized
-   aggrS.transfer_qV(iIq) = sum(wtV .* hhS.v0S.zColl_jV) ./ totalWt;
-   
-   % *** Debt stats at end of college
-   % Mass that exits at end of years 2 / 4, by j
-   mass_tjM = squeeze(aggrS.mass_sqjM([cS.iCD, cS.iCG], iIq,:));
-   % debt at end of years 2 and 4
-   debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
-   aggrS.debtFrac_qV(iIq) = sum(mass_tjM(:) .* (debt_tjM(:) > 0)) ./ sum(mass_tjM(:));
-   % Meand debt (not conditional)
-   aggrS.debtMean_qV(iIq) = sum(mass_tjM(:) .* debt_tjM(:)) ./ sum(mass_tjM(:));
-
-   % debt at end of years 2 and 4 (transfers paid out each period)
-   debt_tjM = max(0, -aggrS.kTrue_tjM(2:3, :));
-   aggrS.debtFracTrue_qV(iIq) = sum(mass_tjM(:) .* (debt_tjM(:) > 0)) ./ sum(mass_tjM(:));
-   % Meand debt (not conditional)
-   aggrS.debtMeanTrue_qV(iIq) = sum(mass_tjM(:) .* debt_tjM(:)) ./ sum(mass_tjM(:));
-end
-
-
-if dbg > 10
-   validateattributes(aggrS.pMean_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-      'size', [nIq, 1]})
-end
+%% Aggregates (college entrants)
 
 % Mass of entrants by q
-mass_qV = sum(aggrS.mass_sqM(cS.iCD : cS.nSchool, :));
-mass_qV = mass_qV(:) ./ sum(mass_qV);
+frac_qV = diff([0; cS.iqUbV]);
+mass_qV = aggrS.fracEnter_qV .* frac_qV;
+mass_qV = mass_qV ./ sum(mass_qV);
 
-aggrS.debtMean = sum(aggrS.debtMean_qV .* mass_qV(:));
-aggrS.earnCollMean = sum(aggrS.earnCollMean_qV .* mass_qV(:));
-aggrS.transferMean = sum(aggrS.transfer_qV .* mass_qV(:));
-aggrS.hoursCollMean = sum(aggrS.hoursCollMean_qV .* mass_qV(:));
-aggrS.pMean = sum(aggrS.pMean_qV .* mass_qV(:));
+% Mean debt at end of college
+debtS.debtMeanEndOfCollege = sum(debtEndOfCollegeS.mean_qV .* mass_qV(:));
+
+
+% *********  Stats over first 2 years in college
+
+aggrS.earnCollMeanYear2 = sum(aggrS.earnCollMean_qV .* mass_qV(:));
+aggrS.transferMeanYear2 = sum(aggrS.transfer_qV .* mass_qV(:));
+aggrS.hoursCollMeanYear2 = sum(aggrS.hoursCollMean_qV .* mass_qV(:));
+aggrS.pMeanYear2 = sum(aggrS.pMean_qV .* mass_qV(:));
+debtS.meanYear2 = sum(debtS.meanYear2_qV .* mass_qV);
+debtS.fracYear2 = sum(debtS.fracYear2_qV .* mass_qV);
+clear mass_qV;
+
+% Check
+debtMeanYear2 = sum(aggrS.massColl_jV .* debt_tjM(1,:)') ./ sum(aggrS.massColl_jV);
+if abs(debtMeanYear2 - debtS.meanYear2) > 1e-2
+   error_bc1('Invalid debt year 2', cS);
+end
+
+
+% Mean debt of all college students
+%  not conditional on having debt
+%  we observe all entrants at t=1-2 and graduates in 3-4
+debtAllS.mean = mean_coll_all(debt_tjM, aggrS.mass_sjM, cS);
+% debtAllS.mean = sum(aggrS.massColl_jV' .* debt_tjM(1,:) + aggrS.mass_sjM(cS.iCG, :) .* debt_tjM(2,:)) ...
+%    ./ sum(aggrS.massColl_jV + aggrS.mass_sjM(cS.iCG, :)');
+
+% Consumption, average over college entrants, all years
+aggrS.consCollMean = mean_coll_all(aggrS.cons_tjM, aggrS.mass_sjM, cS);
+aggrS.earnCollMean = mean_coll_all(aggrS.earn_tjM, aggrS.mass_sjM, cS);
+aggrS.pMean = mean_coll_all(ones([2,1]) * paramS.pColl_jV',  aggrS.mass_sjM, cS);
+aggrS.zMean = mean_coll_all(ones([2,1]) * hhS.v0S.zColl_jV',  aggrS.mass_sjM, cS);
+
+
+% ****** Financing shares
+
+% Spending per year (average)
+spending = aggrS.consCollMean + aggrS.pMean;
+% Fraction paid with earnings
+finS.fracEarnings = aggrS.earnCollMean / spending;
+% Fraction paid with debt
+finS.fracDebt = debtAllS.mean / spending;
+% Fraction paid with transfers
+finS.fracTransfers = aggrS.zMean / spending;
 
 
 
 %% By [parental income class] (for those in college)
 
 [aggrS.pColl_yV, aggrS.transfer_yV, aggrS.fracEnter_yV, aggrS.fracGrad_yV, aggrS.hoursCollMean_yV, aggrS.earnCollMean_yV, ...
-   aggrS.debtFrac_yV, aggrS.debtMean_yV, aggrS.debtFracTrue_yV, aggrS.debtMeanTrue_yV, ...
+   debtEndOfCollegeS.frac_yV, debtEndOfCollegeS.mean_yV, debtAltS.debtFrac_yV, debtAltS.debtMean_yV, ...
    aggrS.logYpMean_yV, aggrS.mass_qyM, aggrS.massColl_qyM, ...
    aggrS.massGrad_qyM] = aggr_yp(aggrS, hhS, paramS, cS);
 
@@ -155,9 +141,9 @@ end
 % indexed by [dropout, graduate]
 
 % Fraction in debt
-aggrS.debtFrac_sV = zeros([2,1]);
+debtEndOfCollegeS.frac_sV = zeros([2,1]);
 % Mean debt (not conditional on being in debt)
-aggrS.debtMean_sV = zeros([2,1]);
+debtEndOfCollegeS.mean_sV = zeros([2,1]);
 
 for i1 = 1 : 2
    if i1 == 1
@@ -178,27 +164,22 @@ for i1 = 1 : 2
    % Find those types that are in debt
    dIdxV = find(k_jV < 0);
    if ~isempty(dIdxV)
-      aggrS.debtFrac_sV(i1) = sum(massColl_jV(dIdxV));
-      % Mean debt, not conditional on being in debt
-      aggrS.debtMean_sV(i1) = -sum(massColl_jV(dIdxV) .* k_jV(dIdxV));
+      debtEndOfCollegeS.frac_sV(i1) = sum(massColl_jV(dIdxV));
+      % Mean debt, not conditional on being in debt (b/c mass does not sum to 1)
+      debtEndOfCollegeS.mean_sV(i1) = -sum(massColl_jV(dIdxV) .* k_jV(dIdxV));
    end
 end
+clear massColl_jV;
 
 % Avoid rounding errors
-aggrS.debtFrac_sV = min(1, aggrS.debtFrac_sV);
+debtEndOfCollegeS.frac_sV = min(1, debtEndOfCollegeS.frac_sV);
 
 if dbg > 10
-   validateattributes(aggrS.debtFrac_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+   validateattributes(debtEndOfCollegeS.frac_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0, '<=', 1})
-   validateattributes(aggrS.debtMean_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+   validateattributes(debtEndOfCollegeS.mean_sV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '>=', 0})
 end
-
-
-% *****  Mean debt per student
-
-frac_sV = aggrS.frac_sV(cS.iCD : cS.iCG);
-aggrS.debtMean = sum(aggrS.debtMean_sV .* frac_sV) ./ sum(frac_sV);
 
 
 
@@ -224,12 +205,24 @@ end
 % aggrS.earnCollMean  = sum(aggrS.massColl_jV .* aggrS.earn_tjM(1,:)')  ./ massColl;
 
 
+
+
+%% Clean up
+
+aggrS.debtS = debtS;
+aggrS.debtAltS = debtAltS;
+aggrS.debtAllS = debtAllS;
+aggrS.debtEndOfCollegeS = debtEndOfCollegeS;
+aggrS.finS = finS;
+
+
 end
 
+%% ***********  Local functions start here
 
 
 %% By j
-function [prGrad_jV, mass_jV] = aggr_j(aggrS, paramS, cS)
+function [prGrad_jV, mass_jV, massColl_jV] = aggr_j(aggrS, hhS, paramS, cS)
 
    % Prob grad conditional on entry = sum of Pr(a|j) * Pr(grad|a)
    prGrad_jV = nan([cS.nTypes, 1]);
@@ -243,16 +236,23 @@ function [prGrad_jV, mass_jV] = aggr_j(aggrS, paramS, cS)
 
    % Defines total mass
    mass_jV = paramS.prob_jV * aggrS.totalMass;
+   
+   % Mass in college by j
+   massColl_jV = mass_jV .* hhS.v0S.probEnter_jV;
+   if cS.dbg > 10
+      validateattributes(massColl_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+         '>=', 0, 'size', [cS.nTypes, 1]})
+   end   
 end
 
 
 
 %% By [s, j]
-function [mass_sjM, probS_jM] = aggr_sj(aggrS, hhS, paramS, cS)
+function [mass_sjM, probS_jM] = aggr_sj(aggrS, cS)
 
    sizeV = [cS.nSchool, cS.nTypes];
    mass_sjM = zeros(sizeV);
-   mass_sjM(cS.iHSG,:) = aggrS.mass_jV .* (1 - hhS.v0S.probEnter_jV);
+   mass_sjM(cS.iHSG,:) = aggrS.mass_jV - aggrS.massColl_jV;
    mass_sjM(cS.iCD,:) = aggrS.massColl_jV .* (1 - aggrS.prGrad_jV);
    mass_sjM(cS.iCG,:) = aggrS.massColl_jV .* aggrS.prGrad_jV;
 
@@ -268,7 +268,6 @@ function [mass_sjM, probS_jM] = aggr_sj(aggrS, hhS, paramS, cS)
 
    % Prob s | j = Prob(s and j) / (prob j)
    probS_jM = mass_sjM ./ (ones([cS.nSchool,1]) * aggrS.mass_jV(:)');
-
 end
 
 
@@ -530,6 +529,7 @@ function [pColl_yV, transfer_yV, fracEnter_yV, fracGrad_yV, hoursCollMean_yV, ea
    nIq = length(cS.iqUbV);
    nyp = length(cS.ypUbV);
    
+   % Fin stats for first 2 years in college
    % Initialize all with zeros so that deviation is valid when nobody goes to college in a group
    pColl_yV = zeros([nyp, 1]);
    % ANNUAL transfer (to be comparable with data targets
@@ -538,6 +538,7 @@ function [pColl_yV, transfer_yV, fracEnter_yV, fracGrad_yV, hoursCollMean_yV, ea
    fracGrad_yV = zeros([nyp, 1]);
    hoursCollMean_yV = zeros([nyp, 1]);
    earnCollMean_yV = zeros([nyp, 1]);
+   % Debt at end of college
    debtFrac_yV = zeros([nyp, 1]);
    debtMean_yV = zeros([nyp, 1]);
    % Assuming that transfers are paid out each period
@@ -643,13 +644,13 @@ function [pColl_yV, transfer_yV, fracEnter_yV, fracGrad_yV, hoursCollMean_yV, ea
       % Mass of entrants by y
       mass_yV = fracEnter_yV .* cS.pr_ypV;
       mass_yV = mass_yV(:) ./ sum(mass_yV);
-      debtMean = sum(debtMean_yV .* mass_yV);
+      % debtMean = sum(debtMean_yV .* mass_yV);
       earnCollMean = sum(earnCollMean_yV .* mass_yV);
       transferMean = sum(transfer_yV .* mass_yV);
       hoursCollMean = sum(hoursCollMean_yV .* mass_yV);
       pMean = sum(pColl_yV .* mass_yV);
-      denomV = [debtMean, earnCollMean, transferMean, hoursCollMean, pMean];
-      diffV = ([aggrS.debtMean, aggrS.earnCollMean, aggrS.transferMean, aggrS.hoursCollMean, aggrS.pMean] - denomV) ./ ...
+      denomV = [earnCollMean, transferMean, hoursCollMean, pMean];
+      diffV = ([aggrS.earnCollMeanYear2, aggrS.transferMeanYear2, aggrS.hoursCollMeanYear2, aggrS.pMeanYear2] - denomV) ./ ...
          max(1, denomV);
       maxDiff = max(abs(diffV));
       if maxDiff > 0.1    % why so imprecise? +++
@@ -658,4 +659,113 @@ function [pColl_yV, transfer_yV, fracEnter_yV, fracGrad_yV, hoursCollMean_yV, ea
       end
    end
 
+end
+
+
+
+%% By IQ
+function [logYpMean_qV, pMean_qV, hoursCollMean_qV, earnCollMean_qV, transfer_qV, ...
+   fracDebtEoc_qV, meanDebtEoc_qV, fracDebtAlt_qV, meanDebtAlt_qV, ...
+   fracDebtYear2_qV, meanDebtYear2_qV] = aggr_iq(aggrS, hhS, paramS, cS)
+
+nIq = length(cS.iqUbV);
+
+% Mean parental income by IQ quartile (for all)
+logYpMean_qV = nan([nIq, 1]);
+
+% Mean college cost (for entrants)
+pMean_qV = nan([nIq, 1]);
+% Average hours, first 2 years in college (for entrants)
+hoursCollMean_qV = nan([nIq, 1]);
+% Average earnings, first 2 years in college (for entrants)
+earnCollMean_qV = nan([nIq, 1]);
+% Average annual transfer (for entrants)
+transfer_qV = nan([nIq, 1]);
+
+% Fraction in debt at end of college
+fracDebtEoc_qV = nan([nIq, 1]);
+% Mean debt, NOT conditional on being in debt (end of college)
+meanDebtEoc_qV = nan([nIq, 1]);
+% Same assuming that transfers are paid out each period
+fracDebtAlt_qV = nan([nIq, 1]);
+meanDebtAlt_qV = nan([nIq, 1]);
+% Debt at end of year 2
+meanDebtYear2_qV = nan([nIq, 1]);
+fracDebtYear2_qV = nan([nIq, 1]);
+
+% Debt levels (0 for those with positive k)
+%  at end of years 2 and 4 in college
+debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
+% Same, transfers paid out each period
+debtAlt_tjM = max(0, -aggrS.kTrue_tjM(2:3, :));
+
+
+for iIq = 1 : nIq
+   % *******  All
+
+   % Mass by j for this IQ
+   wtV = aggrS.mass_jV .* paramS.prIq_jM(iIq, :)';
+   % Parental income (not conditional on college)
+   logYpMean_qV(iIq) = sum(wtV .* log(paramS.yParent_jV)) ./ sum(wtV);
+
+   
+   % *******  In college
+   
+   % Mass with IQ and j in college
+   wt_jV = aggrS.massColl_jV .* paramS.prIq_jM(iIq, :)';
+   wt_jV = wt_jV ./ sum(wt_jV);
+   
+   pMean_qV(iIq) = sum(wt_jV .* paramS.pColl_jV);   
+   hoursCollMean_qV(iIq) = sum(wt_jV .* aggrS.hours_tjM(1,:)');
+   earnCollMean_qV(iIq) = sum(wt_jV .* aggrS.earn_tjM(1,:)');
+   transfer_qV(iIq) = sum(wt_jV .* hhS.v0S.zColl_jV);
+   
+   % Debt at end of year 2
+   meanDebtYear2_qV(iIq) = sum(wt_jV .* debt_tjM(1,:)');
+   fracDebtYear2_qV(iIq) = sum(wt_jV .* (debt_tjM(1,:)' > 0));
+   
+   
+   % *** Debt stats at end of college
+   % Mass that exits at end of years 2 / 4, by j
+   mass_tjM = squeeze(aggrS.mass_sqjM([cS.iCD, cS.iCG], iIq,:));
+%    % debt at end of years 2 and 4
+%    debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
+   fracDebtEoc_qV(iIq) = sum(mass_tjM(:) .* (debt_tjM(:) > 0)) ./ sum(mass_tjM(:));
+   % Meand debt (not conditional)
+   meanDebtEoc_qV(iIq) = sum(mass_tjM(:) .* debt_tjM(:)) ./ sum(mass_tjM(:));
+
+   % debt at end of years 2 and 4 (transfers paid out each period)
+   fracDebtAlt_qV(iIq) = sum(mass_tjM(:) .* (debtAlt_tjM(:) > 0)) ./ sum(mass_tjM(:));
+   % Meand debt (not conditional)
+   meanDebtAlt_qV(iIq) = sum(mass_tjM(:) .* debtAlt_tjM(:)) ./ sum(mass_tjM(:));
+end
+
+
+if cS.dbg > 10
+   validateattributes(pMean_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      'size', [nIq, 1]})
+   validateattributes(meanDebtYear2_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      '>=', 0})
+   validateattributes(fracDebtYear2_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      '>=', 0, '<=', 1})
+end
+
+
+end
+
+
+%% Compute average across all college students
+%{
+IN
+   x_tjM
+      any variable by year in college (1-2, 3-4) and j
+   mass_sjM
+OUT
+   Mean of x over all college students
+%}
+function meanOut = mean_coll_all(x_tjM, mass_sjM, cS)
+   massColl_jV = sum(mass_sjM(cS.iCD : cS.nSchool, :), 1);
+   massCG_jV = mass_sjM(cS.iCG,:);
+   meanOut = sum(massColl_jV(:) .* x_tjM(1,:)' + massCG_jV(:) .* x_tjM(2,:)') ...
+      ./ sum(massColl_jV(:) + massCG_jV(:));   
 end

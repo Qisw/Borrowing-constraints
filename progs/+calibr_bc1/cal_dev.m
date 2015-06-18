@@ -7,17 +7,20 @@ Checked: 2015-Apr-3
 % Debug or not?
 %  Cannot use rand (b/c seed is always the same)
 x = clock;
-if x(6) < cS.dbgFreq * 60
+% Seconds
+secs = x(6);
+if secs < cS.dbgFreq * 60
    cS.dbg = 111;
 else
    cS.dbg = 1;
 end
-if x(6) < 60 / 2
+if secs < 60 / 2
    doShow = 1;
 else
    doShow = 0;
 end
-if x(6) < 60 / 20
+% Save intermediate results
+if (secs < 60 / 20)   &&  (cS.runParallel == 0)
    doSave = 1;
 else
    doSave = 0;
@@ -78,14 +81,15 @@ outS.devYpYp = dev_add(tgS.logYpMean_ycM(:,iCohort), aggrS.logYpMean_yV, 1, 1, c
 
 
 %% College costs
+% First 2 years in college
 
 % Change to mean by pq, yp
 
 % College costs
 % Mean and std dev among college students
-outS.devPMean = dev_add(tgS.pMean_cV(iCohort), aggrS.pMean, 1, dollarFactor, cS.tgPMean, 'pMean', ...
+outS.devPMean = dev_add(paramS.tgS.pMean, aggrS.pMeanYear2, 1, dollarFactor, cS.tgPMean, 'pMean', ...
    'Mean of college cost', 'dollar');
-outS.devPStd  = dev_add(tgS.pStd_cV(iCohort),  aggrS.pStd,  1, dollarFactor, cS.tgPStd,  'pStd', ...
+outS.devPStd  = dev_add(paramS.tgS.pStd,  aggrS.pStd,  1, dollarFactor, cS.tgPStd,  'pStd', ...
    'Std of college cost', 'dollar');
 
 outS.devPMeanIq = dev_add(tgS.pMean_qcM(:,iCohort), aggrS.pMean_qV, 1, dollarFactor, ...
@@ -96,8 +100,8 @@ outS.devPMeanIq = dev_add(tgS.pMean_qcM(:,iCohort), aggrS.pMean_qV, 1, dollarFac
 %% Hours in College
 
 % Average hours and earnings (first 2 years in college)
-outS.devHours = dev_add(tgS.hoursS.hoursMean_cV(iCohort),  aggrS.hoursCollMean, 1, pctFactor, cS.tgHours, 'hours', ...
-   'Mean hours in college', '%.2f');
+outS.devHours = dev_add(tgS.hoursS.hoursMean_cV(iCohort),  aggrS.hoursCollMeanYear2, ...
+   1, pctFactor, cS.tgHours, 'hours', 'Mean hours in college', '%.2f');
 
 outS.devHoursIq = dev_add(tgS.hoursS.hoursMean_qcM(:,iCohort),  aggrS.hoursCollMean_qV, 1, pctFactor, cS.tgHoursIq, 'hours/iq', ...
    'Mean hours in college by IQ', '%.2f');
@@ -106,8 +110,9 @@ outS.devHoursYp = dev_add(tgS.hoursS.hoursMean_ycM(:,iCohort),  aggrS.hoursCollM
 
 
 %% Earnings in college
+% First 2 years in college
 
-outS.devEarn  = dev_add(tgS.collEarnS.mean_cV(iCohort),  aggrS.earnCollMean, 1, dollarFactor, cS.tgEarn, 'earn', ...
+outS.devEarn  = dev_add(tgS.collEarnS.mean_cV(iCohort),  aggrS.earnCollMeanYear2, 1, dollarFactor, cS.tgEarn, 'earn', ...
    'Mean earnings in college', 'dollar');
 
 outS.devEarnIq  = dev_add(tgS.collEarnS.mean_qcM(:, iCohort),  aggrS.earnCollMean_qV, 1, dollarFactor, ...
@@ -118,31 +123,38 @@ outS.devEarnYp  = dev_add(tgS.collEarnS.mean_ycM(:, iCohort),  aggrS.earnCollMea
 
 %% Debt at end of college
 
+% To use debt stats constructed under the assumption that transfers are paid out each period, 
+% just replace this with debtAltS
+% debtS = aggrS.debtS;
+
 % Mean college debt across all students
-outS.devDebtMean = dev_add(tgS.debtMean_cV(iCohort),  aggrS.debtMean, 1, 0.5 * pctFactor, cS.tgDebtMean, ...
-   'debtMean',  'Mean college debt', '%.2f');
+%  at end of college
+outS.devDebtMean = dev_add(tgS.debtS.debtMean_cV(iCohort),  aggrS.debtAllS.mean, ...
+   1, 0.5 * pctFactor, cS.tgDebtMean, 'debtMean',  'Mean college debt', '%.2f');
 
 
-outS.devDebtFracS = dev_add(tgS.debtFrac_scM(:,iCohort),  aggrS.debtFrac_sV, 1, 0.5 * pctFactor, cS.tgDebtFracS, ...
-   'debtFracS',  'Fraction with college debt', '%.2f');
+% Fraction with debt (end of college)
+outS.devDebtFracS = dev_add(tgS.debtS.debtFracEndOfCollege_scM(:,iCohort),  aggrS.debtEndOfCollegeS.frac_sV, ...
+   1, 0.5 * pctFactor, cS.tgDebtFracS,  'debtFracS',  'Fraction with college debt', '%.2f');
 % Mean debt, not conditional on having debt
-outS.devDebtMeanS = dev_add(tgS.debtMean_scM(:,iCohort),  aggrS.debtMean_sV, 1, 0.5 * dollarFactor, ...
-   cS.tgDebtMeanS, 'debtMeanS', 'Mean college debt (CD, CG)', 'dollar');
+outS.devDebtMeanS = dev_add(tgS.debtS.debtMeanEndOfCollege_scM(:,iCohort),  aggrS.debtEndOfCollegeS.mean_sV, ...
+   1, 0.5 * dollarFactor,  cS.tgDebtMeanS, 'debtMeanS', 'Mean college debt (CD, CG)', 'dollar');
 
-outS.devDebtFracIq = dev_add(tgS.debtFrac_qcM(:, iCohort),  aggrS.debtFrac_qV, 1, 0.5 * pctFactor, ...
-   cS.tgDebtFracIq, 'debtFrac/iq', 'Fraction with college debt by IQ', '%.2f');
-outS.devDebtFracYp = dev_add(tgS.debtFrac_ycM(:, iCohort),  aggrS.debtFrac_yV, 1, 0.5 * pctFactor, ...
-   cS.tgDebtFracYp, 'debtFrac/yp', 'Fraction with college debt by y', '%.2f');
+outS.devDebtFracIq = dev_add(tgS.debtS.debtFracEndOfCollege_qcM(:, iCohort),  aggrS.debtEndOfCollegeS.frac_qV, ...
+   1, 0.5 * pctFactor,  cS.tgDebtFracIq, 'debtFrac/iq', 'Fraction with college debt by IQ', '%.2f');
+outS.devDebtFracYp = dev_add(tgS.debtS.debtFracEndOfCollege_ycM(:, iCohort),  aggrS.debtEndOfCollegeS.frac_yV, ...
+   1, 0.5 * pctFactor,  cS.tgDebtFracYp, 'debtFrac/yp', 'Fraction with college debt by y', '%.2f');
 
-outS.devDebtMeanIq = dev_add(tgS.debtMean_qcM(:, iCohort),  aggrS.debtMean_qV, 1, 0.5 * dollarFactor, ...
-   cS.tgDebtMeanIq, 'debtMean/iq', 'Mean college debt by IQ', 'dollar');
-outS.devDebtMeanYp = dev_add(tgS.debtMean_ycM(:, iCohort),  aggrS.debtMean_yV, 1, 0.5 * dollarFactor, ...
-   cS.tgDebtMeanYp, 'debtMean/yp', 'Mean college debt by y', 'dollar');
+outS.devDebtMeanIq = dev_add(tgS.debtS.debtMeanEndOfCollege_qcM(:, iCohort),  aggrS.debtEndOfCollegeS.mean_qV, ...
+   1, 0.5 * dollarFactor,  cS.tgDebtMeanIq, 'debtMean/iq', 'Mean college debt by IQ', 'dollar');
+outS.devDebtMeanYp = dev_add(tgS.debtS.debtMeanEndOfCollege_ycM(:, iCohort),  aggrS.debtEndOfCollegeS.mean_yV, ...
+   1, 0.5 * dollarFactor,  cS.tgDebtMeanYp, 'debtMean/yp', 'Mean college debt by y', 'dollar');
 
 
 %% Transfers
+% First 2 years in college
 
-outS.devTransfer = dev_add(tgS.transferMean_cV(iCohort), aggrS.transferMean, 1, dollarFactor, ...
+outS.devTransfer = dev_add(tgS.transferMean_cV(iCohort), aggrS.transferMeanYear2, 1, dollarFactor, ...
    cS.tgTransfer, 'z mean', 'Mean transfer', 'dollar');
 
 % Mean transfer (per year)
@@ -150,6 +162,16 @@ outS.devTransferYp = dev_add(tgS.transferMean_ycM(:, iCohort), aggrS.transfer_yV
    cS.tgTransferYp, 'z/yp', 'Mean transfer by $y$ quartile', 'dollar');
 outS.devTransferIq = dev_add(tgS.transferMean_qcM(:, iCohort), aggrS.transfer_qV, 1, dollarFactor, ...
    cS.tgTransferIq, 'z/iq', 'Mean transfer by IQ quartile', 'dollar');
+
+
+
+%% Financing shares
+% For cohorts when earnings and transfers are not available
+
+outS.devFinEarnShare = dev_add(tgS.finShareS.workShare_cV(iCohort),  aggrS.finS.fracEarnings, ...
+   1, pctFactor, cS.tgFinShares, 'earnShare', 'Share of college costs from earnings', '%.2f');
+outS.devFinLoanShare = dev_add(tgS.finShareS.loanShare_cV(iCohort),  aggrS.finS.fracDebt, ...
+   1, pctFactor, cS.tgFinShares, 'loanShare', 'Share of college costs from loans', '%.2f');
 
 
 % *** Overall deviation
@@ -225,9 +247,8 @@ IN
          scalarDev = cS.missVal;
          return;
       end
-      if any(isnan(tgV))
-         error_bc1('Targets are NaN', cS);
-      end
+      validateattributes(tgV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
+      validateattributes(modelV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
       
       % For display of dollar values
       if strcmp(fmtStr, 'dollar')

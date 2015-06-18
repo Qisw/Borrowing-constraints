@@ -19,12 +19,12 @@ nVar = length(muV);
 rng(3);
 randM = randn([n, nVar]);
 
-% Try: scale random vars to get realized distribution of endowments closer to target
-rMeanV = mean(randM);
-rStdV  = std(randM);
-for iVar = 1 : nVar
-   randM(:, iVar) = (randM(:, iVar) - rMeanV(iVar)) / rStdV(iVar);
-end
+% % Try: scale random vars to get realized distribution of endowments closer to target
+% rMeanV = mean(randM);
+% rStdV  = std(randM);
+% for iVar = 1 : nVar
+%    randM(:, iVar) = (randM(:, iVar) - rMeanV(iVar)) / rStdV(iVar);
+% end
 
 
 %% Input check
@@ -43,6 +43,14 @@ for iVar = 1 : nVar
    wtV = wtV ./ sqrt(sum(wtV .^ 2)) .* stdV(iVar);
    gridM(:,iVar) = muV(iVar) + randM * wtV(:);
 end
+
+% Try: scale outputs so that means and stds are exactly right
+gMeanV = mean(gridM);
+gStdV = std(gridM);
+for iVar = 1 : nVar
+   gridM(:, iVar) = (gridM(:, iVar) - gMeanV(iVar) + muV(iVar)) / gStdV(iVar) * stdV(iVar);
+end
+
 
 if cS.dbg > 10
    validateattributes(gridM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n, nVar]})

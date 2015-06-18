@@ -54,10 +54,10 @@ j = round(cS.nTypes / 2);
    paramS.prefWt, paramS.prefSigma,   paramS.prefWtLeisure, paramS.prefRho);
 
 % Inverse of u(c)
-c2V = hh_bc1.hh_uprimec_inv_bc1(muCV, paramS, cS);
-if max(abs(c2V - cV)) > 1e-6
-   error('Invalid inverse marginal utility');
-end
+% c2V = hh_bc1.hh_uprimec_inv_bc1(muCV, paramS, cS);
+% if max(abs(c2V - cV)) > 1e-6
+%    error('Invalid inverse marginal utility');
+% end
 
 % MU(l)
 dLeisure = 1e-5;

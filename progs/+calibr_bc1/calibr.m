@@ -61,7 +61,21 @@ end
 %% Optimization
 
 if cS.runParallel == 1
-   pPool = parpool(cS.nNodes);
+   if cS.runLocal == 1
+      % new syntax
+      pPool = gcp('nocreate');
+      if isempty(pPool)
+         pPool = parpool(cS.parProfileStr, cS.nNodes);
+      end
+   else
+      % old syntax
+      if isempty(cS.parProfileStr)
+         % Default profile
+         matlabpool(cS.nNodes);
+      else
+         matlabpool(cS.parProfileStr, cS.nNodes);
+      end
+   end
 end
 
 if strcmpi(solverStr, 'fminsearch');
@@ -70,7 +84,7 @@ if strcmpi(solverStr, 'fminsearch');
    optS.TolX = 1e-2;
    [solnV, fVal, exitFlag] = fminsearch(@cal_dev_fminsearch, guessV, optS);
 
-elseif strcmpi(solverStr, 'none')
+elseif strcmpi(solverStr, 'none')  ||  strcmpi(solverStr, 'test')
    % No solver. Just generate results.
    solnV = guessV;
 end
@@ -85,7 +99,15 @@ fprintf('Calibration done. Terminal deviation: %.3f \n', dev);
 
 
 % If a parallel pool is open: close it
-delete(gcp('nocreate'));
+if cS.runLocal == 1
+   % new syntax
+   delete(gcp('nocreate'));
+else
+   % old syntax
+   if matlabpool('size') > 0
+      matlabpool close;
+   end
+end
 
 
 %% Save
@@ -96,10 +118,12 @@ var_save_bc1(hhS, cS.vHhSolution, cS);
 var_save_bc1(aggrS, cS.vAggregates, cS);
 
 % Generate results
-results_all_bc1(cS.setNo, cS.expNo);
+if ~strcmpi(solverStr, 'test')
+   results_all_bc1(cS.setNo, cS.expNo);
+end
 
 % Run all experiments
-if ~strcmpi(solverStr, 'none')
+if ~strcmpi(solverStr, 'none')  &&  ~strcmpi(solverStr, 'test')
    exper_all_bc1(cS.setNo, cS.expNo);
 end
 

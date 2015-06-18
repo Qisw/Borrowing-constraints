@@ -9,7 +9,10 @@ Checked: 2015-Mar-19
 nIq = length(cS.iqUbV);
 iCohort = cS.iCohort;
 
+% Calibration targets
 tgS = var_load_bc1(cS.vCalTargets, cS);
+% Copy targets that are applicable for this experiment into this struct
+paramTgS.setNo = cS.setNo;
 
 
 % Remove unused params
@@ -32,13 +35,16 @@ paramS = cS.pvector.struct_update(paramS, cS.doCalV);
 % Parameters taken from data, if not calibrated
 % only if always taken from data (never calibrated)
 % it does not make sense to have params that are sometimes taken from data
+% yp targets are currently time invariant (cal_targets), so this is fine for experiments as well
 pNameV    = {'logYpMean', 'logYpStd'};
 tgNameV   = {'logYpMean_cV', 'logYpStd_cV'};
 byCohortV = [1, 1];
 for i1 = 1 : length(pNameV)
    pName = pNameV{i1};
+   % Check whether calibrated
    ps = cS.pvector.retrieve(pName);
    if ps.doCal == cS.calNever
+      % Not calibrated. Assumes that this is valid for experiments
       tgV = tgS.(tgNameV{i1});
       if byCohortV(i1) == 1
          tgV = tgV(iCohort);
@@ -81,7 +87,7 @@ end
 
 %% College costs
 %{
-If not calibrated: copied from base expNo
+If not calibrated: copied from base expNo (done above)
 But can override by setting collCostExpNo
 %}
 
@@ -91,6 +97,11 @@ if ~isempty(cS.expS.collCostExpNo)
    paramS.pMean = param2S.pMean;
    paramS.pStd  = param2S.pStd;
 end
+
+% Targets for college costs
+%  Does not make sense to take that from another cohort
+paramTgS.pMean = tgS.pMean_cV(iCohort);
+paramTgS.pStd  = tgS.pStd_cV(iCohort);
 
 
 %% Endowments
@@ -125,6 +136,7 @@ if cS.dbg > 10
       error_bc1('Invalid mean m', cS);
    end
    if abs(std(paramS.m_jV) - 1) > 0.05
+      disp(std_paramS.m_jV);
       error_bc1('Invalid std m', cS);
    end
 end
@@ -159,7 +171,7 @@ end
 paramS.kMax = 2e5 ./ cS.unitAcct;
 
 
-%% Ability grid
+%% Ability and IQ
 
 % Equal weighted bins
 paramS.prob_aV = ones([cS.nAbil, 1]) ./ cS.nAbil;  
@@ -191,72 +203,12 @@ end
 
 
 
-%%  IQ
-
-% Pr(iq group | j)
-paramS.prIq_jM = calibr_bc1.pr_xgroup_by_type(paramS.m_jV, ...
-   paramS.prob_jV, paramS.sigmaIQ, cS.iqUbV, cS.dbg);
-
-if cS.dbg > 10
-   check_bc1.prob_matrix(paramS.prIq_jM,  [length(cS.iqUbV), cS.nTypes],  cS);
-end
-
-% % Pr(iq group | a,c)
-%    % wrong but not used +++
-% paramS.prob_iq_acM = nan([length(cS.iqUbV), cS.nAbil, cS.nCohorts]);   
-% for iCohort = 1 : cS.nCohorts
-%    paramS.prob_iq_acM(:,:,iCohort) = calibr_bc1.pr_xgroup_by_type(paramS.abilGrid_acM(:, iCohort), ...
-%        paramS.prob_acM(:, iCohort), paramS.sigmaIQ_cV(iCohort), cS.iqUbV, cS.dbg);
-% %    calibr_bc1.pr_iq_a(paramS.abilGrid_acM(:, iCohort), ...
-% %       paramS.prob_acM(:, iCohort), paramS.sigmaIQ_cV(iCohort), cS.iqUbV, cS.dbg);
-% end
-
-
-% *******  Derived
-
-% Pr(IQ and j) = Pr(iq | j) * Pr(j)
-paramS.pr_qjM = paramS.prIq_jM .* (ones([nIq,1]) * paramS.prob_jV(:)');
-if cS.dbg > 10
-   prSum_jV = sum(paramS.pr_qjM);
-   if any(abs(prSum_jV(:) - paramS.prob_jV) > 1e-4)
-      error_bc1('Invalid', cS);
-   end
-   prSum_qV = sum(paramS.pr_qjM, 2);
-   if any(abs(prSum_qV(:) - cS.pr_iqV) > 2e-3)  % why so inaccurate?
-      error_bc1('Invalid', cS);
-   end
-end
-
-% Pr(j | IQ) = Pr(j and IQ) / Pr(iq)
-pr_qV = sum(paramS.pr_qjM, 2);
-paramS.prJ_iqM = paramS.pr_qjM' ./ sum(paramS.pr_qjM(:)) ./ (ones([cS.nTypes,1]) * pr_qV(:)');
-if cS.dbg > 10
-   prSumV = sum(paramS.prJ_iqM);
-   if any(abs(prSumV - 1) > 1e-2)      % Why so inaccurate? +++
-      disp(prSumV);
-      error_bc1('Probs do not sum to 1', cS);
-   end
-end
-% % Pr(j | IQ)
-% %  surprisingly inaccurate +++
-% paramS.prJ_iqM = nan([cS.nTypes, nIq]);
-% for iIq = 1 : nIq
-%    for j = 1 : cS.nTypes
-%       paramS.prJ_iqM(j, iIq) = paramS.prIq_jM(iIq,j) * paramS.prob_jV(j) ./ cS.pr_iqV(iIq);
-%    end
-%    prSum = sum(paramS.prJ_iqM(:, iIq));
-%    if abs(prSum - 1) > 1e-3
-%       error_bc1('Invalid', cS);
-%       % why not more accurate?
-%    end
-%    paramS.prJ_iqM(:, iIq) = paramS.prJ_iqM(:, iIq) ./ prSum;
-% end
+%  IQ params
+[paramS.prIq_jM, paramS.pr_qjM, paramS.prJ_iqM] = calibr_bc1.iq_param(paramS, cS);
 
 
 
 %% Graduation probs
-
-% *****  Derived
 
 paramS.prGrad_aV = pr_grad_a_bc1(1 : cS.nAbil, iCohort, paramS, cS);
 
@@ -278,20 +230,21 @@ paramS.prA_jgradM = hh_bc1.prob_a_jgrad(paramS.prGrad_aV, paramS.prob_jV, paramS
 paramS.phi_sV = [paramS.phiHSG; paramS.phiHSG; paramS.phiCG];
 paramS.eHat_sV = paramS.eHatCD + [paramS.dEHatHSG; 0; paramS.dEHatCG];
 
+% Do we copy pvEarn_asM from another experiment?
 if isempty(cS.expS.earnExpNo)
    % Targets
-   paramS.tgS.pvEarn_sV = tgS.pvEarn_scM(:, cS.iCohort);
+   paramTgS.pvEarn_sV = tgS.pvEarn_scM(:, cS.iCohort);
 
    % Present value by [ability, school]
    %  discounted to work start age
    if cS.abilAffectsEarnings == 0
       % Ability does not affect earnings
-      paramS.pvEarn_asM = ones([cS.nAbil, 1]) * paramS.tgS.pvEarn_sV';
+      paramS.pvEarn_asM = ones([cS.nAbil, 1]) * paramTgS.pvEarn_sV';
    else
       dAbilV = (paramS.abilGrid_aV - cS.aBar);
       paramS.pvEarn_asM = nan([cS.nAbil, cS.nSchool]);
       for iSchool = 1 : cS.nSchool
-         paramS.pvEarn_asM(:,iSchool) = paramS.tgS.pvEarn_sV(cS.iHSG) * ...
+         paramS.pvEarn_asM(:,iSchool) = paramTgS.pvEarn_sV(cS.iHSG) * ...
             exp(paramS.eHat_sV(iSchool) + dAbilV .* paramS.phi_sV(iSchool));
       end
    end
@@ -300,7 +253,7 @@ else
    % Copy from another experiment
    c2S = const_bc1(cS.setNo, cS.expS.earnExpNo);
    param2S = var_load_bc1(cS.vParams, c2S);
-   paramS.tgS.pvEarn_sV = param2S.tgS.pvEarn_sV;
+   paramTgS.pvEarn_sV = param2S.tgS.pvEarn_sV;
    paramS.pvEarn_asM = param2S.pvEarn_asM;
 end
    
@@ -337,5 +290,11 @@ if cS.dbg > 10
    validateattributes(paramS.kMin_aV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       '<=', 0, 'size', [cS.ageWorkStart_sV(cS.iCG), 1]});
 end
+
+
+%% Clean up
+
+paramS.tgS = paramTgS;
+
 
 end

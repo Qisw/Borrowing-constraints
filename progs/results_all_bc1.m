@@ -37,6 +37,10 @@ results_bc1.prob_show(saveFigures, setNo, expNo);
 
 calibr_bc1.check_solution(setNo, expNo);
 
+% Show how leisure varies across types for given consumption 
+%  b/c of free consumption / leisure
+results_bc1.static_show(saveFigures, setNo, expNo);
+
 % Which params are close to bounds?
 cS.pvector.show_close_to_bounds(paramS, cS.doCalV);
 

@@ -14,7 +14,7 @@ end
 expStr = sprintf('%i', expNo);
 
 if length(setNoV) == 1
-   logStr = sprintf('set%i', setNoV(1));
+   logStr = sprintf('set%i_%i', setNoV(1), expNo);
    setStr = sprintf('%i', setNoV(1));
 else
    % Running multiple
@@ -30,8 +30,14 @@ else
    end
 end
 
+
+% For parallel
+parallelStr = '';
+if cS.kureS.parallel == 1
+   parallelStr = sprintf(' -n %i -R "span[hosts=1]" ',  cS.kureS.nNodes);
+end
    
-cmdStr = ['bsub matlab -nodesktop -nodisplay -nosplash -singleCompThread -r "run_batch_bc1(''',  ...
+cmdStr = ['bsub ', parallelStr, ' matlab -nodesktop -nodisplay -nosplash -singleCompThread -r "run_batch_bc1(''',  ...
    solverStr,  ''',0,',  setStr, ',', expStr,  ')" -logfile ',  logStr,  '.out'];
 
 if cS.runLocal

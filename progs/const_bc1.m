@@ -27,7 +27,7 @@ cS.expNo = expNo;
 setStr = sprintf('set%03i', setNo);
 expStr = sprintf('exp%03i', expNo);
 
-cS.dbg = 1;    % +++++
+cS.dbg = 111; 
 cS.missVal = -9191;
 cS.pauseOnError = 1;
 % How often to run full debug mode during calibration?
@@ -35,6 +35,14 @@ cS.dbgFreq = 0.5;
 
 
 %% Miscellaneous
+
+% How many nodes to use on kure
+cS.kureS.nNodes = 4;
+% Run parallel on kure?
+cS.kureS.parallel = 1;
+% Profile to use (local: no need to start multiple matlab instances)
+cS.kureS.profileStr = 'local';
+
 
 % 1 = $unitAcct
 cS.unitAcct = 1e3;
@@ -46,7 +54,7 @@ cS.calExp = 2;
 cS.doCalValueV = [cS.calNever, cS.calBase, cS.calExp];
 
 % Collection of calibrated parameters
-cS.pvector = pvector(30, cS.doCalValueV);
+pvec = pvector(30, cS.doCalValueV);
 
 cS.male = 1;
 cS.female = 2;
@@ -75,7 +83,7 @@ cS.R = 1.04;
 
 % Cohorts modeled
 cS.bYearV = [1915, 1940, 1961, 1979]';
-% Counterfactual expNo that go with each cohort
+% For each cohort: calibrate time varying parameters with these experiments
 cS.bYearExpNoV = [203, 202, NaN, NaN];
 % Cross sectional calibration for this cohort
 cS.iRefCohort = find(cS.bYearV == 1961);
@@ -93,37 +101,37 @@ cS.physAgeLast = 75;
 cS.ucCurvatureSame = 1;
 
 % Discount factor
-cS.pvector = cS.pvector.change('prefBeta', '\beta', 'Discount factor', 0.98, 0.8, 1.1, cS.calNever);
+pvec = pvec.change('prefBeta', '\beta', 'Discount factor', 0.98, 0.8, 1.1, cS.calNever);
 % Curvature of u(c) at work
-cS.pvector = cS.pvector.change('workSigma', '\varphi_{w}', 'Curvature of utility', 2, 1, 5, cS.calNever);
+pvec = pvec.change('workSigma', '\varphi_{w}', 'Curvature of utility', 2, 1, 5, cS.calNever);
 % Weight on u(c) at work. To prevent overconsumption
-cS.pvector = cS.pvector.change('prefWtWork', '\omega_{w}', 'Weight on u(c) at work', 3, 1, 10, cS.calBase);
+pvec = pvec.change('prefWtWork', '\omega_{w}', 'Weight on u(c) at work', 3, 1, 10, cS.calBase);
 % Same for college. Normalize to 1
-cS.pvector = cS.pvector.change('prefWt', '\omega_{c}', 'Weight on u(c)', 1, 0.01, 1.1, cS.calNever);
+pvec = pvec.change('prefWt', '\omega_{c}', 'Weight on u(c)', 1, 0.01, 1.1, cS.calNever);
 % Curvature of u(c) in college
-cS.pvector = cS.pvector.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 2, 1, 5, cS.calNever);
+pvec = pvec.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 2, 1, 5, cS.calNever);
 % Curvature of u(leisure) in college
-cS.pvector = cS.pvector.change('prefRho', '\varphi_{l}', 'Curvature of utility', 2, 1, 5, cS.calNever);
+pvec = pvec.change('prefRho', '\varphi_{l}', 'Curvature of utility', 2, 1, 5, cS.calNever);
 % Weight on leisure
-cS.pvector = cS.pvector.change('prefWtLeisure', '\omega_{l}', 'Weight on leisure', 0.5, 0.01, 5, cS.calBase);
+pvec = pvec.change('prefWtLeisure', '\omega_{l}', 'Weight on leisure', 0.5, 0.01, 5, cS.calBase);
 % Consumption floor
 cS.cFloor = 500 ./ cS.unitAcct;
 % Leisure floor
 cS.lFloor = 0.01;
 
 % Parental preferences
-cS.pvector = cS.pvector.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
+pvec = pvec.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
 % Time varying: to match transfer data
-cS.pvector = cS.pvector.change('puWeight', '\omega_{p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
+pvec = pvec.change('puWeight', '\omega_{p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
 
 % Pref shock at entry. For numerical reasons only. Fixed.
-cS.pvector = cS.pvector.change('prefScaleEntry', '\gamma', 'Preference shock at college entry', 0.1, 0.05, 1, cS.calNever);
+pvec = pvec.change('prefScaleEntry', '\gamma', 'Preference shock at college entry', 0.1, 0.05, 1, cS.calNever);
 % Pref for working as HSG. Includes leisure. No good scale. +++
 %  Calibrate in experiment to match schooling average
-cS.pvector = cS.pvector.change('prefHS', '\bar{\eta}', 'Preference for HS', 0, -5, 10, cS.calBase);
+pvec = pvec.change('prefHS', '\bar{\eta}', 'Preference for HS', 0, -5, 10, cS.calBase);
 % % Tax on HS earnings (a preference shock). 2 parameters. Intercept and slope. Both in (-1,1)
-% cS.pvector = cS.pvector.change('taxHSzero', '\tau{0}', 'Tax on college earnings',   0, -0.6, 0.6, cS.calNever);
-% cS.pvector = cS.pvector.change('taxHSslope',  '\tau{1}', 'Tax on college earnings', 0, -0.8, 0.8, cS.calNever);
+% pvec = pvec.change('taxHSzero', '\tau{0}', 'Tax on college earnings',   0, -0.6, 0.6, cS.calNever);
+% pvec = pvec.change('taxHSslope',  '\tau{1}', 'Tax on college earnings', 0, -0.8, 0.8, cS.calNever);
 
 
 %% Default: endowments
@@ -145,27 +153,27 @@ cS.nIQ = length(cS.iqUbV);
 cS.ypUbV = (0.25 : 0.25 : 1)';
 
 % Endowment correlations
-cS.pvector = cS.pvector.change('alphaPY', '\alpha_{p,y}', 'Correlation, $p,y$', 0.3, -5, 5, cS.calBase);
-cS.pvector = cS.pvector.change('alphaPM', '\alpha_{p,m}', 'Correlation, $p,m$', 0.4, -5, 5, cS.calBase);
-cS.pvector = cS.pvector.change('alphaYM', '\alpha_{y,m}', 'Correlation, $y,m$', 0.5, -5, 5, cS.calBase);
+pvec = pvec.change('alphaPY', '\alpha_{p,y}', 'Correlation, $p,y$', 0.3, -5, 5, cS.calBase);
+pvec = pvec.change('alphaPM', '\alpha_{p,m}', 'Correlation, $p,m$', 0.4, -5, 5, cS.calBase);
+pvec = pvec.change('alphaYM', '\alpha_{y,m}', 'Correlation, $y,m$', 0.5, -5, 5, cS.calBase);
 % Does not matter right now. Until we have a direct role for ability
 %  But want to be able to change signal precision (rather than grad prob function) for experiments
-cS.pvector = cS.pvector.change('alphaAM', '\alpha_{a,m}', 'Correlation, $a,m$', 2, 0.1, 5, cS.calBase);
+pvec = pvec.change('alphaAM', '\alpha_{a,m}', 'Correlation, $a,m$', 2, 0.1, 5, cS.calBase);
 
 % Marginal distributions
-cS.pvector = cS.pvector.change('pMean', '\mu_{p}', 'Mean of $p$', ...
+pvec = pvec.change('pMean', '\mu_{p}', 'Mean of $p$', ...
    (5e3 ./ cS.unitAcct), (-5e3 ./ cS.unitAcct), (1.5e4 ./ cS.unitAcct), cS.calBase);
-cS.pvector = cS.pvector.change('pStd', '\sigma_{p}', 'Std of $p$', 2e3 ./ cS.unitAcct, ...
+pvec = pvec.change('pStd', '\sigma_{p}', 'Std of $p$', 2e3 ./ cS.unitAcct, ...
    5e2 ./ cS.unitAcct, 1e4 ./ cS.unitAcct, cS.calBase);
 
 % This will be taken directly from data (so not calibrated)
 %  but is calibrated for other cohorts
-cS.pvector = cS.pvector.change('logYpMean', '\mu_{y}', 'Mean of $\log(y_{p})$', ...
+pvec = pvec.change('logYpMean', '\mu_{y}', 'Mean of $\log(y_{p})$', ...
    log(5e4 ./ cS.unitAcct), log(5e3 ./ cS.unitAcct), log(5e5 ./ cS.unitAcct), cS.calNever);
 % Assumed time invariant
-cS.pvector = cS.pvector.change('logYpStd', '\sigma_{y}', 'Std of $\log(y_{p})$', 0.3, 0.05, 0.6, cS.calNever);
+pvec = pvec.change('logYpStd', '\sigma_{y}', 'Std of $\log(y_{p})$', 0.3, 0.05, 0.6, cS.calNever);
 
-cS.pvector = cS.pvector.change('sigmaIQ', '\sigma_{IQ}', 'Std of IQ noise',  0.35, 0.2, 2, cS.calBase);
+pvec = pvec.change('sigmaIQ', '\sigma_{IQ}', 'Std of IQ noise',  0.35, 0.2, 2, cS.calBase);
 
 
 %% Default: schooling
@@ -182,24 +190,24 @@ cS.ageWorkStart_sV = [1; 3; cS.collLength+1];
 
 % Parameters governing probGrad(a)
    % One of these has to be time varying
-cS.pvector = cS.pvector.change('prGradMin', '\pi_{0}', 'Min $\pi_{a}$', 0.1, 0.01, 0.5, cS.calBase);
-cS.pvector = cS.pvector.change('prGradMax', '\pi_{1}', 'Max $\pi_{a}$', 0.8, 0.7, 0.99, cS.calBase);
-cS.pvector = cS.pvector.change('prGradMult', '\pi_{a}', 'In $\pi_{a}$', 0.7, 0.1, 5, cS.calBase);
+pvec = pvec.change('prGradMin', '\pi_{0}', 'Min $\pi_{a}$', 0.1, 0.01, 0.5, cS.calBase);
+pvec = pvec.change('prGradMax', '\pi_{1}', 'Max $\pi_{a}$', 0.8, 0.7, 0.99, cS.calBase);
+pvec = pvec.change('prGradMult', '\pi_{a}', 'In $\pi_{a}$', 0.7, 0.1, 5, cS.calBase);
 % Governs how steep the curve is. Don't allow too low. Algorithm will get stuck
-cS.pvector = cS.pvector.change('prGradExp', '\pi_{b}', 'In $\pi_{a}$',  1, 0.3, 5, cS.calBase);
-cS.pvector = cS.pvector.change('prGradPower', '\pi_{c}', 'In $\pi_{a}$', 1, 0.1, 2, cS.calNever);
-cS.pvector = cS.pvector.change('prGradABase', 'a_{0}', 'In $\pi_{a}$', 0, 0, 0.3, cS.calNever);
+pvec = pvec.change('prGradExp', '\pi_{b}', 'In $\pi_{a}$',  1, 0.3, 5, cS.calBase);
+pvec = pvec.change('prGradPower', '\pi_{c}', 'In $\pi_{a}$', 1, 0.1, 2, cS.calNever);
+pvec = pvec.change('prGradABase', 'a_{0}', 'In $\pi_{a}$', 0, 0, 0.3, cS.calNever);
 
 % nCohorts = length(cS.bYearV);
-cS.pvector = cS.pvector.change('wCollMean', 'Mean w_{coll}', 'Maximum earnings in college', ...
+pvec = pvec.change('wCollMean', 'Mean w_{coll}', 'Maximum earnings in college', ...
    2e4 ./ cS.unitAcct, 5e3 ./ cS.unitAcct, 1e5 ./ cS.unitAcct, cS.calBase);
 
 % Free college consumption and leisure
 % Specified as: how much does the highest m type get? The lowest m type gets 0
 % In between: linear in m
-cS.pvector = cS.pvector.change('cCollMax', 'Max cColl', 'Max free consumption', ...
+pvec = pvec.change('cCollMax', 'Max cColl', 'Max free consumption', ...
    0,  0,  1e4 ./ cS.unitAcct, cS.calNever);
-cS.pvector = cS.pvector.change('lCollMax', 'Max lColl', 'Max free leisure', ...
+pvec = pvec.change('lCollMax', 'Max lColl', 'Max free leisure', ...
    0, 0, 0.5, cS.calNever);
 
 
@@ -209,20 +217,20 @@ cS.abilAffectsEarnings = 1;
 
 % Earnings are determined by phi(s) * (a - aBar)
 %  phi(s) taken from gradpred
-cS.pvector = cS.pvector.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0.155,  0.02, 0.2, cS.calNever);
-cS.pvector = cS.pvector.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0.194, 0.02, 0.2, cS.calNever);
+pvec = pvec.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0.155,  0.02, 0.2, cS.calNever);
+pvec = pvec.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0.194, 0.02, 0.2, cS.calNever);
 
 % Scale factors of lifetime earnings (log)
-cS.pvector = cS.pvector.change('eHatCD', '\hat_{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
-cS.pvector = cS.pvector.change('dEHatHSG', 'd\hat_{e}_{HSG}', 'Skill price gap HSG', -0.1, -3, 0, cS.calBase);
-cS.pvector = cS.pvector.change('dEHatCG',  'd\hat_{e}_{CG}',  'Skill price gap CG',   0.1,  0, 3, cS.calBase);
-% cS.pvector = cS.pvector.change('eHatCG',  '\hat_{e_{CG}}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
+pvec = pvec.change('eHatCD', '\hat_{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
+pvec = pvec.change('dEHatHSG', 'd\hat_{e}_{HSG}', 'Skill price gap HSG', -0.1, -3, 0, cS.calBase);
+pvec = pvec.change('dEHatCG',  'd\hat_{e}_{CG}',  'Skill price gap CG',   0.1,  0, 3, cS.calBase);
+% pvec = pvec.change('eHatCG',  '\hat_{e_{CG}}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
 
 
 %% Default: other
 
 % Gross interest rate
-cS.pvector = cS.pvector.change('R', 'R', 'Interest rate', cS.R, 1, 1.1, cS.calNever);
+pvec = pvec.change('R', 'R', 'Interest rate', cS.R, 1, 1.1, cS.calNever);
 
 % Base year for prices
 cS.cpiBaseYear = 2010;
@@ -287,6 +295,9 @@ cS.tgTransfer = 1;
 cS.tgTransferYp = 1;
 cS.tgTransferIq = 1;
 
+% Financing shares (only constructed for cohorts where transfers etc not available)
+cS.tgFinShares = 1;
+
 
 %% Parameter sets
 
@@ -308,12 +319,18 @@ elseif setNo == 4
    % Is curvature of u(c) the same in college / at work?
    cS.ucCurvatureSame = 0;
     % Curvature of u(c) in college
-   cS.pvector = cS.pvector.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 4, 1, 5, cS.calNever);
+   pvec = pvec.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 4, 1, 5, cS.calNever);
    
 elseif setNo == 5
    cS.setStr = 'Free college consumption / leisure';
-   cS.pvector = cS.pvector.calibrate('cCollMax', cS.calBase);
-   cS.pvector = cS.pvector.calibrate('lCollMax', cS.calBase);
+   pvec = pvec.calibrate('cCollMax', cS.calBase);
+   pvec = pvec.calibrate('lCollMax', cS.calBase);
+   
+elseif setNo == 6
+   cS.setStr = 'Alt debt stats';
+   pvec = pvec.calibrate('cCollMax', cS.calBase);
+   pvec = pvec.calibrate('lCollMax', cS.calBase);
+   
 
 else
    error('Invalid');
@@ -321,133 +338,8 @@ end
 
 
 %% Experiment settings
-%{
-By default, non-calibrated params are copied from base expNo
-Can override this by setting switches such as expS.earnExpNo
-Then pvEarn_asM is taken from that experiment (which would usually be the experiment
-that calibrates everything for a particular cohort)
-%}
 
-% Which data based parameters are from baseline cohort?
-% Earnings profiles (sets targets if calibrated, otherwise takes paramS.pvEarn_asM from base cohort)
-expS.earnExpNo = [];
-expS.collCostExpNo = [];
-% expS.ypBaseCohort = 0;
-% Cohort from which borrowing limits are taken
-expS.bLimitCohort = [];
-% Does this experiment require recalibration?
-expS.doCalibrate = 1;
-
-% ******* Base experiments: calibrate everything to match all target
-if expNo < 100
-   if expNo == cS.expBase
-      cS.expStr = 'Baseline';
-      % Parameters with these values of doCal are calibrated
-      cS.doCalV = cS.calBase;
-      cS.iCohort = cS.iRefCohort;  
-      
-   else
-      error('Invalid');
-   end
-   
-   
-% *******  Counterfactuals
-% Nothing is calibrated. Just run exper_bc1
-% Params are copied from base
-elseif expNo < 200
-   expS.doCalibrate = 0;
-   % Irrelevant
-   cS.doCalV = cS.calExp;
-   % Taking parameters from this cohort
-   cS.iCohort = cS.iRefCohort;
-   
-   % Pick out cohort from which counterfactuals are taken
-   if expNo < 110
-      cfBYear = 1940;   % Project talent
-   elseif expNo < 120
-      cfBYear = 1915;   % Updegraff
-   else
-      error('Invalid');
-   end
-   
-   % Taking counterfactuals from this cohort (expNo)
-   [~,cfCohort] = min(abs(cS.bYearV - cfBYear)); 
-   cfExpNo = cS.bYearExpNoV(cfCohort); 
-
-   if any(expNo == [103, 113])
-      cS.expStr = 'Replicate base exper';    % for testing
-      % Irrelevant
-      cS.doCalV = cS.calExp;
-      expS.earnExpNo = cS.expBase;
-      expS.bLimitCohort = cS.iCohort;
-      expS.collCostExpNo = cS.expBase;
-
-   elseif any(expNo == [104, 114])
-      cS.expStr = 'Only change earn profiles'; 
-      expS.earnExpNo = cfExpNo;
-
-   elseif any(expNo == [105, 115])
-      cS.expStr = 'Only change bLimit';    % when not recalibrated
-      expS.bLimitCohort = cfCohort;
-
-   elseif any(expNo == [106, 116])
-      % Change college costs
-      cS.expStr = 'College costs';
-      % Need to calibrate everything for that cohort. Then impose pMean from there
-      expS.collCostExpNo = cfExpNo;
-      
-   else
-      error('Invalid');
-   end
-   
-   
-% ********  Calibrated experiments
-% A subset of params is recalibrated. The rest is copied from baseline
-elseif expNo < 300
-   % Now fewer parameters are calibrated
-   cS.doCalV = cS.calExp;
-   % Calibrate pMean, which is really a truncated data moment
-   %  Should also do something about pStd +++
-   cS.pvector = cS.pvector.calibrate('pMean', cS.calExp);
-
-   if any(expNo == cS.bYearExpNoV)
-      % ******  Calibrate all time varying params
-      cS.iCohort = find(expNo == cS.bYearExpNoV);
-      cS.expStr = sprintf('Cohort %i', cS.bYearV(cS.iCohort));
-      
-      % Signal noise
-      cS.pvector = cS.pvector.calibrate('alphaAM', cS.calExp);
-      % Match transfers
-      cS.pvector = cS.pvector.calibrate('puWeight', cS.calExp);
-      % Match overall college entry
-      cS.pvector = cS.pvector.calibrate('prefHS', cS.calExp);
-      cS.pvector = cS.pvector.calibrate('wCollMean', cS.calExp);
-      
-
-   elseif expNo == 211
-      % This changes earnings, borrowing limits, pMean
-      error('Not updated'); % +++++
-      cS.expStr = 'Only change observables';   
-      cS.iCohort = cS.iRefCohort - 1;  % make one for each cohort +++
-%       % Take all calibrated params from base
-%       for i1 = 1 : cS.pvector.np
-%          ps = cS.pvector.valueV{i1};
-%          if ps.doCal == cS.calExp
-%             % Do not calibrate, but take from base exper
-%             cS.pvector = cS.pvector.calibrate(ps.name, cS.calBase);
-%          end
-%       end
-      %cS.pvector = cS.pvector.calibrate('logYpMean', cS.calExp);
-   
-   else
-      error('Invalid');
-   end
-   
-else
-   error('Invalid');
-end
-
-cS.expS = expS;
+[expS, pvec, cS.doCalV, cS.iCohort] = calibr_bc1.exp_settings(pvec, cS);
 
 
 %% Derived constants
@@ -456,10 +348,13 @@ if exist('/Users/lutz', 'dir')
    cS.runLocal = 1;
    cS.runParallel = 1; 
    cS.nNodes = 4;
+   cS.parProfileStr = 'local';
 else
    cS.runLocal = 0;
-   cS.runParallel = 1;
-   cS.nNodes = 4;
+   cS.runParallel = cS.kureS.parallel;
+   cS.nNodes = cS.kureS.nNodes;
+   % Default (empty) for killdevil. Local for kure
+   cS.parProfileStr = cS.kureS.profileStr;
 end
 
 
@@ -478,17 +373,17 @@ cS.ageMax = cS.physAgeLast - cS.age1 + 1;
 cS.workYears_sV = cS.ageMax - cS.ageWorkStart_sV + 1;
 
 if cS.abilAffectsEarnings == 0   
-   cS.pvector = cS.pvector.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0,  0.02, 0.2, cS.calNever);
-   cS.pvector = cS.pvector.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0, 0.02, 0.2, cS.calNever);
-   cS.pvector = cS.pvector.change('eHatCD', [], [], 0, [], [], cS.calNever);
-   cS.pvector = cS.pvector.change('dEHatHSG', [], [], 0, [], [], cS.calNever);
-   cS.pvector = cS.pvector.change('dEHatCG', [], [], 0, [], [], cS.calNever);
+   pvec = pvec.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0,  0.02, 0.2, cS.calNever);
+   pvec = pvec.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0, 0.02, 0.2, cS.calNever);
+   pvec = pvec.change('eHatCD', [], [], 0, [], [], cS.calNever);
+   pvec = pvec.change('dEHatHSG', [], [], 0, [], [], cS.calNever);
+   pvec = pvec.change('dEHatCG', [], [], 0, [], [], cS.calNever);
 end
 
 if cS.ucCurvatureSame == 1
    % Do not calibrate curvature of work utility
    % It is the same as college utility
-   cS.pvector = cS.pvector.calibrate('workSigma', cS.calNever);
+   pvec = pvec.calibrate('workSigma', cS.calNever);
 end
 
 
@@ -558,6 +453,12 @@ cS.vCohortSchooling = 405;
 
 % Avg student debt by year
 cS.vStudentDebtData = 406;
+
+
+%% Clean up
+
+cS.expS = expS;
+cS.pvector = pvec;
 
 
 end

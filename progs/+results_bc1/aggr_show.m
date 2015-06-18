@@ -9,7 +9,10 @@ aggrS = var_load_bc1(cS.vAggregates, cS);
 outFn = fullfile(cS.outDir, 'aggr_stats.txt');
 fp = fopen(outFn, 'w');
 
+fprintf(fp, '\nAggregate statistics\n');
+
 debt_stats(fp, aggrS, paramS, cS);
+financial_stats(fp, aggrS, cS);
 
 fclose(fp);
 type(outFn);
@@ -17,41 +20,48 @@ type(outFn);
 end
 
 
+%% Financial stats
+function financial_stats(fp, aggrS, cS)
+   fprintf(fp, '\nFinancial stats\n');
+   fprintf(fp, '  Fraction of spending paid by earnings: %.2f   debt: %.2f   transfers: %.2f \n', ...
+      aggrS.finS.fracEarnings, aggrS.finS.fracDebt, aggrS.finS.fracTransfers);
+end
+
 
 %% Debt stats computed both ways
 function debt_stats(fp, aggrS, paramS, cS)
-   fprintf(fp, 'Debt stats computed both ways \n');
+   fprintf(fp, '\nDebt stats computed both ways \n');
 
    fprintf(fp, '  Fraction in debt by IQ: \n');
    fprintf(fp, '    Transfer paid out t=1:     ');
-   fprintf(fp, '%6.2f', aggrS.debtFrac_qV);
+   fprintf(fp, '%6.2f', aggrS.debtEndOfCollegeS.frac_qV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.2f', aggrS.debtFracTrue_qV);
+   fprintf(fp, '%6.2f', aggrS.debtAltS.debtFrac_qV);
    fprintf(fp, '\n');
    
    fprintf(fp, '  Mean in debt by IQ: \n');
    fprintf(fp, '    Transfer paid out t=1:     ');
-   fprintf(fp, '%6.1f', aggrS.debtMean_qV);
+   fprintf(fp, '%6.1f', aggrS.debtEndOfCollegeS.mean_qV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.1f', aggrS.debtMeanTrue_qV);
+   fprintf(fp, '%6.1f', aggrS.debtAltS.debtMean_qV);
    fprintf(fp, '\n');
 
    fprintf(fp, '  Fraction in debt by yp: \n');
    fprintf(fp, '    Transfer paid out t=1:     ');
-   fprintf(fp, '%6.2f', aggrS.debtFrac_yV);
+   fprintf(fp, '%6.2f', aggrS.debtEndOfCollegeS.frac_yV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.2f', aggrS.debtFracTrue_yV);
+   fprintf(fp, '%6.2f', aggrS.debtAltS.debtFrac_yV);
    fprintf(fp, '\n');
    
    fprintf(fp, '  Mean in debt by yp: \n');
    fprintf(fp, '    Transfer paid out t=1:     ');
-   fprintf(fp, '%6.1f', aggrS.debtMean_yV);
+   fprintf(fp, '%6.1f', aggrS.debtEndOfCollegeS.mean_yV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.1f', aggrS.debtMeanTrue_yV);
+   fprintf(fp, '%6.1f', aggrS.debtAltS.debtMean_yV);
    fprintf(fp, '\n');
 end
 
