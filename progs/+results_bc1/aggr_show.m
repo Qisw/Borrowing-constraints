@@ -20,6 +20,7 @@ type(outFn);
 end
 
 
+
 %% Financial stats
 function financial_stats(fp, aggrS, cS)
    fprintf(fp, '\nFinancial stats\n');

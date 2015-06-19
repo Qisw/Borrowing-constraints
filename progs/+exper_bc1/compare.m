@@ -44,16 +44,18 @@ for ix = 1 : nx
    ic = 1 + ix;
    ir = 1;
    
+   aggrS = aggrV{ix};
+   
    row_add('Cohort',  cS.bYearV(constV{ix}.iCohort),  '%i');
    
    ir = ir + 1;
    tbM{ir,1} = 'Drivers';
    ir = ir + 1;
    tbM{ir,1} = 'PV of lifetime earnings by s';
-   tbM{ir, ic} = string_lh.string_from_vector(log(aggrV{ix}.pvEarn_sV), '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(log(aggrS.pvEarn_sV), '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'Premium relative to HSG';
-   tbM{ir,ic} = string_lh.string_from_vector(diff(log(aggrV{ix}.pvEarn_sV)), '%.2f');
+   tbM{ir,ic} = string_lh.string_from_vector(diff(log(aggrS.pvEarn_sV)), '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'Mean college cost';
    [~, tbM{ir,ic}] = string_lh.dollar_format(paramV{ix}.pMean * cS.unitAcct, ',', 0);
@@ -66,31 +68,38 @@ for ix = 1 : nx
    tbM{ir,1} = 'Schooling';
    ir = ir + 1;
    tbM{ir,1} = 'Fraction dropouts / graduates';
-   tbM{ir, ic} = string_lh.string_from_vector(aggrV{ix}.frac_sV([cS.iCD, cS.iCG]), '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.frac_sV([cS.iCD, cS.iCG]), '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'By IQ: frac enter';
-   tbM{ir, ic} = string_lh.string_from_vector(aggrV{ix}.fracEnter_qV, '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.fracEnter_qV, '%.2f');
    ir = ir + 1;
    tbM{ir,1} = '- frac grad';
-   tbM{ir, ic} = string_lh.string_from_vector(aggrV{ix}.fracGrad_qV, '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.fracGrad_qV, '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'By yp: frac enter';
-   tbM{ir, ic} = string_lh.string_from_vector(aggrV{ix}.fracEnter_yV, '%.2f');
-   row_add('- frac grad',  aggrV{ix}.fracGrad_yV,  '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.ypS.fracEnter_yV, '%.2f');
+   row_add('- frac grad',  aggrS.ypS.fracGrad_yV,  '%.2f');
    
    tbS.rowUnderlineV(ir) = 1;
    ir = ir + 1;
    tbM{ir,1} = 'College Finances';
    
-   row_add('Earnings by IQ',  aggrV{ix}.earnCollMean_qV,  '%.2f');
-   row_add('- by yp',  aggrV{ix}.earnCollMean_yV,  '%.2f');
-   row_add('Transfers by IQ',  aggrV{ix}.transfer_qV,  '%.2f');
-   row_add('- by yp',  aggrV{ix}.transfer_yV,  '%.2f');
+   row_add('Earnings by IQ',  aggrS.iqS.earnCollMean_qV,  '%.2f');
+   row_add('- by yp',  aggrS.ypS.earnCollMean_yV,  '%.2f');
+   row_add('Transfers by IQ',  aggrS.transfer_qV,  '%.2f');
+   row_add('- by yp',  aggrS.ypS.transfer_yV,  '%.2f');
    
-   row_add('By IQ: fraction in debt at eoc',  aggrV{ix}.debtEndOfCollegeS.frac_qV,  '%.2f');
-   row_add('- mean debt at eoc',  aggrV{ix}.debtEndOfCollegeS.mean_qV,  'dollar');
-   row_add('By yp: fraction in debt at eoc',  aggrV{ix}.debtEndOfCollegeS.frac_yV,  '%.2f');
-   row_add('- mean debt at eoc',  aggrV{ix}.debtEndOfCollegeS.mean_yV,  'dollar');
+   % This is currently for 2nd year in college
+   total_qV = aggrS.iqS.consCollMean_qV + aggrS.iqS.pMean_qV;
+   row_add('Fraction paid out of earnings by IQ',  aggrS.iqS.earnCollMean_qV ./ total_qV, '%.2f');
+   total_yV = aggrS.ypS.consCollMean_yV + aggrS.ypS.pColl_yV;
+   row_add('- by yp',  aggrS.ypS.earnCollMean_yV ./ total_yV, '%.2f');
+   
+   
+   row_add('By IQ: fraction in debt at eoc',  aggrS.debtEndOfCollegeS.frac_qV,  '%.2f');
+   row_add('- mean debt at eoc',  aggrS.debtEndOfCollegeS.mean_qV,  'dollar');
+   row_add('By yp: fraction in debt at eoc',  aggrS.debtEndOfCollegeS.frac_yV,  '%.2f');
+   row_add('- mean debt at eoc',  aggrS.debtEndOfCollegeS.mean_yV,  'dollar');
    
 %    ir = ir + 1;
 %    tbM{ir,1} = 'Fraction with debt';

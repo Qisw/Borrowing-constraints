@@ -1,0 +1,53 @@
+% Show aggregates by [q,y]
+function aggr_qy_show(saveFigures, setNo, expNo)
+
+cS = const_bc1(setNo, expNo);
+paramS = param_load_bc1(setNo, expNo);
+% hhS = var_load_bc1(cS.vHhSolution, cS);
+aggrS = var_load_bc1(cS.vAggregates, cS);
+qyS = aggrS.qyS;
+
+
+varNameV = {'consMeanYear2_qyM', 'earnMeanYear2_qyM', 'hoursMeanYear2_qyM', 'pMeanYear2_qyM', ...
+   'debtMeanYear2_qyM', 'debtMeanYear4_qyM', 'zMeanYear2_qyM'};
+zStrV = {
+
+for iPlot = 1 : length(varNameV)
+   model_qyM = qyS.(varNameV{iPlot});
+   if iPlot == 1
+      model_qyM = qyS.consMeanYear2_qyM;
+      zStr = 'Consumption';
+      fnStr = 'qy_cons_year2';
+   elseif iPlot == 2
+      model_qyM = qyS.earnMeanYear2_qyM;
+      zStr = 'Earnings';
+      fnStr = 'qy_earn_year2';
+   elseif iPlot == 3
+      model_qyM = qyS.hoursMeanYear2_qyM;
+      zStr = 'Hours';
+      fnStr = 'qy_hours_year2';
+   elseif iPlot == 4
+      model_qyM = qyS.pMeanYear2_qyM;
+      zStr = 'College costs';
+      fnStr = 'qy_college_costs_year2';
+   elseif iPlot == 5
+      model_qyM = qyS.debtMeanYear2_qyM;
+      zStr = 'Debt';
+      fnStr = 'qy_debt_year2';
+   elseif iPlot == 6
+      model_qyM = qyS.debtMeanYear4_qyM;
+      zStr = 'Debt';
+      fnStr = 'qy_debt_year4';
+   elseif iPlot == 7
+      model_qyM = qyS.zMeanYear2_qyM;
+      zStr = 'Transfers';
+      fnStr = 'qy_transfers_year2';
+   else
+      error('Invalid');
+   end
+
+   output_bc1.bar_graph_qy(model_qyM, zStr, saveFigures, cS);
+   output_bc1.fig_save(fnStr, saveFigures, cS);
+end
+
+end

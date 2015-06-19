@@ -27,16 +27,19 @@ if 1
       else
          error('Invalid');
       end
-      
-      fh = output_bc1.fig_new(saveFigures, []);
-      bar3(model_qyM);
-      xlabel('Parental income quartile');
-      ylabel('IQ quartile');
-      zlabel(zStr);
-      colormap(figS.colorMap);
-      view([-135, 30]);
-      output_bc1.fig_format(fh, 'bar');
+
+      output_bc1.bar_graph_qy(model_qyM, zStr, saveFigures, cS);
       output_bc1.fig_save(fnStr, saveFigures, cS);
+
+%       fh = output_bc1.fig_new(saveFigures, []);
+%       bar3(model_qyM);
+%       xlabel('Parental income quartile');
+%       ylabel('IQ quartile');
+%       zlabel(zStr);
+%       colormap(figS.colorMap);
+%       view([-135, 30]);
+%       output_bc1.fig_format(fh, 'bar');
+%       output_bc1.fig_save(fnStr, saveFigures, cS);
    end
 end
 

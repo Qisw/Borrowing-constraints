@@ -1,0 +1,54 @@
+function aggr_qy(hhS, paramS, cS)
+% Aggregates by [IQ, yp] quartile
+
+dbg = cS.dbg;
+nIq = length(cS.iqUbV);
+nyp = length(cS.ypUbV);
+
+% Prob j and enter college
+pr_jV = paramS.prob_jV .* hhS.v0S.probEnter_jV;
+pr_jV = pr_jV ./ sum(pr_jV);
+
+
+% Pr(j, q) among entrants = Pr(j) * Pr(q|j)
+pr_jqM = nan([cS.nTypes, nIq]);
+for j = 1 : cS.nTypes
+   for iIq = 1 : nIq
+      pr_jqM(j, iIq) = pr_jV(j) * paramS.prIq_jM(iIq, j);
+   end
+end
+if dbg > 10
+   check_bc1.prob_matrix(pr_jqM(:), [cS.nTypes * nIq, 1], cS);
+end
+prSum = sum(pr_jqM(:));
+pr_jqM = pr_jqM ./ prSum;
+
+
+% Prob q among entrants
+pr_qV = sum(pr_jqM, 1);
+if dbg > 10
+   check_bc1.prob_matrix(pr_qV(:), [nIq, 1], cS);
+end
+pr_qV = pr_qV(:) ./ sum(pr_qV);
+
+
+% Prob j | q  among entrants
+prJ_qM = pr_jqM ./ (ones([cS.nTypes, 1]) * pr_qV');
+if dbg > 10
+   check_bc1.prob_matrix(prJ_qM, [cS.nTypes, nIq], cS);
+end
+
+
+%% Means by [q,y]
+
+for iy = 1 : nyp
+   % j in this class
+   jIdxV = find(paramS.ypClass_jV == iy);
+   
+   for iIq = 1 : nIq
+      % E(x | q,y) = sum over j in y class:  Prob(j) * 
+      pr_jV(jIdxV)
+   end
+end
+
+end

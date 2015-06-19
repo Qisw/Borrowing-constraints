@@ -28,6 +28,7 @@ results_bc1.hh_show(saveFigures, setNo, expNo);
 results_bc1.value_show(saveFigures, setNo, expNo);
 % Show aggregates
 results_bc1.aggr_show(saveFigures, setNo, expNo);
+results_bc1.aggr_qy_show(saveFigures, setNo, expNo);
 
 results_bc1.prob_show(saveFigures, setNo, expNo);
 
