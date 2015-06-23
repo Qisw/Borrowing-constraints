@@ -86,7 +86,7 @@ for ix = 1 : nx
    
    row_add('Earnings by IQ',  aggrS.iqS.earnCollMean_qV,  '%.2f');
    row_add('- by yp',  aggrS.ypS.earnCollMean_yV,  '%.2f');
-   row_add('Transfers by IQ',  aggrS.transfer_qV,  '%.2f');
+   row_add('Transfers by IQ',  aggrS.iqS.transfer_qV,  '%.2f');
    row_add('- by yp',  aggrS.ypS.transfer_yV,  '%.2f');
    
    % This is currently for 2nd year in college

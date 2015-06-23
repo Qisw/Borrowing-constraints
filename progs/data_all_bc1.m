@@ -36,5 +36,7 @@ for iCohort = 1 : cS.nCohorts
 end
 data_bc1.data_summary(setNo);
 data_bc1.cohort_earn_profiles_show(saveFigures, setNo);
+% Correlation IQ, yp over time
+data_bc1.corr_iq_yp(setNo);
    
 end

@@ -121,6 +121,18 @@ outS.devEarnYp  = dev_add(tgS.collEarnS.mean_ycM(:, iCohort),  aggrS.ypS.earnCol
    cS.tgEarnYp, 'earn/yp',  'Mean earnings in college by y', 'dollar');
 
 
+%% Debt of college grads
+
+outS.devDebtGradsFracIq = dev_add(tgS.debtS.fracGrads_qcM(:,iCohort),  aggrS.iqS.debtFracYear4_qV, ...
+   1, 0.3 * pctFactor, cS.tgDebtFracGrads,  'debtFracGradsIq',  'Fraction with college debt', '%.2f');
+outS.devDebtGradsFracYp = dev_add(tgS.debtS.fracGrads_ycM(:,iCohort),  aggrS.ypS.debtFracYear4_yV, ...
+   1, 0.3 * pctFactor, cS.tgDebtFracGrads,  'debtFracGradsYp',  'Fraction with college debt', '%.2f');
+outS.devDebtGradsMeanIq = dev_add(tgS.debtS.meanGrads_qcM(:,iCohort),  aggrS.iqS.debtMeanYear4_qV, ...
+   1, 0.3 * dollarFactor, cS.tgDebtFracGrads,  'debtMeanGradsIq',  'Mean college debt', 'dollar');
+outS.devDebtGradsMeanYp = dev_add(tgS.debtS.meanGrads_ycM(:,iCohort),  aggrS.ypS.debtMeanYear4_yV, ...
+   1, 0.3 * dollarFactor, cS.tgDebtFracGrads,  'debtMeanGradsYp',  'Mean college debt', 'dollar');
+
+
 %% Debt at end of college
 
 % To use debt stats constructed under the assumption that transfers are paid out each period, 
@@ -130,7 +142,7 @@ outS.devEarnYp  = dev_add(tgS.collEarnS.mean_ycM(:, iCohort),  aggrS.ypS.earnCol
 % Mean college debt across all students
 %  at end of college
 outS.devDebtMean = dev_add(tgS.debtS.debtMean_cV(iCohort),  aggrS.debtAllS.mean, ...
-   1, 0.5 * pctFactor, cS.tgDebtMean, 'debtMean',  'Mean college debt', '%.2f');
+   1, 0.5 * dollarFactor, cS.tgDebtMean, 'debtMean',  'Mean college debt', 'dollar');
 
 
 % Fraction with debt (end of college)
@@ -151,16 +163,43 @@ outS.devDebtMeanYp = dev_add(tgS.debtS.debtMeanEndOfCollege_ycM(:, iCohort),  ag
    1, 0.5 * dollarFactor,  cS.tgDebtMeanYp, 'debtMean/yp', 'Mean college debt by y', 'dollar');
 
 
+% *****  Debt penalty
+%  Avoid params where everyone hits borrowing limit and algorithm gets stuck
+%  Only when borrowing limits are reasonably generous
+if (cS.useDebtPenalty == 1)  &&  (paramS.kMin_aV(end) < -5e3 / cS.unitAcct)
+   % Are at least 50% hitting borrowing limit?
+   nYp = length(cS.ypUbV);
+   if sum(aggrS.ypS.debtFracYear4_yV > 0.95) / nYp > 0.51
+      % Construct a penalty that is increasing in consumption
+      outS.devDebtPenalty = dev_add(zeros(nYp, 1),  aggrS.ypS.consCollMean_yV(:), ...
+         1, 1.1 * dollarFactor,  1,  'debtPenalty',  'Debt penalty', 'dollar');
+      disp('*** Debt penalty imposed');
+   end
+end
+
+
 %% Transfers
 % First 2 years in college
 
 outS.devTransfer = dev_add(tgS.transferMean_cV(iCohort), aggrS.transferMeanYear2, 1, dollarFactor, ...
    cS.tgTransfer, 'z mean', 'Mean transfer', 'dollar');
 
+
 % Mean transfer (per year)
-outS.devTransferYp = dev_add(tgS.transferMean_ycM(:, iCohort), aggrS.ypS.transfer_yV, 1, dollarFactor, ...
+% Are transfers > data transfers penalized?
+%     Not elegant. That option should be built into dev_add
+model_yV = aggrS.ypS.transfer_yV;
+model_qV = aggrS.iqS.transfer_qV;
+data_yV = tgS.transferMean_ycM(:, iCohort);
+data_qV = tgS.transferMean_qcM(:, iCohort);
+if cS.tgPenalizeLargeTransfers == 0
+   model_yV = min(model_yV, data_yV);
+   model_qV = min(model_qV, data_qV);
+end
+   
+outS.devTransferYp = dev_add(data_yV, model_yV, 1, dollarFactor, ...
    cS.tgTransferYp, 'z/yp', 'Mean transfer by $y$ quartile', 'dollar');
-outS.devTransferIq = dev_add(tgS.transferMean_qcM(:, iCohort), aggrS.transfer_qV, 1, dollarFactor, ...
+outS.devTransferIq = dev_add(data_qV, model_qV, 1, dollarFactor, ...
    cS.tgTransferIq, 'z/iq', 'Mean transfer by IQ quartile', 'dollar');
 
 

@@ -16,10 +16,9 @@ paramTgS.setNo = cS.setNo;
 
 
 % Remove unused params
-removeV = {'logYpMean_cV', 'logYpStd_cV', 'ypClass_jcM', 'earn_ascM', 'kMin_acM', 'alphaAM_cV', ...
-   'pMean_cV', 'pStd_cV', 'sigmaIQ_cV', 'wCollMean_cV', 'pColl_jcM', 'yParent_jcM', ...
-   'm_jcM', 'wColl_jcM', 'prob_acM', 'prob_a_jcM', 'abilGrid_acM', 'prIq_jcM', 'prob_iq_acM', ...
-   'prGrad_acM', 'pvEarn_scM', 'abilGridV'};
+removeV = {'prGradA0', 'prefPhi',    'mGridV',    'k1_jV' ,     'puWeight' ,    'earn_asM' , ...
+    'pvEarn_sV' ,    'taxHSzero' ,     'taxHSslope' ,     'tax_jV' ,     'eHatHSG' , ...
+    'eHatCG',     'earn_tsM' };
 for i1 = 1 : length(removeV)
    if isfield(paramS, removeV{i1})
       paramS = rmfield(paramS, removeV{i1});
@@ -110,15 +109,20 @@ paramTgS.pStd  = tgS.pStd_cV(iCohort);
 % All types have the same probability
 paramS.prob_jV = ones([cS.nTypes, 1]) ./ cS.nTypes;
 
-% Order is [pColl, yp, m]
-wtM = [1, 0, 0;    paramS.alphaPY, 1, 0;    ...
-   paramS.alphaPM, paramS.alphaYM, 1];
+% Order is 
+%  p, y, m, puWeight
+wtM = [1, 0, 0, 0; 
+   paramS.alphaPY, 1, 0, 0;
+   paramS.alphaPM, paramS.alphaYM, 1, 0; ...
+   0, 0, paramS.alphaPuM, 1];
 
-gridM = calibr_bc1.endow_grid([paramS.pMean; paramS.logYpMean; 0], ...
-   [paramS.pStd; paramS.logYpStd; 1],  wtM, cS);
+% This correctly handles constant endowments
+gridM = calibr_bc1.endow_grid([paramS.pMean; paramS.logYpMean; 0; paramS.puWeightMean], ...
+   [paramS.pStd; paramS.logYpStd; 1; paramS.puWeightStd],  wtM, cS);
 paramS.pColl_jV      = gridM(:,1);
 paramS.yParent_jV    = exp(gridM(:,2));
 paramS.m_jV          = gridM(:,3);
+paramS.puWeight_jV   = max(0,  gridM(:,4));
 
 % Free consumption / leisure in college 
 %  Proportional to m. Range 0 to cCollMax
@@ -139,6 +143,8 @@ if cS.dbg > 10
       disp(std_paramS.m_jV);
       error_bc1('Invalid std m', cS);
    end
+   validateattributes(paramS.puWeight_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      '>=', 0})
 end
 
 

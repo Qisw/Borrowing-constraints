@@ -40,8 +40,8 @@ expS.bLimitCohort = [];
 expS.doCalibrate = 1;
 
 
-%% ******* Base experiments: calibrate everything to match all targets
 
+%%  Base experiments: calibrate everything to match all targets
 if expNo < 100
    if expNo == cS.expBase
       expS.expStr = 'Baseline';
@@ -54,11 +54,10 @@ if expNo < 100
    end
    
    
-%% *******  Counterfactuals
+%%   Counterfactuals
 % Nothing is calibrated. Just run exper_bc1
 % Params are copied from base
 elseif expNo < 200
-   error('Not updated / checked');  % +++++
    expS.doCalibrate = 0;
    % Irrelevant
    doCalV = cS.calExp;
@@ -80,13 +79,12 @@ elseif expNo < 200
 
    if any(expNo == [103, 113])
       expS.expStr = 'Replicate base exper';    % for testing
-      % Irrelevant
-      doCalV = cS.calExp;
       expS.earnExpNo = cS.expBase;
       expS.bLimitCohort = iCohort;
       expS.collCostExpNo = cS.expBase;
 
    elseif any(expNo == [104, 114])
+      % Take pvEarn_asM from cfExpNo
       expS.expStr = 'Only change earn profiles'; 
       expS.earnExpNo = cfExpNo;
 
@@ -123,7 +121,7 @@ elseif expNo < 300
       % Signal noise
       pvec = pvec.calibrate('alphaAM', cS.calExp);
       % Match transfers
-      pvec = pvec.calibrate('puWeight', cS.calExp);
+      pvec = pvec.calibrate('puWeightMean', cS.calExp);
       % Match overall college entry
       pvec = pvec.calibrate('prefHS', cS.calExp);
       

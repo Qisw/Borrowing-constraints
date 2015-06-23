@@ -37,7 +37,7 @@ for j = jV(:)'
    transfer = hhS.v0S.zWork_jV(j);
    % Consumption (per year)
    cParent = yParent - transfer;
-   [~, uPrime] = hh_bc1.util_parent(cParent, paramS, cS);
+   [~, uPrime] = hh_bc1.util_parent(cParent, j, paramS, cS);
    fprintf(fp, 'Parent:  transfer: %.1f   c: %.1f  uPrime: %.2f \n', transfer,  cParent,  100 * uPrime);
 
    k1 = hhS.v0S.k1Work_jV(j);
@@ -58,7 +58,7 @@ for j = jV(:)'
 
    transfer = hhS.v0S.zColl_jV(j);
    cParent = yParent - transfer;
-   [~, uPrime] = hh_bc1.util_parent(cParent, paramS, cS);
+   [~, uPrime] = hh_bc1.util_parent(cParent, j, paramS, cS);
    fprintf(fp, 'Parent:  transfer: %.1f   c: %.1f  uPrime: %.2f \n', transfer,  cParent,  100 * uPrime);
 
    fprintf(fp, 'Child:   coll cost: %.1f    probGrad: %.2f \n',  paramS.pColl_jV(j),  aggrS.prGrad_jV(j));

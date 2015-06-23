@@ -1,15 +1,18 @@
-function [utilV, muV] = util_parent(cV, paramS, cS)
+function [utilV, muV] = util_parent(cV, jV, paramS, cS)
 % Parental utility, per period
+%{
+jV may be scalar
+%}
 
-uWt = paramS.puWeight;
+uWtV = paramS.puWeight_jV(jV);
 
 if paramS.puSigma == 1
-   utilV = uWt .* log(cV);
-   muV = uWt ./ cV;
+   utilV = uWtV .* log(cV);
+   muV = uWtV ./ cV;
 else
    sig1 = 1 - paramS.puSigma;
-   utilV = uWt .* (cV .^ sig1) ./ sig1 - 1;
-   muV = uWt .* (cV .^ (-paramS.puSigma));
+   utilV = uWtV .* (cV .^ sig1) ./ sig1 - 1;
+   muV = uWtV .* (cV .^ (-paramS.puSigma));
 end
 
 end

@@ -38,7 +38,7 @@ function debt_stats(fp, aggrS, paramS, cS)
    fprintf(fp, '%6.2f', aggrS.debtEndOfCollegeS.frac_qV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.2f', aggrS.debtAltS.debtFrac_qV);
+   fprintf(fp, '%6.2f', aggrS.iqS.debtAltFrac_qV);
    fprintf(fp, '\n');
    
    fprintf(fp, '  Mean in debt by IQ: \n');
@@ -46,7 +46,7 @@ function debt_stats(fp, aggrS, paramS, cS)
    fprintf(fp, '%6.1f', aggrS.debtEndOfCollegeS.mean_qV);
    fprintf(fp, '\n');
    fprintf(fp, '    Transfer paid out each t:  ');
-   fprintf(fp, '%6.1f', aggrS.debtAltS.debtMean_qV);
+   fprintf(fp, '%6.1f', aggrS.iqS.debtAltMean_qV);
    fprintf(fp, '\n');
 
    fprintf(fp, '  Fraction in debt by yp: \n');

@@ -17,13 +17,13 @@ tgS = var_load_bc1(cS.vCalTargets, cS);
 if 1
    for iPlot = 1 : 2
       if iPlot == 1
-         model_qyM = aggrS.massColl_qyM ./ aggrS.mass_qyM;
+         model_qyM = aggrS.qyS.massColl_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Entry rate';
-         fnStr = 'prob_enter_qy';
+         fnStr = 'qy_prob_enter';
       elseif iPlot == 2
-         model_qyM = aggrS.massGrad_qyM ./ aggrS.mass_qyM;
+         model_qyM = aggrS.qyS.massGrad_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Graduation rate (unconditional)';
-         fnStr = 'prob_grad_qy';
+         fnStr = 'qy_prob_grad';
       else
          error('Invalid');
       end
@@ -49,12 +49,12 @@ if ~isnan(tgS.fracGrad_qycM(1,1,cS.iCohort))  &&  1
    for iPlot = 1 : 2
       if iPlot == 1
          data_qyM = tgS.fracEnter_qycM(:,:,cS.iCohort);
-         model_qyM = aggrS.massColl_qyM ./ aggrS.mass_qyM;
+         model_qyM = aggrS.qyS.massColl_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Entry rate';
          fnStr = 'fit_prob_enter_qy';
       elseif iPlot == 2
          data_qyM = tgS.fracGrad_qycM(:,:,cS.iCohort);
-         model_qyM = aggrS.massGrad_qyM ./ aggrS.mass_qyM;
+         model_qyM = aggrS.qyS.massGrad_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Graduation rate (unconditional)';
          fnStr = 'fit_prob_grad_qy';
       else

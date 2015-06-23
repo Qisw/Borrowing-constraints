@@ -16,6 +16,9 @@ paramS = param_load_bc1(setNo, expNo);
 validateattributes([showCalibrated, setNo, expNo], {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', ...
    'size', [1,3]})
 
+% To make sure that everything is shown
+pNameV = cS.pvector.nameV;
+
 
 %%  Table layout
 
@@ -55,7 +58,10 @@ tbM{ir, cName} = 'Endowments';
 
 
 % Endowment correlations
-nameV = {'alphaPY', 'alphaPM', 'alphaYM'};
+nameV = {'alphaPY', 'alphaPM', 'alphaYM', 'alphaPuM'};
+% if (paramS.puWeightStd > 1e-4)  ||  1
+%    nameV = [nameV, 'alphaPuM'];
+% end
 row_add_vector(nameV, 'Endowment correlations', '%.2f', []);
 % Signal noise
 row_add('alphaAM', '%.2f', []);
@@ -76,14 +82,20 @@ row_add('prefBeta', '%.2f', []);
 row_add('prefSigma', '%.2f', [])
 if cS.ucCurvatureSame == 0
    row_add('workSigma', '%.2f', [])
+else
+   pNameV = mark_done(pNameV, 'workSigma');
 end
 row_add('prefWt', '%.2f', []);
 row_add('prefRho', '%.2f', []);
 row_add('prefWtLeisure', '%.2f', []);
+row_add('prefWtWork', '%.2f', []);
 row_add('puSigma', '%.2f', []);
-row_add('puWeight', '%.2f', []);
+row_add('puWeightMean', '%.2f', []);
+row_add('puWeightStd', '%.2f', []);
 row_add('prefScaleEntry', '%.2f', []);
 row_add('prefHS', '%.2f', []);
+row_add('cCollMax', '%.1f', []);
+row_add('lCollMax', '%.2f', []);
 
 
 %% Other
@@ -93,8 +105,12 @@ tbM{ir, cName} = 'Other';
 
 row_add_vector({'phiHSG', 'phiCG'},  'Returns to ability', '%.3f', []);
 if showCalibrated == 1
-   row_add_direct('$\hat_{e}_{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
+   row_add_direct('$\hat{e}_{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
 end
+% Not directly used
+pNameV = mark_done(pNameV, 'eHatCD');
+pNameV = mark_done(pNameV, 'dEHatHSG');
+pNameV = mark_done(pNameV, 'dEHatCG');
 
 % Prob grad(a)
 row_add_vector({'prGradMin', 'prGradMax', 'prGradMult', 'prGradExp', 'prGradPower', 'prGradABase'}, ...
@@ -124,6 +140,20 @@ end
 latex_lh.latex_texttb_lh(fullfile(cS.tbDir, tbFn), tbM(1:ir,:), 'Caption', 'Label', tbS);
 
 
+% Check that all params are taken care of
+if ~isempty(pNameV)
+   warning('Not all parameters in table');
+   for i2 = 1 : length(pNameV)
+      fprintf('    %s', pNameV{i2});
+   end
+   fprintf('\n');
+end
+
+return;
+
+
+%% ********  Nested functions follow
+
 
 %% Nested: Add row to table, values directly provided
 
@@ -135,6 +165,8 @@ latex_lh.latex_texttb_lh(fullfile(cS.tbDir, tbFn), tbM(1:ir,:), 'Caption', 'Labe
       tbM{ir, cName} = nameStr;
       tbM{ir, cRole} = roleStr;
       tbM{ir, cValue} = valueStr;
+      % Mark as done
+      pNameV = mark_done(pNameV, nameStr);
    end
 
 
@@ -167,6 +199,7 @@ IN:
          end
          tbM{ir,cValue} = ['$', valueStr, '$'];
       end
+      pNameV = mark_done(pNameV, nameStr);
    end
    
 
@@ -182,6 +215,7 @@ IN:
       valueStr = '';
       for i1 = 1 : length(nameV)
          ps = cS.pvector.retrieve(nameV{i1});
+         pNameV = mark_done(pNameV, nameV{i1});
          if show_param(ps)
             nameStr  = [nameStr,  ', ', ps.symbolStr];
             
@@ -209,4 +243,17 @@ IN:
       %fprintf('%s    doCal: %i    show: %i \n',  ps.name, ps.doCal, doShow);
    end
 
+end
+
+
+%% Mark a parameter as done
+function nameV = mark_done(nameV, nameStr)
+   idx = find(strcmp(nameV, nameStr));
+   if length(idx) == 1
+      nameV(idx) = [];
+   elseif length(idx) > 1
+      error('Not possible');
+%    else
+%       warning(sprintf('Parameter %s not found', nameStr));
+   end
 end

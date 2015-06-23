@@ -48,7 +48,7 @@ end
 gMeanV = mean(gridM);
 gStdV = std(gridM);
 for iVar = 1 : nVar
-   gridM(:, iVar) = (gridM(:, iVar) - gMeanV(iVar) + muV(iVar)) / gStdV(iVar) * stdV(iVar);
+   gridM(:, iVar) = (gridM(:, iVar) - gMeanV(iVar)) / max(1e-5, gStdV(iVar)) * stdV(iVar)   +   muV(iVar);
 end
 
 

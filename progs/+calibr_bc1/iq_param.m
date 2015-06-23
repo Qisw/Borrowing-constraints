@@ -43,7 +43,7 @@ pr_qV = sum(pr_qjM, 2);
 prJ_iqM = pr_qjM' ./ sum(pr_qjM(:)) ./ (ones([cS.nTypes,1]) * pr_qV(:)');
 
 if cS.dbg > 10
-   validateattributes(prJ_iqM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>', 0, '<', 1})
+   validateattributes(prJ_iqM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, '<=', 1})
    prSumV = sum(prJ_iqM);
    if any(abs(prSumV - 1) > 1e-2)      % Why so inaccurate? +++
       disp(prSumV);

@@ -1,4 +1,4 @@
-function outS = load_income_iq_college(sourceFn, setNo)
+function [outS, entryS] = load_income_iq_college(sourceFn, setNo)
 % Load college entry / grad rates by [income, iq]
 %{
 Using csv files for each source
@@ -37,12 +37,14 @@ frac_yV = sum(entryS.perc_qyM);
 cumFrac_yV = cumsum(frac_yV);
 diffV = cumFrac_yV(:) - entryS.ypUbV;
 if any(abs(diffV) > 0.05) 
+   fprintf('%s \n', sourceFn);
    error_bc1('Inconsistent', cS);
 end
 frac_qV = sum(entryS.perc_qyM, 2);
 cumFrac_qV = cumsum(frac_qV);
 diffV = cumFrac_qV(:) - entryS.iqUbV;
 if any(abs(diffV) > 0.05) 
+   fprintf('%s \n', sourceFn);
    error_bc1('Inconsistent', cS);
 end
 
@@ -73,9 +75,9 @@ end
 % Construct marginal distributions
 [outS.entry_qV, outS.entry_yV] = marginals(outS.entry_qyM, outS.mass_qyM, cS);
 validateattributes(outS.entry_qV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 0.9, 'size', [nq, 1]})
+   '<', 0.95, 'size', [nq, 1]})
 validateattributes(outS.entry_yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-   '<', 0.9, 'size', [nYp, 1]})
+   '<', 0.95, 'size', [nYp, 1]})
 
 if ~isempty(gradS)
    [outS.grad_qV,  outS.grad_yV] = marginals(outS.grad_qyM, outS.mass_qyM, cS);

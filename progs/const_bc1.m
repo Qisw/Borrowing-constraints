@@ -37,7 +37,7 @@ cS.dbgFreq = 0.5;
 %% Miscellaneous
 
 % How many nodes to use on kure
-cS.kureS.nNodes = 4;
+cS.kureS.nNodes = 8;
 % Run parallel on kure?
 cS.kureS.parallel = 1;
 % Profile to use (local: no need to start multiple matlab instances)
@@ -122,7 +122,10 @@ cS.lFloor = 0.01;
 % Parental preferences
 pvec = pvec.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
 % Time varying: to match transfer data
-pvec = pvec.change('puWeight', '\omega_{p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
+pvec = pvec.change('puWeightMean', '\mu_{\omega,p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
+pvec = pvec.change('puWeightStd',  '\sigma_{\omega,p}', 'Std of weight on parental utility', 0, 0.001, 2, cS.calNever);
+pvec = pvec.change('alphaPuM', '\alpha_{\omega,m}', 'Correlation, $\omega_{p},m$', 0, -5, 5, cS.calNever);
+
 
 % Pref shock at entry. For numerical reasons only. Fixed.
 pvec = pvec.change('prefScaleEntry', '\gamma', 'Preference shock at college entry', 0.1, 0.05, 1, cS.calNever);
@@ -143,7 +146,7 @@ cS.nAbil = 9;
 cS.aBar = 0;
 
 % Number of types
-cS.nTypes = 80;
+cS.nTypes = 150;
 
 % IQ groups
 cS.iqUbV = (0.25 : 0.25 : 1)';
@@ -283,17 +286,24 @@ cS.tgEarnYp = 1;
 cS.tgDebtFracS = 0;
 cS.tgDebtMeanS = 0;      
 % Debt at end of college
-cS.tgDebtFracIq = 1;
-cS.tgDebtFracYp = 1;
-cS.tgDebtMeanIq = 1;
-cS.tgDebtMeanYp = 1;
+cS.tgDebtFracIq = 0;
+cS.tgDebtFracYp = 0;
+cS.tgDebtMeanIq = 0;
+cS.tgDebtMeanYp = 0;
 % Average debt per student
 cS.tgDebtMean = 0;
+% Debt stats among college grads only, by iq an yp
+cS.tgDebtFracGrads = 1;
+% Penalty when too many students hit borrowing limit?
+%  To avoid getting stuck at params where everyone maxes out borrowing limit
+cS.useDebtPenalty = 1;
 
 % Mean transfer
 cS.tgTransfer = 1;
 cS.tgTransferYp = 1;
 cS.tgTransferIq = 1;
+% Penalize transfers > data transfers?
+cS.tgPenalizeLargeTransfers = 1;
 
 % Financing shares (only constructed for cohorts where transfers etc not available)
 cS.tgFinShares = 1;
@@ -330,7 +340,15 @@ elseif setNo == 6
    cS.setStr = 'Alt debt stats';
    pvec = pvec.calibrate('cCollMax', cS.calBase);
    pvec = pvec.calibrate('lCollMax', cS.calBase);
-   
+
+elseif setNo == 7
+   cS.setStr = 'Heterogeneity in altruism';
+   pvec = pvec.calibrate('cCollMax', cS.calBase);
+   pvec = pvec.calibrate('lCollMax', cS.calBase);
+   pvec = pvec.change('puWeightStd',  '\sigma_{p}', 'Std of weight on parental utility', 0.05, 0.001, 2, cS.calBase);
+   pvec = pvec.change('alphaPuM', '\alpha_{y,m}', 'Correlation, $\omega_{p},m$', 0.5, -5, 5, cS.calBase);
+   % Penalize transfers > data transfers?
+   cS.tgPenalizeLargeTransfers = 0;
 
 else
    error('Invalid');

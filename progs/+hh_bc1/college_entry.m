@@ -73,7 +73,7 @@ The parent gives k1 = nPeriods * z
    function value = coll_value(z)
       % Parent utility per period
       cParent = yParent - z;
-      uParent = hh_bc1.util_parent(cParent, paramS, cS);
+      uParent = hh_bc1.util_parent(cParent, j, paramS, cS);
       value = -(nPeriods * uParent + v1Fct(nPeriods * z) + utilWtZ * log(z));
    end
 
@@ -82,7 +82,7 @@ The parent gives k1 = nPeriods * z
    function value = work_value(z)
       % Parent utility
       cParent = yParent - z;
-      uParent = hh_bc1.util_parent(cParent, paramS, cS);
+      uParent = hh_bc1.util_parent(cParent, j, paramS, cS);
       value = -(nPeriods * uParent + vWorkFct(nPeriods * z) + utilWtZ * log(z));
    end
    

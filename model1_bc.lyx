@@ -366,6 +366,22 @@ college wage
 \end_layout
 
 \begin_layout Itemize
+parental 
+\begin_inset Quotes eld
+\end_inset
+
+altruism
+\begin_inset Quotes erd
+\end_inset
+
+ (really: weight on parental utility): 
+\begin_inset Formula $\puWeight\left(j\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
 \begin_inset Quotes eld
 \end_inset
 
@@ -1395,7 +1411,7 @@ u\left(c,l\right)=\left[\prefWt\frac{c^{1-\prefSigma}}{1-\prefSigma}-1\right]+\p
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-u_{p}\left(c_{p}\right)=\puWeight\left[\frac{c_{p}^{1-\puSigma}}{1-\puSigma}-1\right]
+u_{p}\left(c_{p}\right)=\puWeight\left(j\right)\left[\frac{c_{p}^{1-\puSigma}}{1-\puSigma}-1\right]
 \end{equation}
 
 \end_inset
@@ -1438,7 +1454,7 @@ Endowments:
 
 \begin_layout Standard
 Joint Normal: 
-\begin_inset Formula $z,m,p$
+\begin_inset Formula $z,m,p,\puWeight$
 \end_inset
 
 
@@ -2272,36 +2288,6 @@ college costs (need to recalibrate that one parameter to match 1 target)
 
 \end_deeper
 \begin_layout Enumerate
-Replicate all data for a cohort
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-recalibrate 
-\begin_inset Formula $\prefHS$
-\end_inset
-
-, signal precision, 
-\begin_inset Formula $\puWeight$
-\end_inset
-
-, 
-\begin_inset Formula $\hat{e}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-also calibrate 
-\begin_inset Formula $\mu_{p}$
-\end_inset
-
- (because it directly matches a data moment)
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
 Hold all parameters fixed, except those taken directly from data (e.g.
  college costs, earnings profiles and 
 \begin_inset Formula $\hat{e}$
@@ -2443,6 +2429,39 @@ Corners
 \begin_layout Standard
 For calibration, should prevent a situation where nobody /everybody enters
  college for some parameter values.
+\end_layout
+
+\begin_layout Subsubsection
+Debt corners
+\end_layout
+
+\begin_layout Standard
+Can have parameter values where everyone maxes out on debt in year 4.
+\end_layout
+
+\begin_layout Standard
+Then using only debt tg for grads gets stuck.
+\end_layout
+
+\begin_layout Standard
+Using aggregate debt does not help all that much either.
+ Can have params where (nearly) only grads borrow.
+\end_layout
+
+\begin_layout Standard
+Solution:
+\end_layout
+
+\begin_layout Itemize
+start from a guess where not everyone hits the borrowing limit
+\end_layout
+
+\begin_layout Itemize
+penalty when more than a fixed fraction hits borrowing limit
+\end_layout
+
+\begin_layout Itemize
+only when borrowing limit is positive
 \end_layout
 
 \begin_layout Section

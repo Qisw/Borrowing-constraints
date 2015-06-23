@@ -90,7 +90,7 @@ if 1
       
       % Parent
       cParent_jV = paramS.yParent_jV - transfer_jV;
-      [~, uPrimeParent_jV] = hh_bc1.util_parent(cParent_jV, paramS, cS);
+      [~, uPrimeParent_jV] = hh_bc1.util_parent(cParent_jV, 1 : cS.nTypes, paramS, cS);
       
       
       fh = output_bc1.fig_new(saveFigures, []);
@@ -120,7 +120,7 @@ if 1
    j = round(cS.nTypes / 2);
    cV = linspace(5e3, 5e4, np) ./ cS.unitAcct;
    
-   [~, mupV] = hh_bc1.util_parent(cV, paramS, cS);
+   [~, mupV] = hh_bc1.util_parent(cV, j, paramS, cS);
    [~, muWorkV] = hh_bc1.util_work_bc1(cV, paramS, cS);
    [~,muCollV] = hh_bc1.hh_util_coll_bc1(cV, 0.7 .* ones(size(cV)), paramS.cColl_jV(j), paramS.lColl_jV(j), ...
       paramS.prefWt, paramS.prefSigma,  paramS.prefWtLeisure, paramS.prefRho);

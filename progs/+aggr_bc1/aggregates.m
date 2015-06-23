@@ -50,9 +50,8 @@ debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
 
 
 % By IQ quartile
-[iqS, aggrS.transfer_qV, ...
-   debtEndOfCollegeS.frac_qV, debtEndOfCollegeS.mean_qV, debtAltS.debtFrac_qV, debtAltS.debtMean_qV, ...
-   debtS.fracYear2_qV, debtS.meanYear2_qV] = aggr_bc1.aggr_iq(aggrS, hhS, paramS, cS);
+[iqS, debtEndOfCollegeS.frac_qV, debtEndOfCollegeS.mean_qV] = ...
+   aggr_bc1.aggr_iq(aggrS, hhS, paramS, cS);
 
 
 %% Aggregates (college entrants)
@@ -69,11 +68,11 @@ debtS.debtMeanEndOfCollege = sum(debtEndOfCollegeS.mean_qV .* mass_qV(:));
 % *********  Stats over first 2 years in college
 
 aggrS.earnCollMeanYear2 = sum(iqS.earnCollMean_qV .* mass_qV(:));
-aggrS.transferMeanYear2 = sum(aggrS.transfer_qV .* mass_qV(:));
+aggrS.transferMeanYear2 = sum(iqS.transfer_qV .* mass_qV(:));
 aggrS.hoursCollMeanYear2 = sum(iqS.hoursCollMean_qV .* mass_qV(:));
 aggrS.pMeanYear2 = sum(iqS.pMean_qV .* mass_qV(:));
-debtS.meanYear2 = sum(debtS.meanYear2_qV .* mass_qV);
-debtS.fracYear2 = sum(debtS.fracYear2_qV .* mass_qV);
+debtS.meanYear2 = sum(iqS.debtMeanYear2_qV .* mass_qV);
+debtS.fracYear2 = sum(iqS.debtFracYear2_qV .* mass_qV);
 clear mass_qV;
 
 % Check
@@ -113,8 +112,7 @@ finS.fracTransfers = aggrS.zMean / spending;
 %% By [parental income class] (for those in college)
 
 [ypS,  debtEndOfCollegeS.frac_yV, debtEndOfCollegeS.mean_yV, debtAltS.debtFrac_yV, debtAltS.debtMean_yV, ...
-   aggrS.logYpMean_yV, aggrS.mass_qyM, aggrS.massColl_qyM, ...
-   aggrS.massGrad_qyM] = aggr_bc1.aggr_yp(aggrS, hhS, paramS, cS);
+   aggrS.logYpMean_yV] = aggr_bc1.aggr_yp(aggrS, hhS, paramS, cS);
 
 
 % By [IQ, yp]
@@ -220,6 +218,11 @@ aggrS.ypS = ypS;
 aggrS.iqS = iqS;
 aggrS.sqS = sqS;
 aggrS.qyS = qyS;
+
+if cS.dbg > 10
+   % Consistency checks
+   aggr_bc1.aggr_check(aggrS, cS);
+end
 
 
 end

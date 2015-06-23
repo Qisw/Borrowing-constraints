@@ -52,12 +52,31 @@ qyS.debtMeanYear2_qyM = nan([nIq, nyp]);
 qyS.debtMeanYear4_qyM = nan([nIq, nyp]);
 qyS.pMeanYear2_qyM = nan([nIq, nyp]);
 
+% Mass by [IQ, yp]
+qyS.mass_qyM = nan([nIq, nyp]);
+qyS.massColl_qyM = nan([nIq, nyp]);
+qyS.massGrad_qyM = nan([nIq, nyp]);
+
+
 debt_tjM = max(0, -aggrS.k_tjM(2:3, :));
 
 for iy = 1 : nyp
    % j in this class
    jIdxV = find(paramS.ypClass_jV == iy);
+   % Their masses in college
+   massColl_jV = aggrS.massColl_jV(jIdxV);
+   % Mass of grad
+   massGrad_jV = massColl_jV .* aggrS.prGrad_jV(jIdxV);
    
+   % Mass (q,y) = sum over j in y group  Pr(iq|j) * mass(j)
+   qyS.mass_qyM(:, iy) = sum(paramS.prIq_jM(:, jIdxV) .* (ones([nIq,1]) * aggrS.mass_jV(jIdxV)'), 2);
+
+   % Mass in college by [iq, j] for the right yp group
+   qyS.massColl_qyM(:, iy) = sum(paramS.prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massColl_jV(:)'), 2);
+
+   % Mass in college by [iq, j] for the right yp group
+   qyS.massGrad_qyM(:, iy) = sum(paramS.prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massGrad_jV(:)'), 2);
+
    for iIq = 1 : nIq
       % E(x | q,y) = sum over j in y class:  Prob(j | q) * x(j)
       probV = prJ_qM(jIdxV, iIq);
