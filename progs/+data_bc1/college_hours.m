@@ -37,8 +37,8 @@ outS.hoursMean_cV = nan([cS.nCohorts, 1]);
 
 for iCohort = 1 : cS.nCohorts
    if isnan(tgS.fracEnter_ycM(1,iCohort))  ||  isnan(outS.hoursMean_ycM(1,iCohort))
-      % Set to 20 hours per week (based on vague data)
-      outS.hoursMean_cV(iCohort) = 20 * 50 ./ outS.timeEndow;
+      % Set to 20 hours per week (based on vague data). With 1/3 of students working
+      outS.hoursMean_cV(iCohort) = 20 / 3 * 50 ./ outS.timeEndow;
    else
       % Set from hours by yp
       mass_yV = tgS.fracEnter_ycM(:, iCohort) .* cS.pr_ypV;

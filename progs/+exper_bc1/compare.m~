@@ -1,0 +1,267 @@
+function compare(setNoV, expNoV, tbFn)
+% Compare experiments
+%{
+IN
+   tbFn
+      file name for output table
+%}
+
+fprintf('\nComparing a set of experiments \n');
+fprintf('    %i', setNoV);
+fprintf('\n');
+fprintf('    %i', expNoV);
+fprintf('\n');
+
+dbg = 111;
+saveFigures = 1;
+nx = length(expNoV);
+cS = const_bc1(setNoV(1), expNoV(1));
+nIq = length(cS.iqUbV);
+nYp = length(cS.ypUbV);
+tgS = var_load_bc1(cS.vCalTargets, cS);
+
+
+%% Load all experiments
+
+paramV = cell([nx, 1]);
+aggrV = cell([nx, 1]);
+constV = cell([nx, 1]);
+cohortStrV = cell([nx, 1]);
+expS
+for ix = 1 : nx
+   cxS = const_bc1(setNoV(ix), expNoV(ix));
+   constV{ix} = cxS;
+   paramV{ix} = param_load_bc1(setNoV(ix), expNoV(ix));
+   aggrV{ix} = var_load_bc1(cS.vAggregates, cxS);
+   cohortStrV{ix} = sprintf('%i', cS.bYearV(constV{ix}.iCohort));
+end
+
+if any(isempty(aggrV))
+   warning('Could not load all experiments');
+   return;
+end
+
+
+%% Regression of entry rate on [iq, yp]
+% With original bins, this is run in the data summary
+if 1
+   fprintf('\nRegress entry rate on [iq, yp]\n');
+   tb_regr_entry(tbFn, tgS, aggrV, constV);
+   fprintf('\nEntry gaps by iq and yp \n');
+   exper_bc1.tb_entry_gaps(tbFn, expNoV, cS);
+end
+
+
+
+%% By iq, yp: Entry and graduation rates
+if 1
+   % What is plotted in each figure?
+   iIq = 1;
+   iYp = 2;
+   xTypeV = [iIq, iIq, iYp, iYp];
+   yStrV = {'Fraction entering college',  'Fraction graduating from college', ...
+      'Fraction entering college',  'Fraction graduating from college'};
+   figFnV = {'iq_enter',   'iq_grad',    'yp_enter',    'yp_grad'};
+   
+   for iPlot = 1 : length(xTypeV)
+      if xTypeV(iPlot) == iIq
+         xStr = 'IQ group';
+         xV = 1 : nIq;
+      elseif xTypeV(iPlot) == iYp
+         xStr = 'yp group';
+         xV = 1 : nYp;
+      else
+         error('Invalid');
+      end
+      
+      yM = zeros([length(xV), nx]);
+      for ix = 1 : nx
+         if iPlot == 1
+            yV = aggrV{ix}.fracEnter_qV;
+         elseif iPlot == 2
+            yV = aggrV{ix}.fracGrad_qV;
+         elseif iPlot == 3
+            yV = aggrV{ix}.ypS.fracEnter_yV;
+         elseif iPlot == 4
+            yV = aggrV{ix}.ypS.fracGrad_yV;
+         else
+            error('Invalid');
+         end
+         yM(:,ix) = yV;
+      end      
+      
+      
+      fh = output_bc1.fig_new(saveFigures, []);
+      bar(xV, yM);
+      xlabel(xStr);
+      ylabel(yStrV{iPlot});
+      legend(cohortStrV, 'location', 'northwest');
+      figures_lh.axis_range_lh([NaN NaN 0 1]);
+      output_bc1.fig_format(fh, 'bar');
+      output_bc1.fig_save([tbFn, '_', figFnV{iPlot}], saveFigures, cS);
+   end
+end
+
+
+%% Summary table
+
+% cExp = 2;
+% cBase = 3;
+nc = 1 + nx;
+
+nr = 50;
+tbM = cell([nr, nc]);
+tbS.rowUnderlineV = zeros([nr, 1]);
+
+
+% Header row
+ir = 1;
+tbM{ir, 1} = 'Variable';
+for ix = 1 : nx
+   tbM{ir, ix+1} = sprintf('%i/%i',  setNoV(ix), expNoV(ix));
+end
+
+
+% *********  Body
+for ix = 1 : nx
+   ic = 1 + ix;
+   ir = 1;
+   
+   aggrS = aggrV{ix};
+   
+   row_add('Cohort',  cS.bYearV(constV{ix}.iCohort),  '%i');
+   
+   ir = ir + 1;
+   tbM{ir,1} = 'Drivers';
+   ir = ir + 1;
+   tbM{ir,1} = 'PV of lifetime earnings by s';
+   tbM{ir, ic} = string_lh.string_from_vector(log(aggrS.pvEarn_sV), '%.2f');
+   ir = ir + 1;
+   tbM{ir,1} = 'Premium relative to HSG';
+   tbM{ir,ic} = string_lh.string_from_vector(diff(log(aggrS.pvEarn_sV)), '%.2f');
+   ir = ir + 1;
+   tbM{ir,1} = 'Mean college cost';
+   [~, tbM{ir,ic}] = string_lh.dollar_format(paramV{ix}.pMean * cS.unitAcct, ',', 0);
+   ir = ir + 1;
+   tbM{ir,1} = 'Borrowing limit';
+   [~, tbM{ir,ic}] = string_lh.dollar_format(paramV{ix}.kMin_aV(end) * cS.unitAcct, ',', 0);
+   
+   tbS.rowUnderlineV(ir) = 1;
+   ir = ir + 1;
+   tbM{ir,1} = 'Schooling';
+   ir = ir + 1;
+   tbM{ir,1} = 'Fraction dropouts / graduates';
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.frac_sV([cS.iCD, cS.iCG]), '%.2f');
+   ir = ir + 1;
+   tbM{ir,1} = 'By IQ: frac enter';
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.fracEnter_qV, '%.2f');
+   ir = ir + 1;
+   tbM{ir,1} = '- frac grad';
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.fracGrad_qV, '%.2f');
+   ir = ir + 1;
+   tbM{ir,1} = 'By yp: frac enter';
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.ypS.fracEnter_yV, '%.2f');
+   row_add('- frac grad',  aggrS.ypS.fracGrad_yV,  '%.2f');
+   
+   tbS.rowUnderlineV(ir) = 1;
+   ir = ir + 1;
+   tbM{ir,1} = 'College Finances';
+   
+   row_add('Earnings by IQ',  aggrS.iqS.earnCollMean_qV,  '%.2f');
+   row_add('- by yp',  aggrS.ypS.earnCollMean_yV,  '%.2f');
+   row_add('Transfers by IQ',  aggrS.iqS.transfer_qV,  '%.2f');
+   row_add('- by yp',  aggrS.ypS.transfer_yV,  '%.2f');
+   
+   % This is currently for 2nd year in college
+   total_qV = aggrS.iqS.consCollMean_qV + aggrS.iqS.pMean_qV;
+   row_add('Fraction paid out of earnings by IQ',  aggrS.iqS.earnCollMean_qV ./ total_qV, '%.2f');
+   total_yV = aggrS.ypS.consCollMean_yV + aggrS.ypS.pColl_yV;
+   row_add('- by yp',  aggrS.ypS.earnCollMean_yV ./ total_yV, '%.2f');
+   
+   
+   row_add('By IQ: fraction in debt at eoc',  aggrS.debtEndOfCollegeS.frac_qV,  '%.2f');
+   row_add('- mean debt at eoc',  aggrS.debtEndOfCollegeS.mean_qV,  'dollar');
+   row_add('By yp: fraction in debt at eoc',  aggrS.debtEndOfCollegeS.frac_yV,  '%.2f');
+   row_add('- mean debt at eoc',  aggrS.debtEndOfCollegeS.mean_yV,  'dollar');
+   
+%    ir = ir + 1;
+%    tbM{ir,1} = 'Fraction with debt';
+%    ir = ir + 1;
+%    tbM{ir,1} = 'Mean debt (unconditional)';
+%    ir = ir + 1;
+%    tbM{ir,1} = 'Mean transfer';
+end
+
+
+% *******  Write table
+
+outFn = fullfile(cS.tbDir, [tbFn, '.txt']);
+fp = fopen(outFn, 'w');
+fclose(fp);
+diary(outFn);
+tbS.rowUnderlineV = tbS.rowUnderlineV(1 : ir);
+latex_lh.latex_texttb_lh(fullfile(cS.tbDir, [tbFn, '.tex']), tbM(1:ir,:), 'Caption', 'Label', tbS);
+diary off;
+
+
+%% Nested: add a row
+% Dollar values in model units!
+   function row_add(descrStr, valueV, fmtStr)
+      ir = ir + 1;
+      tbM{ir, 1} = descrStr;
+      tbM{ir, ic} = output_bc1.formatted_vector(valueV, fmtStr, cS);
+   end
+
+
+end
+
+
+%% Local: Regression of entry rate on [iq, yp]
+% With original bins, this is run in the data summary
+function tb_regr_entry(tbFn, tgS, aggrV, constV)
+   cS = constV{1};
+   nx = length(aggrV);
+   fmtStr = '%.2f';
+   
+   nc = 3;
+   nr = 1 + 3 * nx;
+   
+   tbM = cell([nr, nc]);
+   tbS.rowUnderlineV = zeros([nr, 1]);
+   
+   ir = 1;
+   tbM(ir, :) = {' ', '$\beta_{IQ}$', '$\beta_{yp}$'};
+   tbS.rowUnderlineV(ir) = 1;
+   
+   for ix = 1 : nx
+      iCohort = constV{ix}.iCohort;
+      if cS.regrEntryIqYpWeighted == 1
+         mBetaIq = aggrV{ix}.qyS.betaIqWeighted;
+         mBetaYp = aggrV{ix}.qyS.betaYpWeighted;
+         dataIdx = tgS.schoolS.iWeighted;
+      else
+         mBetaIq = aggrV{ix}.qyS.betaIq;
+         mBetaYp = aggrV{ix}.qyS.betaYp;
+         dataIdx = tgS.schoolS.iUnweighted;
+      end
+      
+%       fprintf('Cohort %i \n',  cS.bYearV(iCohort));
+%       fprintf('  Model: betaIq: %.3f    betaYp: %.3f \n',  mBetaIq, mBetaYp);
+%       fprintf('  Data:  betaIq: %.3f    betaYp: %.3f \n',  ...
+%          tgS.schoolS.betaIqM(dataIdx,iCohort), tgS.schoolS.betaYpM(dataIdx,iCohort));
+      
+      ir = ir + 1;
+      tbM{ir, 1} = cS.expS.expStr;
+         %sprintf('Cohort %i',  cS.bYearV(iCohort));
+      
+      ir = ir + 1;
+      tbM(ir, :) = {'Model',  sprintf(fmtStr, mBetaIq), sprintf(fmtStr, mBetaYp)};
+      ir = ir + 1;
+      tbM(ir, :) = {'Data',  sprintf(fmtStr, tgS.schoolS.betaIqM(dataIdx,iCohort)), ...
+         sprintf(fmtStr, tgS.schoolS.betaYpM(dataIdx,iCohort))};
+   end
+   
+   latex_lh.latex_texttb_lh(fullfile(cS.tbDir, [tbFn, '_regr_entry.tex']), tbM, 'Caption', 'Label', tbS);
+end
+
+

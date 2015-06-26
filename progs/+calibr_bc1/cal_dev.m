@@ -47,36 +47,43 @@ outS.devV = devvect(100);
 %% College outcomes
 
 % Overall
-outS.devFracS = dev_add(tgS.frac_scM(:, iCohort), aggrS.frac_sV, 1, pctFactor, cS.tgFracS, ...
+outS.devFracS = dev_add(tgS.frac_scM(:, iCohort), aggrS.frac_sV, 1, pctFactor, cS.tgS.tgFracS, ...
    'frac s', 'Fraction by schooling', '%.2f');
 
 % by IQ
-outS.devFracEnterIq = dev_add(tgS.fracEnter_qcM(:, iCohort), aggrS.fracEnter_qV, 1, 1.5 * pctFactor, cS.tgFracEnterIq, ...
+outS.devFracEnterIq = dev_add(tgS.fracEnter_qcM(:, iCohort), aggrS.fracEnter_qV, 1, 1.5 * pctFactor, cS.tgS.tgFracEnterIq, ...
    'enter/iq',  'Fraction entering college by IQ quartile', '%.2f');
-outS.devFracGradIq  = dev_add(tgS.fracGrad_qcM(:, iCohort),  aggrS.fracGrad_qV,  1, 1.5 * pctFactor, cS.tgFracGradIq , ...
+outS.devFracGradIq  = dev_add(tgS.fracGrad_qcM(:, iCohort),  aggrS.fracGrad_qV,  1, 1.5 * pctFactor, cS.tgS.tgFracGradIq , ...
    'grad/iq',  'Fraction graduating by IQ quartile', '%.2f');
 
 % By yParent
-outS.devFracEnterYp = dev_add(tgS.fracEnter_ycM(:, iCohort), aggrS.ypS.fracEnter_yV, 1, 1.5 * pctFactor, cS.tgFracEnterYp, ...
+outS.devFracEnterYp = dev_add(tgS.fracEnter_ycM(:, iCohort), aggrS.ypS.fracEnter_yV, 1, 1.5 * pctFactor, cS.tgS.tgFracEnterYp, ...
    'enter/yp',  'Fraction entering college by y quartile', '%.2f');
-outS.devFracGradYp  = dev_add(tgS.fracGrad_ycM(:, iCohort),  aggrS.ypS.fracGrad_yV,  1, 1.5 * pctFactor, cS.tgFracGradYp , ...
+outS.devFracGradYp  = dev_add(tgS.fracGrad_ycM(:, iCohort),  aggrS.ypS.fracGrad_yV,  1, 1.5 * pctFactor, cS.tgS.tgFracGradYp , ...
    'grad/yp',  'Fraction graduating by y quartile', '%.2f');
+
+% By [iq, yp]
+outS.devFracEnterQy = dev_add(tgS.fracEnter_qycM(:,:, iCohort), aggrS.qyS.fracEnter_qyM, 1, pctFactor, cS.tgS.tgCollegeQy, ...
+   'enter/qy',  'Fraction entering college by qy quartile', '%.2f');
+outS.devFracGradQy = dev_add(tgS.fracGrad_qycM(:,:, iCohort), aggrS.qyS.fracGrad_qyM, 1, pctFactor, cS.tgS.tgCollegeQy, ...
+   'grad/qy',  'Fraction graduating college by qy quartile', '%.2f');
+
 
 
 %% Lifetime earnings
 
 outS.devPvLty = dev_add(log(paramS.tgS.pvEarn_sV),  log(aggrS.pvEarn_sV), 1,  4, ...
-   cS.tgPvLty,  'pvLty',  'Lifetime earnings by s',  'dollar');
+   cS.tgS.tgPvLty,  'pvLty',  'Lifetime earnings by s',  'dollar');
 
 
 %% Parental income
 
 % Parental income and IQ
-outS.devYpIq = dev_add(tgS.logYpMean_qcM(:,iCohort), aggrS.iqS.logYpMean_qV, 1, 1, cS.tgYpIq, 'yp/iq', ...
+outS.devYpIq = dev_add(tgS.logYpMean_qcM(:,iCohort), aggrS.iqS.logYpMean_qV, 1, 1, cS.tgS.tgYpIq, 'yp/iq', ...
    'Mean log parental income by IQ quartile', '%.2f');
 
 % By yp quartile
-outS.devYpYp = dev_add(tgS.logYpMean_ycM(:,iCohort), aggrS.logYpMean_yV, 1, 1, cS.tgYpYp, 'yp/yp', ...
+outS.devYpYp = dev_add(tgS.logYpMean_ycM(:,iCohort), aggrS.logYpMean_yV, 1, 1, cS.tgS.tgYpYp, 'yp/yp', ...
    'Mean log parental income by y quartile', '%.2f');
 
 
@@ -87,13 +94,13 @@ outS.devYpYp = dev_add(tgS.logYpMean_ycM(:,iCohort), aggrS.logYpMean_yV, 1, 1, c
 
 % College costs
 % Mean and std dev among college students
-outS.devPMean = dev_add(paramS.tgS.pMean, aggrS.pMeanYear2, 1, dollarFactor, cS.tgPMean, 'pMean', ...
+outS.devPMean = dev_add(paramS.tgS.pMean, aggrS.pMeanYear2, 1, dollarFactor, cS.tgS.tgPMean, 'pMean', ...
    'Mean of college cost', 'dollar');
-outS.devPStd  = dev_add(paramS.tgS.pStd,  aggrS.pStd,  1, dollarFactor, cS.tgPStd,  'pStd', ...
+outS.devPStd  = dev_add(paramS.tgS.pStd,  aggrS.pStd,  1, dollarFactor, cS.tgS.tgPStd,  'pStd', ...
    'Std of college cost', 'dollar');
 
 outS.devPMeanIq = dev_add(tgS.pMean_qcM(:,iCohort), aggrS.iqS.pMean_qV, 1, dollarFactor, ...
-   cS.tgPMeanIq, 'pMean/iq',  'Mean of college cost by IQ', 'dollar');
+   cS.tgS.tgPMeanIq, 'pMean/iq',  'Mean of college cost by IQ', 'dollar');
 
 
 
@@ -101,36 +108,36 @@ outS.devPMeanIq = dev_add(tgS.pMean_qcM(:,iCohort), aggrS.iqS.pMean_qV, 1, dolla
 
 % Average hours and earnings (first 2 years in college)
 outS.devHours = dev_add(tgS.hoursS.hoursMean_cV(iCohort),  aggrS.hoursCollMeanYear2, ...
-   1, pctFactor, cS.tgHours, 'hours', 'Mean hours in college', '%.2f');
+   1, pctFactor, cS.tgS.tgHours, 'hours', 'Mean hours in college', '%.2f');
 
-outS.devHoursIq = dev_add(tgS.hoursS.hoursMean_qcM(:,iCohort),  aggrS.iqS.hoursCollMean_qV, 1, pctFactor, cS.tgHoursIq, 'hours/iq', ...
+outS.devHoursIq = dev_add(tgS.hoursS.hoursMean_qcM(:,iCohort),  aggrS.iqS.hoursCollMean_qV, 1, pctFactor, cS.tgS.tgHoursIq, 'hours/iq', ...
    'Mean hours in college by IQ', '%.2f');
-outS.devHoursYp = dev_add(tgS.hoursS.hoursMean_ycM(:,iCohort),  aggrS.ypS.hoursCollMean_yV, 1, pctFactor, cS.tgHoursYp, 'hours/yp', ...
+outS.devHoursYp = dev_add(tgS.hoursS.hoursMean_ycM(:,iCohort),  aggrS.ypS.hoursCollMean_yV, 1, pctFactor, cS.tgS.tgHoursYp, 'hours/yp', ...
    'Mean hours in college by y', '%.2f');
 
 
 %% Earnings in college
 % First 2 years in college
 
-outS.devEarn  = dev_add(tgS.collEarnS.mean_cV(iCohort),  aggrS.earnCollMeanYear2, 1, dollarFactor, cS.tgEarn, 'earn', ...
+outS.devEarn  = dev_add(tgS.collEarnS.mean_cV(iCohort),  aggrS.earnCollMeanYear2, 1, dollarFactor, cS.tgS.tgEarn, 'earn', ...
    'Mean earnings in college', 'dollar');
 
 outS.devEarnIq  = dev_add(tgS.collEarnS.mean_qcM(:, iCohort),  aggrS.iqS.earnCollMean_qV, 1, dollarFactor, ...
-   cS.tgEarnIq, 'earn/iq',  'Mean earnings in college by IQ', 'dollar');
+   cS.tgS.tgEarnIq, 'earn/iq',  'Mean earnings in college by IQ', 'dollar');
 outS.devEarnYp  = dev_add(tgS.collEarnS.mean_ycM(:, iCohort),  aggrS.ypS.earnCollMean_yV, 1, dollarFactor, ...
-   cS.tgEarnYp, 'earn/yp',  'Mean earnings in college by y', 'dollar');
+   cS.tgS.tgEarnYp, 'earn/yp',  'Mean earnings in college by y', 'dollar');
 
 
 %% Debt of college grads
 
 outS.devDebtGradsFracIq = dev_add(tgS.debtS.fracGrads_qcM(:,iCohort),  aggrS.iqS.debtFracYear4_qV, ...
-   1, 0.3 * pctFactor, cS.tgDebtFracGrads,  'debtFracGradsIq',  'Fraction with college debt', '%.2f');
+   1, 0.3 * pctFactor, cS.tgS.tgDebtFracGrads,  'debtFracGradsIq',  'Fraction with college debt', '%.2f');
 outS.devDebtGradsFracYp = dev_add(tgS.debtS.fracGrads_ycM(:,iCohort),  aggrS.ypS.debtFracYear4_yV, ...
-   1, 0.3 * pctFactor, cS.tgDebtFracGrads,  'debtFracGradsYp',  'Fraction with college debt', '%.2f');
+   1, 0.3 * pctFactor, cS.tgS.tgDebtFracGrads,  'debtFracGradsYp',  'Fraction with college debt', '%.2f');
 outS.devDebtGradsMeanIq = dev_add(tgS.debtS.meanGrads_qcM(:,iCohort),  aggrS.iqS.debtMeanYear4_qV, ...
-   1, 0.3 * dollarFactor, cS.tgDebtFracGrads,  'debtMeanGradsIq',  'Mean college debt', 'dollar');
+   1, 0.3 * dollarFactor, cS.tgS.tgDebtFracGrads,  'debtMeanGradsIq',  'Mean college debt', 'dollar');
 outS.devDebtGradsMeanYp = dev_add(tgS.debtS.meanGrads_ycM(:,iCohort),  aggrS.ypS.debtMeanYear4_yV, ...
-   1, 0.3 * dollarFactor, cS.tgDebtFracGrads,  'debtMeanGradsYp',  'Mean college debt', 'dollar');
+   1, 0.3 * dollarFactor, cS.tgS.tgDebtFracGrads,  'debtMeanGradsYp',  'Mean college debt', 'dollar');
 
 
 %% Debt at end of college
@@ -142,31 +149,31 @@ outS.devDebtGradsMeanYp = dev_add(tgS.debtS.meanGrads_ycM(:,iCohort),  aggrS.ypS
 % Mean college debt across all students
 %  at end of college
 outS.devDebtMean = dev_add(tgS.debtS.debtMean_cV(iCohort),  aggrS.debtAllS.mean, ...
-   1, 0.5 * dollarFactor, cS.tgDebtMean, 'debtMean',  'Mean college debt', 'dollar');
+   1, 0.5 * dollarFactor, cS.tgS.tgDebtMean, 'debtMean',  'Mean college debt', 'dollar');
 
 
 % Fraction with debt (end of college)
 outS.devDebtFracS = dev_add(tgS.debtS.debtFracEndOfCollege_scM(:,iCohort),  aggrS.debtEndOfCollegeS.frac_sV, ...
-   1, 0.5 * pctFactor, cS.tgDebtFracS,  'debtFracS',  'Fraction with college debt', '%.2f');
+   1, 0.5 * pctFactor, cS.tgS.tgDebtFracS,  'debtFracS',  'Fraction with college debt', '%.2f');
 % Mean debt, not conditional on having debt
 outS.devDebtMeanS = dev_add(tgS.debtS.debtMeanEndOfCollege_scM(:,iCohort),  aggrS.debtEndOfCollegeS.mean_sV, ...
-   1, 0.5 * dollarFactor,  cS.tgDebtMeanS, 'debtMeanS', 'Mean college debt (CD, CG)', 'dollar');
+   1, 0.5 * dollarFactor,  cS.tgS.tgDebtMeanS, 'debtMeanS', 'Mean college debt (CD, CG)', 'dollar');
 
 outS.devDebtFracIq = dev_add(tgS.debtS.debtFracEndOfCollege_qcM(:, iCohort),  aggrS.debtEndOfCollegeS.frac_qV, ...
-   1, 0.5 * pctFactor,  cS.tgDebtFracIq, 'debtFrac/iq', 'Fraction with college debt by IQ', '%.2f');
+   1, 0.5 * pctFactor,  cS.tgS.tgDebtFracIq, 'debtFrac/iq', 'Fraction with college debt by IQ', '%.2f');
 outS.devDebtFracYp = dev_add(tgS.debtS.debtFracEndOfCollege_ycM(:, iCohort),  aggrS.debtEndOfCollegeS.frac_yV, ...
-   1, 0.5 * pctFactor,  cS.tgDebtFracYp, 'debtFrac/yp', 'Fraction with college debt by y', '%.2f');
+   1, 0.5 * pctFactor,  cS.tgS.tgDebtFracYp, 'debtFrac/yp', 'Fraction with college debt by y', '%.2f');
 
 outS.devDebtMeanIq = dev_add(tgS.debtS.debtMeanEndOfCollege_qcM(:, iCohort),  aggrS.debtEndOfCollegeS.mean_qV, ...
-   1, 0.5 * dollarFactor,  cS.tgDebtMeanIq, 'debtMean/iq', 'Mean college debt by IQ', 'dollar');
+   1, 0.5 * dollarFactor,  cS.tgS.tgDebtMeanIq, 'debtMean/iq', 'Mean college debt by IQ', 'dollar');
 outS.devDebtMeanYp = dev_add(tgS.debtS.debtMeanEndOfCollege_ycM(:, iCohort),  aggrS.debtEndOfCollegeS.mean_yV, ...
-   1, 0.5 * dollarFactor,  cS.tgDebtMeanYp, 'debtMean/yp', 'Mean college debt by y', 'dollar');
+   1, 0.5 * dollarFactor,  cS.tgS.tgDebtMeanYp, 'debtMean/yp', 'Mean college debt by y', 'dollar');
 
 
 % *****  Debt penalty
 %  Avoid params where everyone hits borrowing limit and algorithm gets stuck
 %  Only when borrowing limits are reasonably generous
-if (cS.useDebtPenalty == 1)  &&  (paramS.kMin_aV(end) < -5e3 / cS.unitAcct)
+if (cS.tgS.useDebtPenalty == 1)  &&  (paramS.kMin_aV(end) < -5e3 / cS.unitAcct)
    % Are at least 50% hitting borrowing limit?
    nYp = length(cS.ypUbV);
    if sum(aggrS.ypS.debtFracYear4_yV > 0.95) / nYp > 0.51
@@ -182,7 +189,7 @@ end
 % First 2 years in college
 
 outS.devTransfer = dev_add(tgS.transferMean_cV(iCohort), aggrS.transferMeanYear2, 1, dollarFactor, ...
-   cS.tgTransfer, 'z mean', 'Mean transfer', 'dollar');
+   cS.tgS.tgTransfer, 'z mean', 'Mean transfer', 'dollar');
 
 
 % Mean transfer (per year)
@@ -192,15 +199,15 @@ model_yV = aggrS.ypS.transfer_yV;
 model_qV = aggrS.iqS.transfer_qV;
 data_yV = tgS.transferMean_ycM(:, iCohort);
 data_qV = tgS.transferMean_qcM(:, iCohort);
-if cS.tgPenalizeLargeTransfers == 0
+if cS.tgS.tgPenalizeLargeTransfers == 0
    model_yV = min(model_yV, data_yV);
    model_qV = min(model_qV, data_qV);
 end
    
 outS.devTransferYp = dev_add(data_yV, model_yV, 1, dollarFactor, ...
-   cS.tgTransferYp, 'z/yp', 'Mean transfer by $y$ quartile', 'dollar');
+   cS.tgS.tgTransferYp, 'z/yp', 'Mean transfer by $y$ quartile', 'dollar');
 outS.devTransferIq = dev_add(data_qV, model_qV, 1, dollarFactor, ...
-   cS.tgTransferIq, 'z/iq', 'Mean transfer by IQ quartile', 'dollar');
+   cS.tgS.tgTransferIq, 'z/iq', 'Mean transfer by IQ quartile', 'dollar');
 
 
 
@@ -208,9 +215,9 @@ outS.devTransferIq = dev_add(data_qV, model_qV, 1, dollarFactor, ...
 % For cohorts when earnings and transfers are not available
 
 outS.devFinEarnShare = dev_add(tgS.finShareS.workShare_cV(iCohort),  aggrS.finS.fracEarnings, ...
-   1, pctFactor, cS.tgFinShares, 'earnShare', 'Share of college costs from earnings', '%.2f');
+   1, pctFactor, cS.tgS.tgFinShares, 'earnShare', 'Share of college costs from earnings', '%.2f');
 outS.devFinLoanShare = dev_add(tgS.finShareS.loanShare_cV(iCohort),  aggrS.finS.fracDebt, ...
-   1, pctFactor, cS.tgFinShares, 'loanShare', 'Share of college costs from loans', '%.2f');
+   1, pctFactor, cS.tgS.tgFinShares, 'loanShare', 'Share of college costs from loans', '%.2f');
 
 
 % *** Overall deviation

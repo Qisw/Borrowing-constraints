@@ -5,7 +5,7 @@ All in year 2010 prices
 Mean earnings by schooling (age 40, thousands):   30.4    42.5    67.8  
 Log skill premiums:   0.34    0.47  
 College cost: mean / std  5.0 / 5.7 
-In college: mean hours: 0.23   mean earnings: NaN 
+In college: mean hours: 0.08   mean earnings: NaN 
 
 By parental income quartile
    Q  ypMean   zMean

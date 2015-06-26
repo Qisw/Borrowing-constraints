@@ -37,12 +37,12 @@ validateattributes(debtS.debtMeanEndOfCollege_scM(~isnan(debtS.debtMeanEndOfColl
 
 %% By IQ
 
-% ********  Fraction with debt by IQ
-
+% At end of college
 nIq = length(cS.iqUbV);
 debtS.debtFracEndOfCollege_qcM = nan([nIq, cS.nCohorts]);
 debtS.debtMeanEndOfCollege_qcM = nan([nIq, cS.nCohorts]);
 
+% Loans of grads at end of college
 debtS.fracGrads_qcM = nan([nIq, cS.nCohorts]);
 debtS.meanGrads_qcM = nan([nIq, cS.nCohorts]);
 
@@ -55,8 +55,6 @@ debtS.meanGrads_qcM(:,icNlsy79) = n79S.grads_mean_loans_byafqt ./ tgS.nlsyCpiFac
 
 
 debtS.debtFracEndOfCollege_qcM(:,tgS.icNlsy79) = n79S.share_with_loans_byafqt;
-% Mean debt not conditional
-% debtV = [6900, 11200, 16300, 22000]' .* tgS.debtFrac_qcM(:,tgS.icNlsy79) ./ 17400 .* 10200;
 debtS.debtMeanEndOfCollege_qcM(:,tgS.icNlsy79) = n79S.mean_loans_byafqt(:) ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
 
 validateattributes(debtS.debtFracEndOfCollege_qcM(~isnan(debtS.debtFracEndOfCollege_qcM)), {'double'}, ...

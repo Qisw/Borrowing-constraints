@@ -74,7 +74,7 @@ for iy = 1 : nyp
    % Mass in college by [iq, j] for the right yp group
    qyS.massColl_qyM(:, iy) = sum(paramS.prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massColl_jV(:)'), 2);
 
-   % Mass in college by [iq, j] for the right yp group
+   % Mass graduating college by [iq, j] for the right yp group
    qyS.massGrad_qyM(:, iy) = sum(paramS.prIq_jM(:, jIdxV) .* (ones([nIq,1]) * massGrad_jV(:)'), 2);
 
    for iIq = 1 : nIq
@@ -91,5 +91,42 @@ for iy = 1 : nyp
       qyS.debtMeanYear4_qyM(iIq, iy) = sum(probV .* debt_tjM(2, jIdxV)');
    end
 end
+
+% Fraction college
+qyS.fracEnter_qyM = qyS.massColl_qyM ./ qyS.mass_qyM;
+% Fraction graduating, NOT conditional on entry
+qyS.fracGrad_qyM = qyS.massGrad_qyM ./ qyS.mass_qyM;
+
+if dbg > 10
+   validateattributes(qyS.fracGrad_qyM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      '>=', 0,  '<=', 1})
+end
+
+
+%% Regression: college entry on [iq, yp] quartiles
+
+for i1 = 1 : 2
+   if i1 == 1
+      wt_qyM = [];
+   elseif i1 == 2
+      wt_qyM = sqrt(qyS.mass_qyM);
+   else
+      error('Invalid');
+   end
+   
+   [betaIq, betaYp] = results_bc1.regress_qy(qyS.fracEnter_qyM, wt_qyM, cS.iqUbV(:), cS.ypUbV(:), dbg);
+   
+   if i1 == 1
+      qyS.betaIq = betaIq;
+      qyS.betaYp = betaYp;
+   elseif i1 == 2
+      qyS.betaIqWeighted = betaIq;
+      qyS.betaYpWeighted = betaYp;
+   else
+      error('Invalid');
+   end
+end
+
+
 
 end

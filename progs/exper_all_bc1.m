@@ -1,10 +1,13 @@
-function exper_all_bc1(setNo, expNo)
+function exper_all_bc1(setNo)
 % Run all experiments that do not require recalibration
+%{
+Need to first calibrate model for all cohorts!
+%}
 
-cS = const_bc1(setNo, expNo);
+cS = const_bc1(setNo);
 
-if expNo == cS.expBase
-   for expNo2 = [104 : 106, 114 : 116]   % Hard coded +++
+for expNo2 = cS.expS.decomposeExpNoM(:)'
+   if ~isnan(expNo2)
       exper_bc1(setNo, expNo2);
    end
 end

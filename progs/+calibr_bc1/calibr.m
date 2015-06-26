@@ -87,6 +87,42 @@ if strcmpi(solverStr, 'fminsearch');
 elseif strcmpi(solverStr, 'none')  ||  strcmpi(solverStr, 'test')
    % No solver. Just generate results.
    solnV = guessV;
+
+elseif strcmpi(solverStr, 'bobyqa')  ||  strcmpi(solverStr, 'cobyla')  ||  strcmpi(solverStr, 'sbplx')  ||  ...
+       strcmpi(solverStr, 'nelder')
+   % *****  NLopt solver
+   % Initialize NLopt
+   if cS.runLocal == 1
+      locationStr = 'local';
+   else
+      locationStr = 'kure';
+   end
+   optim_lh.nlopt_initialize(locationStr);
+   
+   if strcmpi(solverStr, 'bobyqa')
+      optS.algorithm = NLOPT_LN_BOBYQA;
+      optS.initial_step = 1e-2 .* ones(size(guessV));
+   elseif strcmpi(solverStr, 'cobyla')
+      optS.algorithm = NLOPT_LN_COBYLA;
+      optS.initial_step = 1e-2 .* ones(size(guessV));
+   elseif  strcmpi(solverStr, 'sbplx')
+      optS.algorithm = NLOPT_LN_SBPLX;
+   elseif strcmpi(solverStr, 'nelder')
+      optS.algorithm = NLOPT_LN_NELDERMEAD;
+   else
+      error('Invalid');
+   end
+   
+   % Solver options
+   optS.min_objective = @cal_dev_fminsearch;
+   optS.ftol_abs = 1e-2;
+   optS.xtol_abs = 1e-2 .* ones(size(guessV));
+   optS.maxeval  = 1e3;
+   optS.maxtime  = 60 * 3600; % in seconds
+   optS.lower_bounds = cS.pvector.guessMin .* ones(size(guessV));
+   optS.upper_bounds = cS.pvector.guessMax .* ones(size(guessV));
+   
+   [solnV, fVal, exitFlag] = nlopt_optimize(optS, guessV);
 end
 
 
@@ -117,15 +153,14 @@ var_save_bc1(outS, cS.vCalResults, cS);
 var_save_bc1(hhS, cS.vHhSolution, cS);
 var_save_bc1(aggrS, cS.vAggregates, cS);
 
+aggr_bc1.aggr_stats(cS.setNo, cS.expNo);
+
+
 % Generate results
 if ~strcmpi(solverStr, 'test')
    results_all_bc1(cS.setNo, cS.expNo);
 end
 
-% Run all experiments
-if ~strcmpi(solverStr, 'none')  &&  ~strcmpi(solverStr, 'test')
-   exper_all_bc1(cS.setNo, cS.expNo);
-end
 
 
 %% Nested: objective function

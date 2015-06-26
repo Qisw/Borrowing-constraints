@@ -83,6 +83,6 @@ for j = jV(:)'
 end
 
 fclose(fp);
-type(outFn);
+% type(outFn);
 
 end

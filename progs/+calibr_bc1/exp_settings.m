@@ -1,4 +1,4 @@
-function [expS, pvec, doCalV, iCohort] = exp_settings(pvec, cS)
+function [expS, tgS, pvec, doCalV, iCohort] = exp_settings(pvec, cS)
 % Experiment settings
 %{
 By default, non-calibrated params are copied from base expNo
@@ -13,6 +13,9 @@ IN
 OUT
    expS
       struct with experiment settings
+   tgS
+      [] unless cal targets are modified
+      must be copied back into cS if not []
    Items for cS:
       doCalV
          parameters with any value in doCalV are calibrated
@@ -21,6 +24,13 @@ OUT
 %}
 
 expNo = cS.expNo;
+
+% These experiments decompose time series changes into drivers
+% Each column is a cohort
+expS.decomposeExpNoM = [104 : 106; 114 : 116]';
+
+% Do we modify calibration targets?
+tgS = [];
 
 
 %%  Which data based parameters are from another experiment?
@@ -40,9 +50,22 @@ expS.bLimitCohort = [];
 expS.doCalibrate = 1;
 
 
-
-%%  Base experiments: calibrate everything to match all targets
+% The reason for nested functions is an editor bug in Matlab
 if expNo < 100
+   base_exper;
+elseif expNo < 200
+   counterfactuals;
+elseif expNo < 300
+   time_series;
+else
+   error('Invalid');
+end
+
+return;
+
+
+%% Nested:  Base experiments: calibrate everything to match all targets
+function base_exper
    if expNo == cS.expBase
       expS.expStr = 'Baseline';
       % Parameters with these values of doCal are calibrated
@@ -52,17 +75,23 @@ if expNo < 100
    else
       error('Invalid');
    end
+end
    
    
-%%   Counterfactuals
-% Nothing is calibrated. Just run exper_bc1
+   
+%% Nested:   Counterfactuals
+% Nothing is calibrated  EXCEPT prefHS to match college entry.
 % Params are copied from base
-elseif expNo < 200
-   expS.doCalibrate = 0;
-   % Irrelevant
+function counterfactuals
+   expS.doCalibrate = 1;
    doCalV = cS.calExp;
    % Taking parameters from this cohort
    iCohort = cS.iRefCohort;
+
+   % Match overall college entry. Calibrate only 1 param
+   pvec = pvec.calibrate('prefHS', cS.calExp);
+   % Only target school fractions
+   tgS = calibr_bc1.caltg_defaults('onlySchoolFrac');
    
    % Pick out cohort from which counterfactuals are taken
    if expNo < 110
@@ -101,11 +130,12 @@ elseif expNo < 200
    else
       error('Invalid');
    end
+end
    
    
-%% ********  Calibrated experiments
+%% Nested:  Calibrated experiments
 % A subset of params is recalibrated. The rest is copied from baseline
-elseif expNo < 300
+function time_series
    % Now fewer parameters are calibrated
    doCalV = cS.calExp;
    % Calibrate pMean, which is really a truncated data moment
@@ -152,10 +182,7 @@ elseif expNo < 300
    else
       error('Invalid');
    end
-   
-else
-   error('Invalid');
 end
-
+   
 
 end

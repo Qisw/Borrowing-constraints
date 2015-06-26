@@ -57,37 +57,37 @@ for iCohort = 1 : cS.nCohorts
    tbM{ir,1} = 'School fractions';
    tbM{ir,ic} = string_lh.string_from_vector(tgS.frac_scM(:,iCohort), '%.2f');
    
-   ir = ir + 1;
-   tbM{ir,1} = 'Parental income (exp mean log)';
-   tbM{ir,ic} = sprintf('%.1f', exp(tgS.logYpMean_cV(iCohort)) .* dollarFactor);
+   row_add('Parental income (exp mean log)',  exp(tgS.logYpMean_cV(iCohort)),  'dollar');
    
-   ir = ir + 1;
-   tbM{ir,1} = 'College cost (mean)';
-   tbM{ir,ic} = sprintf('%.1f', tgS.pMean_cV(iCohort) .* dollarFactor);
+   row_add('College cost (mean)', tgS.pMean_cV(iCohort), 'dollar');
    
    ir = ir + 1;
    tbM{ir,1} = 'Mean hours worked in college';
    tbM{ir,ic} = sprintf('%.2f', tgS.hoursS.hoursMean_cV(iCohort));
 
-   ir = ir + 1;
-   tbM{ir,1} = 'Mean earnings in college';
-   meanEarn = sum(frac_qV .* tgS.collEarnS.mean_qcM(:,iCohort)) .* dollarFactor;
-   tbM{ir,ic} = sprintf('%.1f', meanEarn);
+   meanEarn = sum(frac_qV .* tgS.collEarnS.mean_qcM(:,iCohort));
+   row_add('Mean earnings in college', meanEarn, 'dollar');
    
    ir = ir + 1;
    tbM{ir,1} = 'Mean transfers in college';
    meanTransfer = sum(frac_qV .* tgS.transferMean_qcM(:,iCohort)) .* dollarFactor;
    tbM{ir,ic} = sprintf('%.1f', meanTransfer);
    
-   ir = ir + 1;
-   tbM{ir,1} = 'Fraction with college debt';
-   debtFrac = sum(frac_qV .* tgS.debtS.debtFracEndOfCollege_qcM(:,iCohort));
-   tbM{ir,ic} = sprintf('%.2f', debtFrac);
+   row_add('Fraction income from work',  tgS.finShareS.workShare_cV(iCohort),  '%.2f');
+   
    
    ir = ir + 1;
-   tbM{ir,1} = 'Mean college debt';
-   debtMean = sum(frac_qV .* tgS.debtS.debtMeanEndOfCollege_qcM(:, iCohort));
-   tbM{ir,ic} = sprintf('%.1f',  debtMean * dollarFactor);
+   tbM{ir,1} = 'College debt';
+   
+   row_add('Borrowing limit',  tgS.kMin_acM(end, iCohort),  'dollar');
+   
+   ir = ir + 1;
+   tbM{ir,1} = 'Fraction CG with college debt';
+   debtFrac = sum(frac_qV .* tgS.debtS.fracGrads_qcM(:,iCohort));
+   tbM{ir,ic} = sprintf('%.2f', debtFrac);
+   
+   debtMean = sum(frac_qV .* tgS.debtS.meanGrads_qcM(:, iCohort));
+   row_add('Mean CG debt', debtMean, 'dollar');
 end
 
 
@@ -96,8 +96,21 @@ end
 tbS.rowUnderlineV = tbS.rowUnderlineV(1 : ir);
 latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'data_summary.tex'), tbM(1:ir,:), 'Caption', 'Label', tbS);
 
+return;
+
+
+%% Nested: Add a row
+   function row_add(descrStr, valueV, fmtStr)
+      ir = ir + 1;
+      tbM{ir, 1} = descrStr;
+      if strcmp(fmtStr, 'dollar')
+         tbM{ir, ic} = output_bc1.formatted_vector(valueV, fmtStr, cS);
+            % string_lh.dollar_format(valueV .* dollarFactor, ',', 0);
+      else
+         tbM{ir, ic} = sprintf(fmtStr, valueV);
+      end
+   end
+
 
 end
 
-
-%% Cohort calculations

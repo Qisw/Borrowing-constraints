@@ -1,0 +1,19 @@
+
+Aggregate statistics
+
+Debt stats computed both ways 
+  Fraction in debt by IQ: 
+    Transfer paid out t=1:       0.00  0.00  0.00  0.00
+    Transfer paid out each t:    0.75  0.90  0.92  0.97
+  Mean in debt by IQ: 
+    Transfer paid out t=1:        0.0   0.0   0.0   0.0
+    Transfer paid out each t:     2.8   3.3   2.7   2.3
+  Fraction in debt by yp: 
+    Transfer paid out t=1:       0.00  0.00  0.00  0.00
+    Transfer paid out each t:    0.91  0.92  0.94  0.91
+  Mean in debt by yp: 
+    Transfer paid out t=1:        0.0   0.0   0.0   0.0
+    Transfer paid out each t:     2.6   2.9   2.4   2.7
+
+Financial stats
+  Fraction of spending paid by earnings: 0.35   debt: 0.00   transfers: 0.63 

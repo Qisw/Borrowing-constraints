@@ -4,6 +4,7 @@ function param_show(saveFigures, setNo, expNo)
 cS = const_bc1(setNo, expNo);
 figS = const_fig_bc1;
 paramS = param_load_bc1(setNo, expNo);
+statsS = var_load_bc1(cS.vAggrStats, cS);
 % aggrS = var_load_bc1(cS.vAggregates, cS);
 % tgS = var_load_bc1(cS.vCalTargets, cS);
 % iCohort = cS.iCohort; 
@@ -42,19 +43,11 @@ end
 %% Endowment correlations
 % By simulation
 if 01
-   % Simulate endowments
-   [abilV, jV, iqV] = calibr_bc1.endow_sim(1e4, paramS, cS);
-%    % IQ classes
-%    nIq = length(cS.iqUbV);
-%    iqClV = distrib_lh.class_assign(iqV, ones(size(iqV)), cS.iqUbV, cS.dbg);
+   corrS = statsS.endowCorrS;
 
-
-   % Correlation matrix
-   varNameV = {'$a$', '$m$', '$IQ$', '$p$', '$\ln(y)$'};
-   corrM = corrcoef([abilV, paramS.m_jV(jV), iqV, paramS.pColl_jV(jV), log(paramS.yParent_jV(jV))]);
-
-   [tbM, tbS] = latex_lh.corr_table(corrM, varNameV);
+   [tbM, tbS] = latex_lh.corr_table(corrS.corrM, corrS.varNameV);
    latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'endow_corr.tex'), tbM, 'Caption', 'Label', tbS);
+   clear corrS;
 end
 
 

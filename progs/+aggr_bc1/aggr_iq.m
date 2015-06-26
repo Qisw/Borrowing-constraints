@@ -1,6 +1,10 @@
 %% By IQ
 function [iqS, debtFracEoc_qV, debtMeanEoc_qV] = aggr_iq(aggrS, hhS, paramS, cS)
 
+% For consistency: copy these
+iqS.fracEnter_qV = aggrS.fracEnter_qV;
+iqS.fracGrad_qV  = aggrS.fracGrad_qV;
+
 nIq = length(cS.iqUbV);
 
 % Mean parental income by IQ quartile (for all)

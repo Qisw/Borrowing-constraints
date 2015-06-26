@@ -6,6 +6,8 @@ For multiple setNos: submit one batch job per calibration
 
 IN:
    solverStr
+      'exper'
+         run all experiments without recalibrating the model
 %}
 % --------------------------------------------
 
@@ -21,8 +23,17 @@ if cS.runLocal == 1
 end
 
 if length(setNoV) == 1
-   % A single job
-   calibr_bc1.calibr(solverStr, setNoV, expNo);
+   if strcmpi(solverStr, 'exper')
+      % Just run experiments
+      % But also calibrate with 'none' so that we are sure to have current base results
+      calibr_bc1.calibr('none', setNoV, cS.expBase);
+      exper_all_bc1(setNoV);
+      
+   else
+      % A single job
+      calibr_bc1.calibr(solverStr, setNoV, expNo);
+   end
+   
 else
    % Multiple jobs
    for setNo = setNoV(:)'

@@ -1,5 +1,6 @@
 function exitFlag = mkdir_lh(dirName, dbg)
 % Make a directory, if it does not exist
+%{
 % Input is a full path
 % Algorithm:
 %  Break path into list of directories
@@ -10,6 +11,7 @@ function exitFlag = mkdir_lh(dirName, dbg)
 %     1: created
 %     0: exists
 %     -1: failed
+%}
 % ------------------------------------------------
 
 if nargin < 2

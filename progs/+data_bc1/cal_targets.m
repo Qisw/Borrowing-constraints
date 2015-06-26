@@ -42,110 +42,10 @@ n79S = n79S.all_targets;
 % CPS data
 tgS.frac_scM = var_load_bc1(cS.vCohortSchooling, cS);
 
+[tgS, schoolS] = data_bc1.school_targets(n79S, tgS, cS);
+tgS.schoolS = schoolS;
+clear schoolS;
 
-% Fraction enter / grad by [iq, yp, cohort]
-%  Currently we only use marginals
-tgS.fracEnter_qycM = nan([nIq, nYp, cS.nCohorts]);
-tgS.fracGrad_qycM  = nan([nIq, nYp, cS.nCohorts]);
-
-% Fraction enter / graduate by IQ
-%  frac grad not conditional on entry
-tgS.fracEnter_qcM = nan([nIq, cS.nCohorts]);
-tgS.fracGrad_qcM  = nan([nIq, cS.nCohorts]);
-tgS.fracEnter_ycM = nan([nYp, cS.nCohorts]);
-tgS.fracGrad_ycM  = nan([nYp, cS.nCohorts]);
-
-
-
-% ***  Early cohorts
-
-for iCohort = 1 : 2
-   bYear = cS.bYearV(iCohort);
-   if abs(bYear - 1940) < 3
-      % Project talent
-      dataFn = 'flanagan 1971.csv';
-   elseif abs(bYear - 1915) < 3
-      % Updegraff
-      dataFn = 'updegraff 1936.csv';
-   else
-      error('Invalid');
-   end
-   
-   loadS = data_bc1.load_income_iq_college(dataFn, setNo);
-
-   tgS.fracEnter_qycM(:,:,iCohort) = loadS.entry_qyM;
-   tgS.fracEnter_qcM(:,iCohort) = loadS.entry_qV;
-   tgS.fracEnter_ycM(:,iCohort) = loadS.entry_yV;
-   if ~isempty(loadS.grad_qyM)
-      tgS.fracGrad_qycM(:,:,iCohort)  = loadS.grad_qyM;
-      tgS.fracGrad_qcM(:,iCohort) = loadS.grad_qV;
-      tgS.fracGrad_ycM(:,iCohort) = loadS.grad_yV;
-   end
-end
-
-% 
-% % HSB data, hsb_fam_income.xlsx
-% fracEnter_yqM = [0.1910305	0.3404084	0.4616973	0.7431248
-%    0.2746048	0.3476628	0.5838453	0.8174849
-%    0.3067916	0.4374966	0.6217784	0.8587366
-%    0.2960698	0.5814796	0.7817845	0.9273478];
-% % Fraction graduate conditional on entry
-% fracGrad_yqM = [0.1987562	0.1296711	0.4773349	0.6385519
-%    0.0779666	0.3380288	0.5016366	0.7053534
-%    0.1137461	0.3146327	0.5340976	0.7627105
-%    0.0291045	0.2856211	0.5979195	0.8423696];
-% fracHSG_yqM = 1 - fracEnter_yqM;
-% fracCG_yqM  = fracEnter_yqM .* fracGrad_yqM;
-% fracCD_yqM  = 1 - fracHSG_yqM - fracCG_yqM;
-% tgS.fracS_qycM(cS.iHSG, :, :, icHSB) = fracHSG_yqM';
-% tgS.fracS_qycM(cS.iCD,  :, :, icHSB) = fracCD_yqM';
-% tgS.fracS_qycM(cS.iCG,  :, :, icHSB) = fracCG_yqM';
-% 
-% validateattributes(tgS.fracS_qycM(:,:,:,icHSB), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-%    '>', 0', '<', 1, 'size', [cS.nSchool, nIq, nYp]})
-
-
-% *****  Nlsy79
-
-tgS.fracEnter_qcM(:, tgS.icNlsy79) = n79S.attend_college_byafqt;
-tgS.fracGrad_qcM(:, tgS.icNlsy79)  = n79S.grad_college_byafqt;
-
-tgS.fracEnter_ycM(:, tgS.icNlsy79) = n79S.attend_college_byinc;
-tgS.fracGrad_ycM(:, tgS.icNlsy79)  = n79S.grad_college_byinc;
-
-for iCohort = 1 : cS.nCohorts
-   if ~isnan(tgS.fracEnter_qcM(1,iCohort))
-      validateattributes(tgS.fracEnter_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-         'positive', '<', 0.9})
-   end
-   if ~isnan(tgS.fracGrad_qcM(1,iCohort))
-      validateattributes(tgS.fracGrad_qcM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-         'positive', '<', 0.8})
-   end
-end
-
-
-% *****  Implied: Fraction by s
-% For samples with micro data
-
-% Fraction in each IQ group
-qFracV = diff([0; cS.iqUbV]);
-for iCohort = 1 : cS.nCohorts
-   % check consistency with cps data +++++
-   if ~isnan(tgS.fracGrad_qcM(1,iCohort))
-      fracEnter = sum(tgS.fracEnter_qcM(:, iCohort) .* qFracV(:));
-      fracGrad  = sum(tgS.fracGrad_qcM(:, iCohort) .* qFracV(:));
-      tgS.frac_scM(:, iCohort) = [1-fracEnter,  fracEnter-fracGrad,  fracGrad];
-
-      % Check
-      validateattributes(tgS.frac_scM(:,iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-         '<', 1, 'size', [cS.nSchool, 1]})
-      pSumV = sum(tgS.frac_scM(:,iCohort));
-      if any(abs(pSumV - 1) > 1e-6)
-         error('Invalid');
-      end
-   end
-end
 
 
 %% Lifetime earnings and scale factors
@@ -156,15 +56,15 @@ end
 
 %% Parental income
 % Scaled to be stationary
-% Also have medians
+% We actually use medians to avoid outlier effects
 
 % Mean log parental income by IQ quartile
 tgS.logYpMean_qcM = nan([nIq, cS.nCohorts]);
 tgS.logYpMean_ycM = nan([nYp, cS.nCohorts]);
 
 % NLSY 79
-tgS.logYpMean_qcM(:, tgS.icNlsy79) = n79S.mean_parent_inc_byafqt - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
-tgS.logYpMean_ycM(:, tgS.icNlsy79) = n79S.mean_parent_inc_byinc  - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
+tgS.logYpMean_qcM(:, tgS.icNlsy79) = n79S.median_parent_inc_byafqt - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
+tgS.logYpMean_ycM(:, tgS.icNlsy79) = n79S.median_parent_inc_byinc  - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
 
 if cS.dbg > 10
    idxV = find(~isnan(tgS.logYpMean_qcM(1,:)));
@@ -181,7 +81,7 @@ end
 % tgS.logYpStd_cV  = nan([cS.nCohorts, 1]);
 
 % Assumed time invariant
-tgS.logYpMean_cV = n79S.mean_parent_inc .* ones([cS.nCohorts, 1]) - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
+tgS.logYpMean_cV = n79S.median_parent_inc .* ones([cS.nCohorts, 1]) - log(tgS.nlsyCpiFactor) - log(cS.unitAcct);
 % Std log(yp) - no need to account for units
 tgS.logYpStd_cV  = n79S.sd_parent_inc .* ones([cS.nCohorts, 1]); 
 
@@ -388,50 +288,30 @@ function collEarnS = college_earn_tg(n79S, tgS, cS)
    % Average earnings
    %  should be 1st 2 years in college
    collEarnS.mean_qcM = nan([nIq, cS.nCohorts]);
-   collEarnS.mean_qcM(:, tgS.icNlsy79) = n79S.mean_earnings_byafqt ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
+   collEarnS.mean_qcM(:, tgS.icNlsy79) = n79S.median_earnings_2yr_byafqt ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
 
    collEarnS.mean_ycM = nan([nYp, cS.nCohorts]);
-   collEarnS.mean_ycM(:, tgS.icNlsy79) = n79S.mean_earnings_byinc ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
+   collEarnS.mean_ycM(:, tgS.icNlsy79) = n79S.median_earnings_2yr_byinc ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
 
-
-   % % Stats by [year in college, cohort]
-   % collEarnS.mean_tcM = nan([4, cS.nCohorts]);
-   % collEarnS.std_tcM  = nan([4, cS.nCohorts]);
-   % collEarnS.nObs_tcM = nan([4, cS.nCohorts]);
-   % 
-   % % Data from gradpred paper (NELS:88), year 2000 prices
-   % meanV = [4175	4789	6031	6440] ./ hsbCpiFactor ./ cS.unitAcct;
-   % stdV  = [4100	4465	5425	5864] ./ hsbCpiFactor ./ cS.unitAcct;
-   % nObsV = [1951	1662	1353	1202];
-   % 
-   % collEarnS.mean_tcM(:, icHSB) = meanV;
-   % collEarnS.std_tcM(:, icHSB)  = stdV;
-   % collEarnS.nObs_tcM(:, icHSB) = nObsV;
-   % 
-   % % Invented +++
-   % collEarnS.mean_tcM = collEarnS.mean_tcM(:, icHSB) * ones([1, cS.nCohorts]);
-   % collEarnS.std_tcM  = collEarnS.std_tcM(:, icHSB)  * ones([1, cS.nCohorts]);
-   % collEarnS.nObs_tcM = collEarnS.nObs_tcM(:, icHSB) * ones([1, cS.nCohorts]);
-   % 
-   % validateattributes(collEarnS.mean_tcM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   %    '>', 500 ./ cS.unitAcct,  '<', 1e4 ./ cS.unitAcct})
-   % validateattributes(collEarnS.std_tcM,  {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   %    '>', 500 ./ cS.unitAcct,  '<', 1e4 ./ cS.unitAcct})
 
 
    % ********  Average earnings across all students
 
-   collEarnS.mean_cV = mean_by_yp(collEarnS.mean_ycM, tgS.fracEnter_ycM, cS);
+   collEarnS.mean_cV = nan([cS.nCohorts, 1]);
+   collEarnS.mean_cV(tgS.icNlsy79) = n79S.median_earnings_2yr ./ tgS.nlsyCpiFactor ./ cS.unitAcct;
+   
+   
+   % Where missing: impute from values by yp
+   for iCohort = 1 : cS.nCohorts
+      if isnan(collEarnS.mean_cV(iCohort))  &&  ~isnan(collEarnS.mean_ycM(1,iCohort))
+         collEarnS.mean_cV(iCohort) = mean_by_yp(collEarnS.mean_ycM(:,iCohort), tgS.fracEnter_ycM(:,iCohort), cS);
 
-   % Check
-   % Alternative calculation
-   mean_cV = mean_by_yp(collEarnS.mean_qcM, tgS.fracEnter_qcM, cS);
-   idxV = find(~isnan(collEarnS.mean_cV));
-   for iCohort = idxV(:)'
-      validateattributes(collEarnS.mean_cV(iCohort), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
-      maxDiff = max(abs(mean_cV(idxV) - collEarnS.mean_cV(idxV)) ./ collEarnS.mean_cV(idxV));
-      if maxDiff > 2e-2
-         error_bc1('Mean earnings not consistent', cS);
+         % Check
+         % Alternative calculation
+         meanAlt = mean_by_yp(collEarnS.mean_qcM(:,iCohort), tgS.fracEnter_qcM(:,iCohort), cS);
+         if abs(meanAlt / collEarnS.mean_cV(iCohort) - 1) > 1e-2
+            error_bc1('Mean earnings not consistent', cS);
+         end
       end
    end
 
