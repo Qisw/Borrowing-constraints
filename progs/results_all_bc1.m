@@ -5,6 +5,8 @@ cS = const_bc1(setNo, expNo);
 paramS = param_load_bc1(setNo, expNo);
 saveFigures = 1;
 
+% Make dirs
+helper_bc1.mkdir(setNo, expNo);
 % If on the server: delete all existing out files
 if cS.runLocal == 0
    delete(fullfile(cS.outDir, '*.*'));

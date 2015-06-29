@@ -65,6 +65,14 @@ end
 
 %% Preferences: Derived
 
+if ~isempty(cS.expS.prefHsExpNo)
+   % prefHS from another experiment
+   c2S = const_bc1(cS.setNo, cS.expS.prefHsExpNo);
+   param2S = var_load_bc1(c2S.vParams, c2S);
+   paramS.prefHS = param2S.prefHS;
+   clear param2S;
+end
+
 if cS.ucCurvatureSame == 1
    % Same curvature of preferences work / college
    paramS.workSigma = paramS.prefSigma;
@@ -103,7 +111,28 @@ paramTgS.pMean = tgS.pMean_cV(iCohort);
 paramTgS.pStd  = tgS.pStd_cV(iCohort);
 
 
+%% School attainment
+
+
+% Which cohorts schooling to match (for experiments)
+if isempty(cS.expS.schoolFracCohort)
+   ic = iCohort;
+else
+   ic = cS.expS.schoolFracCohort;
+end
+paramTgS.frac_sV = tgS.frac_scM(:, ic);
+clear ic;
+
+
 %% Endowments
+
+if ~isempty(cS.expS.puWeightExpNo)
+   % Take altruism from another cohort
+   c2S = const_bc1(cS.setNo, cS.expS.puWeightExpNo);
+   param2S = var_load_bc1(c2S.vParams, c2S);
+   paramS.puWeightMean = param2S.puWeightMean;
+   clear param2S;
+end
 
 
 % All types have the same probability

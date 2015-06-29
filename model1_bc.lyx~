@@ -2288,36 +2288,6 @@ college costs (need to recalibrate that one parameter to match 1 target)
 
 \end_deeper
 \begin_layout Enumerate
-Replicate all data for a cohort
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-recalibrate 
-\begin_inset Formula $\prefHS$
-\end_inset
-
-, signal precision, 
-\begin_inset Formula $\puWeight$
-\end_inset
-
-, 
-\begin_inset Formula $\hat{e}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-also calibrate 
-\begin_inset Formula $\mu_{p}$
-\end_inset
-
- (because it directly matches a data moment)
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
 Hold all parameters fixed, except those taken directly from data (e.g.
  college costs, earnings profiles and 
 \begin_inset Formula $\hat{e}$

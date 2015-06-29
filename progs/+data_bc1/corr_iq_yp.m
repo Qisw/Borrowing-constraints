@@ -1,6 +1,9 @@
 function corr_iq_yp(setNo)
 % Compute correlation of iq and fam income
 % For all samples
+%{
+Change: write output to a file
+%}
 
 cS = const_bc1(setNo);
 

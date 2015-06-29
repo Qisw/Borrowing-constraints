@@ -42,6 +42,10 @@ IN:
           If 1st has one on left, then last has one on right
        .colWidthV
           Column width in inches. Set to <= 0 to ignore for particular columns
+         createTextFile
+            also create a text file with the contents of the table (as shown by showOnScreen)?
+            default: true
+            works only if fid is a file name
 %}
 
 %% Input check
@@ -65,6 +69,7 @@ if ischar(fid)
    end
 else
    closeFileAtEnd = 0;
+   fPath = [];
 end
 
 
@@ -96,6 +101,9 @@ if ~isfield(tbS, 'showOnScreen')
 end
 if ~isfield(tbS, 'colLineV')
    tbS.colLineV = zeros(1, nCols);
+end
+if ~isfield(tbS, 'createTextFile')
+   tbS.createTextFile = true;
 end
 
 
@@ -167,10 +175,6 @@ if tbS.floating == 1
 end
 
 
-if tbS.showOnScreen == 1
-   text_table_lh(dataM, tbS);
-end
-
 
 %% Clean up
 
@@ -179,5 +183,21 @@ if closeFileAtEnd == 1
    [~, fName] = fileparts(fPath);
    disp(['Saved table ', fName]);
 end
+
+
+if tbS.showOnScreen == 1
+   latex_lh.text_table_lh(dataM, tbS);
+end
+
+% Also create text file?
+if ~isempty(fPath)  &&  tbS.createTextFile
+   [fDir, fName] = fileparts(fPath);
+   fid2 = fopen(fullfile(fDir, [fName, '.txt']), 'w');
+   tbS.fp = fid2;
+   latex_lh.text_table_lh(dataM, tbS);
+   fclose(fid2);
+end
+
+
 
 end

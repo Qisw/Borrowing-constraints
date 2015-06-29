@@ -35,7 +35,7 @@ for iCohort = 1 : length(cS.bYearV)
    figures_lh.axis_range_lh([NaN, NaN, 0, yMax]);
    output_bc1.fig_format(fh, 'line');
    
-   output_bc1.fig_save(sprintf('earn_profile_coh%i', cS.bYearV(iCohort)), saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.dataOutDir, sprintf('earn_profile_coh%i', cS.bYearV(iCohort))), saveFigures, cS);
 end
 
 

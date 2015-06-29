@@ -94,7 +94,7 @@ end
 %% Write table
 
 tbS.rowUnderlineV = tbS.rowUnderlineV(1 : ir);
-latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'data_summary.tex'), tbM(1:ir,:), 'Caption', 'Label', tbS);
+latex_lh.latex_texttb_lh(fullfile(cS.dataOutDir, 'data_summary.tex'), tbM(1:ir,:), 'Caption', 'Label', tbS);
 
 return;
 

@@ -47,7 +47,7 @@ outS.devV = devvect(100);
 %% College outcomes
 
 % Overall
-outS.devFracS = dev_add(tgS.frac_scM(:, iCohort), aggrS.frac_sV, 1, pctFactor, cS.tgS.tgFracS, ...
+outS.devFracS = dev_add(paramS.tgS.frac_sV, aggrS.frac_sV, 1, pctFactor, cS.tgS.tgFracS, ...
    'frac s', 'Fraction by schooling', '%.2f');
 
 % by IQ

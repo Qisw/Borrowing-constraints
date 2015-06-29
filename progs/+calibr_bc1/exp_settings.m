@@ -1,4 +1,4 @@
-function [expS, tgS, pvec, doCalV, iCohort] = exp_settings(pvec, cS)
+function [expS, tgS, pvec, doCalV, iCohort] = exp_settings(pvecIn, cS)
 % Experiment settings
 %{
 By default, non-calibrated params are copied from base expNo
@@ -24,10 +24,13 @@ OUT
 %}
 
 expNo = cS.expNo;
+pvec = pvecIn;
 
 % These experiments decompose time series changes into drivers
 % Each column is a cohort
-expS.decomposeExpNoM = [104 : 106; 114 : 116]';
+expS.decomposeExpNoM = [114 : 117; 104 : 107]';
+% Decomposition: cumulative changes
+expS.decomposeCumulExpNoM = [134 : 138; 124 : 128]';
 
 % Do we modify calibration targets?
 tgS = [];
@@ -45,6 +48,12 @@ expS.collCostExpNo = [];
 % Cohort from which borrowing limits are taken
 %  Never calibrated
 expS.bLimitCohort = [];
+% Target school fractions (tgS.frac_scM) taken from another cohort
+expS.schoolFracCohort = [];
+% Parental altruism taken from this cohort
+expS.puWeightExpNo = [];
+% Pref for HS from another experiment
+expS.prefHsExpNo = [];
 
 % Does this experiment require recalibration?
 expS.doCalibrate = 1;
@@ -96,8 +105,18 @@ function counterfactuals
    % Pick out cohort from which counterfactuals are taken
    if expNo < 110
       cfBYear = 1940;   % Project talent
+      baseExpNo = 100;
    elseif expNo < 120
       cfBYear = 1915;   % Updegraff
+      baseExpNo = 110;
+   elseif expNo < 130
+      % Cumulative changes: Project Talent
+      cfBYear = 1940;  
+      baseExpNo = 120;
+   elseif expNo < 140
+      % Cumulative changes: Project Talent
+      cfBYear = 1915;  
+      baseExpNo = 130;
    else
       error('Invalid');
    end
@@ -106,26 +125,74 @@ function counterfactuals
    [~,cfCohort] = min(abs(cS.bYearV - cfBYear)); 
    cfExpNo = cS.bYearExpNoV(cfCohort); 
 
-   if any(expNo == [103, 113])
-      expS.expStr = 'Replicate base exper';    % for testing
-      expS.earnExpNo = cS.expBase;
-      expS.bLimitCohort = iCohort;
-      expS.collCostExpNo = cS.expBase;
+   
+   if any(expNo == expS.decomposeExpNoM(:))
+      % ------  Change one param at a time
+      if any(expNo == [103, 113])
+         expS.expStr = 'Replicate base exper';    % for testing
+         expS.earnExpNo = cS.expBase;
+         expS.bLimitCohort = iCohort;
+         expS.collCostExpNo = cS.expBase;
 
-   elseif any(expNo == [104, 114])
-      % Take pvEarn_asM from cfExpNo
-      expS.expStr = 'Only change earn profiles'; 
-      expS.earnExpNo = cfExpNo;
+      elseif any(expNo == [104, 114])
+         % Take pvEarn_asM from cfExpNo
+         expS.expStr = 'Only change earn profiles'; 
+         expS.earnExpNo = cfExpNo;
 
-   elseif any(expNo == [105, 115])
-      expS.expStr = 'Only change bLimit';    % when not recalibrated
-      expS.bLimitCohort = cfCohort;
+      elseif any(expNo == [105, 115])
+         expS.expStr = 'Only change bLimit';    % when not recalibrated
+         expS.bLimitCohort = cfCohort;
 
-   elseif any(expNo == [106, 116])
-      % Change college costs
-      expS.expStr = 'College costs';
-      % Need to calibrate everything for that cohort. Then impose pMean from there
-      expS.collCostExpNo = cfExpNo;
+      elseif any(expNo == [106, 116])
+         % Change college costs
+         expS.expStr = 'Change college costs';
+         % Need to calibrate everything for that cohort. Then impose pMean from there
+         expS.collCostExpNo = cfExpNo;
+
+      elseif any(expNo == [107, 117]);
+         %  Target schooling of cf cohort
+         expS.expStr = 'Change schooling';
+         expS.schoolFracCohort = cfCohort;
+      
+      else
+         error('Invalid');
+      end
+      
+   elseif any(expNo == expS.decomposeCumulExpNoM(:))
+      % -----  Cumulative changes   
+      % Always adjust prefHS to keep schooling constant (for ease of interpretation)
+      eDiff = expNo - baseExpNo;
+      if eDiff >= 4
+         % Change college costs
+         expS.expStr = 'Change college costs';
+         % Need to calibrate everything for that cohort. Then impose pMean from there
+         expS.collCostExpNo = cfExpNo;
+      end
+      if eDiff >= 5
+         expS.expStr = 'Also change bLimit';    % when not recalibrated
+         expS.bLimitCohort = cfCohort;
+      end
+      if eDiff >= 6
+         % Take pvEarn_asM from cfExpNo
+         expS.expStr = 'Only change earn profiles'; 
+         expS.earnExpNo = cfExpNo;
+      end
+      if eDiff >= 7
+         % Parental altruism
+         expS.expStr = 'Also change parental altruism';
+         expS.puWeightExpNo = cfExpNo;
+         pvec = pvec.calibrate('puWeightMean', cS.calNever);
+      end
+      if eDiff >= 8
+         %  Target schooling of cf cohort
+         expS.expStr = 'Also change schooling';
+         expS.schoolFracCohort = cfCohort;
+         expS.prefHsExpNo = cfExpNo;
+         % Now nothing is calibrated anymore
+         expS.doCalibrate = 0;
+         pvec = pvec.calibrate('prefHS', cS.calNever);
+      end
+      
       
    else
       error('Invalid');
@@ -149,7 +216,7 @@ function time_series
       expS.expStr = sprintf('Cohort %i', cS.bYearV(iCohort));
       
       % Signal noise
-      pvec = pvec.calibrate('alphaAM', cS.calExp);
+      % pvec = pvec.calibrate('alphaAM', cS.calExp);
       % Match transfers
       pvec = pvec.calibrate('puWeightMean', cS.calExp);
       % Match overall college entry

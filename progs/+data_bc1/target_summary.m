@@ -4,7 +4,7 @@ function target_summary(iCohort, setNo)
 cS = const_bc1(setNo);
 tgS = var_load_bc1(cS.vCalTargets, cS);
 
-outFn = fullfile(cS.tbDir, sprintf('target_summary_coh%i.txt', cS.bYearV(iCohort)));
+outFn = fullfile(cS.dataOutDir, sprintf('target_summary_coh%i.txt', cS.bYearV(iCohort)));
 fp = fopen(outFn, 'w');
 
 nYp = length(cS.ypUbV);

@@ -50,7 +50,7 @@ end
 
 %% Write table
 
-latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'fit.tex'), tbM, 'Caption', 'Label', tbS);
+latex_lh.latex_texttb_lh(fullfile(cS.fitDir, 'fit.tex'), tbM, 'Caption', 'Label', tbS);
 
 
 end

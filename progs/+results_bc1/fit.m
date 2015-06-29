@@ -25,7 +25,7 @@ if 1
          legend({'Model', 'Data'}, 'location', 'northwest');
          figures_lh.axis_range_lh([NaN NaN 0 1]);
          output_bc1.fig_format(fh, 'bar');
-         output_bc1.fig_save(['fit_', figFnV{iPlot}], saveFigures, cS);
+         output_bc1.fig_save(fullfile(cS.fitDir, figFnV{iPlot}), saveFigures, cS);
       end
    end
 end

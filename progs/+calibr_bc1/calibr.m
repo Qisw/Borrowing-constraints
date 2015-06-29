@@ -7,6 +7,10 @@ Checked: 2015-Mar-19
 %}
 
 cS = const_bc1(setNo, expNo);
+
+% Make dirs
+helper_bc1.mkdir(setNo, expNo);
+
 % Load param guesses. Impose exogenous params. Copy params from baseline if needed
 paramS = param_load_bc1(setNo, expNo);
 tgS = var_load_bc1(cS.vCalTargets, cS);
@@ -54,35 +58,30 @@ if 0
          warning('Small change');
       end
    end
-   keyboard;  
+   keyboard;
 end
 
 
 %% Optimization
 
-if cS.runParallel == 1
-   if cS.runLocal == 1
-      % new syntax
-      pPool = gcp('nocreate');
-      if isempty(pPool)
-         pPool = parpool(cS.parProfileStr, cS.nNodes);
-      end
-   else
-      % old syntax
-      if isempty(cS.parProfileStr)
-         % Default profile
-         matlabpool(cS.nNodes);
-      else
-         matlabpool(cS.parProfileStr, cS.nNodes);
-      end
-   end
-end
+helper_bc1.parpool_open(cS);
 
-if strcmpi(solverStr, 'fminsearch');
+if strcmpi(solverStr, 'fminsearch')   % &&  (length(guessV) > 1)
    optS = optimset('fminsearch');
    optS.TolFun = 1e-2;
    optS.TolX = 1e-2;
    [solnV, fVal, exitFlag] = fminsearch(@cal_dev_fminsearch, guessV, optS);
+
+
+% fminbnd fails b/c it gets stuck at college entry rate = 1
+% elseif strcmpi(solverStr, 'fminbnd')  ||  strcmpi(solverStr, 'fminsearch')
+%    % Also when some solvers are called with 1 guess
+%    optS = optimset('fminbnd');
+%    optS.TolFun = 1e-2;
+%    optS.TolX = 1e-2;
+%    [solnV, fVal, exitFlag] = fminbnd(@cal_dev_nested, cS.guessLb * ones(size(guessV)), ...
+%       cS.guessUb * ones(size(guessV)), optS);
+
 
 elseif strcmpi(solverStr, 'none')  ||  strcmpi(solverStr, 'test')
    % No solver. Just generate results.
@@ -98,7 +97,7 @@ elseif strcmpi(solverStr, 'bobyqa')  ||  strcmpi(solverStr, 'cobyla')  ||  strcm
       locationStr = 'kure';
    end
    optim_lh.nlopt_initialize(locationStr);
-   
+
    if strcmpi(solverStr, 'bobyqa')
       optS.algorithm = NLOPT_LN_BOBYQA;
       optS.initial_step = 1e-2 .* ones(size(guessV));
@@ -112,7 +111,7 @@ elseif strcmpi(solverStr, 'bobyqa')  ||  strcmpi(solverStr, 'cobyla')  ||  strcm
    else
       error('Invalid');
    end
-   
+
    % Solver options
    optS.min_objective = @cal_dev_fminsearch;
    optS.ftol_abs = 1e-2;
@@ -121,7 +120,7 @@ elseif strcmpi(solverStr, 'bobyqa')  ||  strcmpi(solverStr, 'cobyla')  ||  strcm
    optS.maxtime  = 60 * 3600; % in seconds
    optS.lower_bounds = cS.pvector.guessMin .* ones(size(guessV));
    optS.upper_bounds = cS.pvector.guessMax .* ones(size(guessV));
-   
+
    [solnV, fVal, exitFlag] = nlopt_optimize(optS, guessV);
 end
 
@@ -133,17 +132,10 @@ end
 
 fprintf('Calibration done. Terminal deviation: %.3f \n', dev);
 
-
-% If a parallel pool is open: close it
-if cS.runLocal == 1
-   % new syntax
-   delete(gcp('nocreate'));
-else
-   % old syntax
-   if matlabpool('size') > 0
-      matlabpool close;
-   end
+if cS.runLocal == 0
+   helper_bc1.parpool_close(cS);
 end
+
 
 
 %% Save
@@ -167,7 +159,7 @@ end
    function [dev, param2S] = cal_dev_nested(guessV)
       %fprintf('  %.3f  ', guessV(1:8));
       %fprintf('\n');
-      
+
       % Extract the guesses
       param2S = cS.pvector.guess_extract(guessV, paramS, doCalV);
       param2S = param_derived_bc1(param2S, cS);

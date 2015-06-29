@@ -27,13 +27,6 @@ if 01
    % Calibrate for base cohort (all params)
    calibr_bc1.calibr('none', setNo, cS.expBase);
    
-   % Calibrate time varying parameters for other cohorts
-   for iCohort = 1 : cS.nCohorts
-      if ~isnan(cS.bYearExpNoV(iCohort))
-         calibr_bc1.calibr('none', setNo, cS.bYearExpNoV(iCohort));
-      end
-   end
-   
    % Run all experiments that do not require recalibration
    % Needs to be done after calibrating for all cohorts!
    exper_all_bc1(setNo);
@@ -46,7 +39,7 @@ if 0
    % results_all_bc1(setNo, cS.expBase);
 
    % Show results for experiments
-   exper_results_bc1(setNo);
+   exper_results_bc1('all', setNo);
 end
 
 

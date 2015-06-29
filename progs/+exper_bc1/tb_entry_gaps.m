@@ -1,4 +1,4 @@
-function tb_entry_gaps(tbFn, expNoV, cS)
+function tb_entry_gaps(expNoV, outDir, cS)
 % Gap in entry rates by [iq, yp]
 %{ 
 Alternative to the regressions
@@ -30,5 +30,5 @@ Alternative to the regressions
       tbM(ir, :) = {'Data',  sprintf(fmtStr, dataIqV(ix)), sprintf(fmtStr, dataYpV(ix))};
    end
    
-   latex_lh.latex_texttb_lh(fullfile(cS.tbDir, [tbFn, '_entry_gap.tex']), tbM, 'Caption', 'Label', tbS);
+   latex_lh.latex_texttb_lh(fullfile(outDir, 'entry_gap.tex'), tbM, 'Caption', 'Label', tbS);
 end

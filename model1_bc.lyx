@@ -2296,6 +2296,18 @@ Hold all parameters fixed, except those taken directly from data (e.g.
 , borrowing limits)
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+Also vary 
+\begin_inset Formula $\prefHS$
+\end_inset
+
+ so that model matches schooling.
+ Otherwise the college premium produces a large change in schooling, which
+ makes results hard to interpret.
+\end_layout
+
+\end_deeper
 \begin_layout Section
 Notes
 \end_layout

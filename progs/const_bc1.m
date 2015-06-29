@@ -11,7 +11,7 @@ Checked: 2015-Mar-18
 % -----------------------------
 
 % Default set and exp numbers
-cS.setDefault = 1;
+cS.setDefault = 7;
 cS.expBase = 1;
 if isempty(setNo)
    setNo = cS.setDefault;
@@ -260,7 +260,7 @@ cS.tgS = calibr_bc1.caltg_defaults('default');
 
 %% Parameter sets
 
-if setNo == cS.setDefault
+if setNo == 1
    cS.setStr = 'Default';
    cS.iCohort = cS.iRefCohort;
    
@@ -370,7 +370,14 @@ end
 cS.modelDir = fullfile(cS.baseDir, 'model1');
 cS.progDir = fullfile(cS.modelDir, 'progs');
 cS.matDir  = fullfile(cS.modelDir, 'mat', setStr, expStr);
-cS.outDir  = fullfile(cS.modelDir, 'out', setStr, expStr);
+cS.setOutDir = fullfile(cS.modelDir, 'out', setStr);
+cS.outDir  = fullfile(cS.setOutDir, expStr);
+% Within an experiment: show fit
+cS.fitDir  = fullfile(cS.outDir, 'fit');
+% Show data
+cS.dataOutDir = fullfile(cS.outDir, 'data');
+% Parameters
+cS.paramDir = fullfile(cS.outDir, 'params');
 cS.figDir  = cS.outDir;
 cS.tbDir   = cS.outDir;
 cS.sharedDir = fullfile(cS.modelDir, 'shared');
