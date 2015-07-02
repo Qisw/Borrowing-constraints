@@ -12,7 +12,7 @@ hhS = var_load_bc1(cS.vHhSolution, cS);
 sortM = sortrows([aggrS.prGrad_jV, (1 : cS.nTypes)']);
 jV = sortM(1 : 10 : cS.nTypes, 2);
 
-outFn = fullfile(cS.outDir, 'hh_histories.txt');
+outFn = fullfile(cS.hhDir, 'hh_histories.txt');
 fp = fopen(outFn, 'w');
 
 for j = jV(:)'

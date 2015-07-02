@@ -2,14 +2,15 @@
 -------------------------------------------------------------------------------------------
                                 Description                   Model                    Data
 -------------------------------------------------------------------------------------------
-                      Fraction by schooling        0.72, 0.16, 0.12        0.64, 0.19, 0.17
-   Fraction entering college by IQ quartile  0.15, 0.22, 0.33, 0.44  0.16, 0.18, 0.29, 0.36
-    Fraction entering college by y quartile  0.16, 0.25, 0.34, 0.38  0.07, 0.18, 0.31, 0.59
+                      Fraction by schooling        0.66, 0.21, 0.14        0.64, 0.19, 0.17
+   Fraction entering college by IQ quartile  0.25, 0.30, 0.39, 0.43  0.16, 0.18, 0.29, 0.36
+    Fraction entering college by y quartile  0.18, 0.31, 0.46, 0.43  0.07, 0.18, 0.31, 0.59
    Fraction entering college by qy quartile                                                
-                     Lifetime earnings by s        4.91, 4.89, 5.31        4.68, 4.72, 4.91
-                       Mean of college cost                    1.53                    1.31
-                        Std of college cost                    2.85                    1.49
-                      Mean hours in college                    0.11                    0.08
-       Share of college costs from earnings                    0.29                    0.30
+                 Regression entry on iq, yp              0.10, 0.34              0.07, 0.63
+                     Lifetime earnings by s        5.00, 4.97, 5.38        4.68, 4.72, 4.91
+                       Mean of college cost                    4.18                    1.31
+                        Std of college cost                    2.78                    1.49
+                      Mean hours in college                    0.14                    0.08
+       Share of college costs from earnings                    0.32                    0.30
           Share of college costs from loans                    0.00                    0.02
 -------------------------------------------------------------------------------------------

@@ -4,6 +4,10 @@ function [outS, entryS] = load_income_iq_college(sourceFn, setNo)
 Using csv files for each source
 Not all years have graduation rates
 
+IN
+   sourceFn
+      e.g. 'updegraff 1936.csv'
+
 OUT
    entry_qyM, grad_qyM
       entry and graduation rates (not conditional on entry)
@@ -21,14 +25,14 @@ nYp = length(cS.ypUbV);
 
 %% Load csv files
 
-gradDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college grad';
-entryDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college';
+% gradDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college grad';
+% entryDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college';
 
 % Entry rates
-entryS = load_table(fullfile(entryDir, sourceFn), cS);
+entryS = load_table(fullfile(cS.studyEntryDir, sourceFn), cS);
 
 % Graduation rates are still conditional on entry
-gradFn = fullfile(gradDir, sourceFn);
+gradFn = fullfile(cS.studyGradDir, sourceFn);
 if exist(gradFn, 'file')
    gradS  = load_table(gradFn, cS);
 else

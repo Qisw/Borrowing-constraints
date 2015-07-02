@@ -31,7 +31,7 @@ for iCohort = 1 : 2
    bYear = cS.bYearV(iCohort);
    if abs(bYear - 1940) < 3
       % Project talent
-      dataFn = 'flanagan 1971.csv';
+      dataFn = 'flanagan 1971.csv';   
    elseif abs(bYear - 1915) < 3
       % Updegraff
       dataFn = 'updegraff 1936.csv';

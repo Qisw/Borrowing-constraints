@@ -41,7 +41,7 @@ if 1
          figures_lh.axis_range_lh([NaN NaN 0.5 1]);
       end
       output_bc1.fig_format(fh, 'line');
-      output_bc1.fig_save(['hh_', yFigStr, '_', xFigStr], saveFigures, cS);
+      output_bc1.fig_save(fullfile(cS.hhDir, [yFigStr, '_', xFigStr]), saveFigures, cS);
    end
 end
 
@@ -58,7 +58,7 @@ if 1
    xlabel('Parental income');
    ylabel('Transfer (college)');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('z_yp', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.hhDir, 'z_yp'), saveFigures, cS);
 end
 
 
@@ -106,7 +106,7 @@ if 1
       xlabel('MU(c) parent');
       ylabel('Mu(c) child');
       output_bc1.fig_format(fh, 'line');
-      output_bc1.fig_save(['muc_parent_child_' workStudyStr], saveFigures, cS);
+      output_bc1.fig_save(fullfile(cS.hhDir, ['muc_parent_child_' workStudyStr]), saveFigures, cS);
    end
 end
 
@@ -139,7 +139,7 @@ if 1
    ylabel('Marginal utility');
    legend({'Parent', 'College', 'Work'}, 'location', 'northeast');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('pref_mu_c', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.hhDir, 'pref_mu_c'), saveFigures, cS);
 end
 
 

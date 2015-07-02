@@ -51,21 +51,22 @@ if ~isnan(tgS.fracGrad_qycM(1,1,cS.iCohort))  &&  1
          data_qyM = tgS.fracEnter_qycM(:,:,cS.iCohort);
          model_qyM = aggrS.qyS.massColl_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Entry rate';
-         fnStr = 'fit_prob_enter_qy';
+         fnStr = 'qy_prob_enter';
       elseif iPlot == 2
          data_qyM = tgS.fracGrad_qycM(:,:,cS.iCohort);
          model_qyM = aggrS.qyS.massGrad_qyM ./ aggrS.qyS.mass_qyM;
          zStr = 'Graduation rate (unconditional)';
-         fnStr = 'fit_prob_grad_qy';
+         fnStr = 'qy_prob_grad';
       else
          error('Invalid');
       end
       
-      fh = output_bc1.fig_new(saveFigures, figS.figOpt4S);
       % One subplot per yp quartile
+      fh = output_bc1.fig_new(saveFigures, figS.figOpt4S);
       for iy = 1 : length(cS.ypUbV)
          subplot(2,2,iy);
-         bar([model_qyM(:,iy), data_qyM(:,iy)], 'grouped');      
+         bar([model_qyM(:,iy), data_qyM(:,iy)], 'grouped');   
+         figures_lh.axis_range_lh([NaN, NaN, 0, 1]);
          xlabel('IQ quartile');  
          zlabel(zStr);
          if iy == 1
@@ -75,7 +76,24 @@ if ~isnan(tgS.fracGrad_qycM(1,1,cS.iCohort))  &&  1
          output_bc1.fig_format(fh, 'bar');
       end
       
-      output_bc1.fig_save(fnStr, saveFigures, cS);
+      output_bc1.fig_save(fullfile(cS.fitDir, fnStr), saveFigures, cS);
+      
+      
+      % The same with IQ subplots
+      fh = output_bc1.fig_new(saveFigures, figS.figOpt4S);
+      for iIq = 1 : length(cS.iqUbV)
+         subplot(2,2,iIq);
+         bar([model_qyM(iIq,:)', data_qyM(iIq,:)'], 'grouped');      
+         figures_lh.axis_range_lh([NaN, NaN, 0, 1]);
+         xlabel('yp quartile');  
+         zlabel(zStr);
+         if iy == 1
+            legend({'Model', 'Data'});
+         end
+         colormap(figS.colorMap);
+         output_bc1.fig_format(fh, 'bar');
+      end
+      output_bc1.fig_save(fullfile(cS.fitDir, [fnStr, '_byIq']), saveFigures, cS);
    end
 end
 
@@ -91,7 +109,7 @@ if 1
    ylabel('Graduation probability');
    figures_lh.axis_range_lh([NaN NaN 0 1]);
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('prob_grad_j', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.paramDir, 'prob_grad_j'), saveFigures, cS);
 end
 
 
@@ -103,7 +121,7 @@ if 1
    ylabel('Graduation probability');
    figures_lh.axis_range_lh([NaN NaN 0 1]);
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('prob_grad_a', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.paramDir, 'prob_grad_a'), saveFigures, cS);
 end
 
 

@@ -9,7 +9,7 @@ saveFigures = 1;
 helper_bc1.mkdir(setNo, expNo);
 % If on the server: delete all existing out files
 if cS.runLocal == 0
-   delete(fullfile(cS.outDir, '*.*'));
+   results_bc1.delete_results(setNo, expNo, 'noconfirm');
 end
 
 preamble_lh.initialize(var_fn_bc1(cS.vPreambleData, cS), cS.preambleFn);

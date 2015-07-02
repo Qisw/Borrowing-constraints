@@ -9,7 +9,7 @@ statsS = var_load_bc1(cS.vAggrStats, cS);
 % tgS = var_load_bc1(cS.vCalTargets, cS);
 % iCohort = cS.iCohort; 
 nIq = length(cS.iqUbV);
-
+outDir = cS.paramDir;
 
 % Mean ability by m
 mean_abil_j(saveFigures, paramS, cS);
@@ -36,7 +36,7 @@ if 1
    ylabel('Log lifetime earnings gap');
    legend(legendV, 'location', 'south');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('lty_return_a', saveFigures, cS);
+   output_bc1.fig_save(fullfile(outDir, 'lty_return_a'), saveFigures, cS);
 end
 
 
@@ -46,7 +46,7 @@ if 01
    corrS = statsS.endowCorrS;
 
    [tbM, tbS] = latex_lh.corr_table(corrS.corrM, corrS.varNameV);
-   latex_lh.latex_texttb_lh(fullfile(cS.tbDir, 'endow_corr.tex'), tbM, 'Caption', 'Label', tbS);
+   latex_lh.latex_texttb_lh(fullfile(outDir, 'endow_corr.tex'), tbM, 'Caption', 'Label', tbS);
    clear corrS;
 end
 
@@ -71,7 +71,7 @@ if 1
    ylabel('Pr(IQ | m)');
    legend(legendV, 'location', 'north');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('endow_pr_iq_m', saveFigures, cS);
+   output_bc1.fig_save(fullfile(outDir, 'endow_pr_iq_m'), saveFigures, cS);
 end
 
 
@@ -115,7 +115,7 @@ if 1
       ylabel(yStr);
       text(0.1, 0.1, sprintf('Correlation %.2f', corrCoeff), 'Units', 'normalized');
       output_bc1.fig_format(fh, 'line');
-      output_bc1.fig_save(figName, saveFigures, cS);
+      output_bc1.fig_save(fullfile(outDir, figName), saveFigures, cS);
    end
 end
 
@@ -155,5 +155,5 @@ function mean_abil_j(saveFigures, paramS, cS)
    xlabel('m');
    ylabel('E(a|j)');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('endow_eOfa_j', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.paramDir, 'endow_eOfa_j'), saveFigures, cS);
 end

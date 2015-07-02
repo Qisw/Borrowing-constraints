@@ -68,6 +68,11 @@ outS.devFracEnterQy = dev_add(tgS.fracEnter_qycM(:,:, iCohort), aggrS.qyS.fracEn
 outS.devFracGradQy = dev_add(tgS.fracGrad_qycM(:,:, iCohort), aggrS.qyS.fracGrad_qyM, 1, pctFactor, cS.tgS.tgCollegeQy, ...
    'grad/qy',  'Fraction graduating college by qy quartile', '%.2f');
 
+% Regression of entry rate on [iq, yp]
+iWeighted = tgS.schoolS.iUnweighted;
+dataV = [tgS.schoolS.betaIqM(iWeighted, iCohort), tgS.schoolS.betaYpM(iWeighted, iCohort)];
+outS.devRegrIqYp = dev_add(dataV,  [aggrS.qyS.betaIq, aggrS.qyS.betaYp],  1, 2 * pctFactor, cS.tgS.tgRegrIqYp, ...
+   'regr/qy',  'Regression entry on iq, yp',  '%.2f');
 
 
 %% Lifetime earnings

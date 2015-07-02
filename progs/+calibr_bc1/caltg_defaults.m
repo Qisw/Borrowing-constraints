@@ -1,6 +1,5 @@
 function tgS = caltg_defaults(caseStr)
-
-%% Defaults
+% Default: what moments are targeted?
 
 % PV of lifetime earnings by schooling
 tgS.tgPvLty = 1;
@@ -23,6 +22,8 @@ tgS.tgFracEnterYp = 1;
 tgS.tgFracGradYp = 1;
 % Targets by [iq, yp]: entry and graduation rates
 tgS.tgCollegeQy = 1;
+% Regression coefficients of entry on [iq, yp]
+tgS.tgRegrIqYp = 1;
 
 % *****  Parental income
 tgS.tgYpIq = 1;

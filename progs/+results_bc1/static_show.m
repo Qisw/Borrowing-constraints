@@ -21,7 +21,7 @@ xlabel('m');
 ylabel('Leisure');
 figures_lh.axis_range_lh([NaN NaN 0.5 1]);
 output_bc1.fig_format(fh, 'line');
-output_bc1.fig_save('hh_static_j', saveFigures, cS);
+output_bc1.fig_save(fullfile(cS.hhDir, 'static_j'), saveFigures, cS);
 
 
 end

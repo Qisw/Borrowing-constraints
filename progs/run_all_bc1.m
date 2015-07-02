@@ -35,6 +35,8 @@ end
 
 %% Results
 if 0
+   % Use this to delete existing results for clean slate
+   % results_bc1.delete_results(setNo, expNo);
    % Calibration runs this
    % results_all_bc1(setNo, cS.expBase);
 

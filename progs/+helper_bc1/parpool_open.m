@@ -10,11 +10,13 @@ if cS.runParallel == 1
       end
    else
       % old syntax
-      if isempty(cS.parProfileStr)
-         % Default profile
-         matlabpool(cS.nNodes);
-      else
-         matlabpool(cS.parProfileStr, cS.nNodes);
+      if matlabpool('size') < 2
+         if isempty(cS.parProfileStr)
+            % Default profile
+            matlabpool(cS.nNodes);
+         else
+            matlabpool(cS.parProfileStr, cS.nNodes);
+         end
       end
    end
 end

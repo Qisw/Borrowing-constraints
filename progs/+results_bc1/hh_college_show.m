@@ -35,7 +35,7 @@ if 1
       xlabel('k');
       ylabel('Value');
       output_bc1.fig_format(fh, 'line');
-      output_bc1.fig_save(figName, saveFigures, cS);      
+      output_bc1.fig_save(fullfile(cS.hhDir, figName), saveFigures, cS);      
    end
 end
 

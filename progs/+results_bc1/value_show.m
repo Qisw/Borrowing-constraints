@@ -31,7 +31,7 @@ if 1
    linkaxes(axV, 'y');
    ylim([floor(min(vWorkS.value_ksaM(:))), ceil(max(vWorkS.value_ksaM(:)))]);
    
-   output_bc1.fig_save('value_work_abil', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.hhDir, 'value_work_abil'), saveFigures, cS);
 end
 
 
@@ -63,7 +63,7 @@ if 1
    ylim(yRangeV);
 %    figures_lh.axes_same(axV, [NaN, NaN, yRangeV]);
 
-   output_bc1.fig_save('value_work_school', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.hhDir, 'value_work_school'), saveFigures, cS);
    
    
 end

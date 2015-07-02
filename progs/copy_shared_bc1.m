@@ -30,7 +30,8 @@ if ~isempty(dirV)
    if ischar(dirV)
       if strcmpi(dirV, 'all')
          % Copy all
-         dirV = {'export_fig', '+check_lh', '+files_lh', '+latex_lh', '+preamble_lh'};
+         dirV = {'export_fig', '+check_lh', '+files_lh', '+latex_lh', '+preamble_lh', '+string_lh', ...
+            '+struct_lh'};
       else
          error('Invalid dirV');
       end
@@ -53,9 +54,7 @@ if ~isempty(nameV)
             '+random_lh/rand_discrete', ...
             '+regress_lh/regr_stats_lh',  '+regress_lh/lsq_weighted_lh', ...
             '+stats_lh/std_w', ...
-            '+string_lh/dollar_format', '+string_lh/string_from_vector', ...
-            '+struct_lh/comp_struct',  '+struct_lh/merge',  '+struct_lh/show', ...
-            '+vector_lh/midpoints',  '+vector_lh/recode_sequential'};
+            '+vector_lh/extrapolate',  '+vector_lh/midpoints',  '+vector_lh/recode_sequential',  '+vector_lh/splice'};
       else
          error('Invalid nameV');
       end

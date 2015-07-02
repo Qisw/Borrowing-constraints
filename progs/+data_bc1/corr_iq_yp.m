@@ -7,8 +7,7 @@ Change: write output to a file
 
 cS = const_bc1(setNo);
 
-entryDir = '/Users/lutz/Dropbox/borrowing constraints/data/income x iq x college';
-dirV = dir(fullfile(entryDir, '*.csv'));
+dirV = dir(fullfile(cS.studyEntryDir, '*.csv'));
 
 
 

@@ -3,21 +3,21 @@
                                                        Parameter                        Description                     Value
 -----------------------------------------------------------------------------------------------------------------------------
                                                       Endowments                                                             
-   $\alpha_{p,y}, \alpha_{p,m}, \alpha_{y,m}, \alpha_{\omega,m}$             Endowment correlations  $0.19, 0.15, 0.87, 0.56$
-                                                  $\alpha_{a,m}$                 Correlation, $a,m$                    $0.53$
-                                           $\mu_{p}, \sigma_{p}$       Marginal distribution of $p$                $3.8, 4.0$
-                                                   $\sigma_{IQ}$                           IQ noise                    $0.29$
+   $\alpha_{p,y}, \alpha_{p,m}, \alpha_{y,m}, \alpha_{\omega,m}$             Endowment correlations  $0.01, 0.20, 0.74, 0.11$
+                                                  $\alpha_{a,m}$                 Correlation, $a,m$                    $0.70$
+                                           $\mu_{p}, \sigma_{p}$       Marginal distribution of $p$                $3.4, 4.0$
+                                                   $\sigma_{IQ}$                           IQ noise                    $0.37$
                                                      Preferences                                                             
-                                                    $\omega_{l}$                  Weight on leisure                    $0.24$
-                                                    $\omega_{w}$             Weight on u(c) at work                    $6.14$
-                                                   $\varphi_{p}$      Curvature of parental utility                    $0.44$
-                                                $\mu_{\omega,p}$         Weight on parental utility                    $0.31$
+                                                    $\omega_{l}$                  Weight on leisure                    $0.25$
+                                                    $\omega_{w}$             Weight on u(c) at work                    $6.32$
+                                                   $\varphi_{p}$      Curvature of parental utility                    $0.42$
+                                                $\mu_{\omega,p}$         Weight on parental utility                    $0.36$
                                              $\sigma_{\omega,p}$  Std of weight on parental utility                    $0.14$
-                                                    $\bar{\eta}$                  Preference for HS                   $-0.03$
+                                                    $\bar{\eta}$                  Preference for HS                   $-0.04$
                                                      $Max cColl$               Max free consumption                     $0.3$
-                                                     $Max lColl$                   Max free leisure                    $0.18$
+                                                     $Max lColl$                   Max free leisure                    $0.16$
                                                            Other                                                             
-                                                   $\hat{e}_{s}$                   Log skill prices        -0.04, -0.01, 0.44
-                            $\pi_{0}, \pi_{1}, \pi_{a}, \pi_{b}$                 Governing $\pi(a)$  $0.07, 0.90, 2.09, 1.99$
-                                                 $Mean w_{coll}$        Maximum earnings in college                    $27.8$
+                                                   $\hat{e}_{s}$                   Log skill prices        -0.05, -0.02, 0.41
+                            $\pi_{0}, \pi_{1}, \pi_{a}, \pi_{b}$                 Governing $\pi(a)$  $0.07, 0.89, 2.39, 1.90$
+                                                 $Mean w_{coll}$        Maximum earnings in college                    $28.4$
 -----------------------------------------------------------------------------------------------------------------------------
