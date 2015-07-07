@@ -1,10 +1,10 @@
 
-------------------------------------------------------
-      Parameter        Description               Value
-------------------------------------------------------
-     Endowments                                       
-    Preferences                                       
-   $\bar{\eta}$  Preference for HS             $-0.10$
-          Other                                       
-   $\hat{e}{s}$   Log skill prices  -0.33, -0.28, 0.08
-------------------------------------------------------
+----------------------------------------------------
+      Parameter        Description             Value
+----------------------------------------------------
+     Endowments                                     
+    Preferences                                     
+   $\bar{\eta}$  Preference for HS           $-0.15$
+          Other                                     
+   $\hat{e}{s}$   Log skill prices  6.34, 6.38, 6.74
+----------------------------------------------------

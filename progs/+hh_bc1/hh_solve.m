@@ -174,7 +174,7 @@ v0S.k1Coll_jV = min(v1S.kGridV(end), max(v1S.kGridV(1), cS.collLength .* v0S.zCo
 
 % Fraction that enters college
 v0S.probEnter_jV = exp(v0S.vColl_jV ./ paramS.prefScaleEntry) ./ ...
-   (exp(v0S.vColl_jV ./ paramS.prefScaleEntry) + exp((v0S.vWork_jV + paramS.prefHS) ./ paramS.prefScaleEntry));
+   (exp(v0S.vColl_jV ./ paramS.prefScaleEntry) + exp((v0S.vWork_jV + paramS.prefHS_jV) ./ paramS.prefScaleEntry));
 
 % Make sure someone always enters college
 v0S.probEnter_jV = min(0.999, max(1e-3, v0S.probEnter_jV));

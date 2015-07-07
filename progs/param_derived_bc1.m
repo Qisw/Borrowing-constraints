@@ -70,6 +70,8 @@ if ~isempty(cS.expS.prefHsExpNo)
    c2S = const_bc1(cS.setNo, cS.expS.prefHsExpNo);
    param2S = var_load_bc1(c2S.vParams, c2S);
    paramS.prefHS = param2S.prefHS;
+   paramS.dPrefHS = param2S.dPrefHS;
+   paramS.prefHS_jV = param2S.prefHS_jV;
    clear param2S;
 end
 
@@ -159,6 +161,15 @@ mMin = min(paramS.m_jV);
 mMax = max(paramS.m_jV);
 paramS.cColl_jV = (paramS.m_jV - mMin) .* paramS.cCollMax ./ (mMax - mMin);
 paramS.lColl_jV = (paramS.m_jV - mMin) .* paramS.cCollMax ./ (mMax - mMin);
+
+% Preference for high school by type
+if paramS.dPrefHS > 1e-6
+   % prefHS_jV is in prefHS +/- 0.5 * dPrefHS
+   mScaledV = paramS.m_jV ./ (mMax - mMin);
+   paramS.prefHS_jV = paramS.prefHS - mScaledV .* paramS.dPrefHS;
+else
+   paramS.prefHS_jV = paramS.prefHS .* ones([cS.nTypes, 1]);
+end
 
 if cS.dbg > 10
    % Moments of marginal distributions are checked in test fct for endow_grid

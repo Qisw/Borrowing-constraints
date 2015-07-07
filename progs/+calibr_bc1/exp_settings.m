@@ -233,7 +233,7 @@ function time_series
       % Keeping college wage fixed for now
       %pvec = pvec.calibrate('wCollMean', cS.calExp);
       
-   elseif expNo == 205  ||  expNo == 206
+   elseif expNo == 205  ||  expNo == 206  || expNo == 207
       iCohort = 1;
       expS.expStr = sprintf('Cohort %i', cS.bYearV(iCohort));
       
@@ -254,6 +254,10 @@ function time_series
       elseif expNo == 206
          % testing: calibrate graduation rates
          pvec = pvec.calibrate('prGradMax', cS.calExp);   % +++
+      elseif expNo == 207
+         % testing: calibrate prefHS_jV
+         expS.expStr = 'Calibrate prefHS by j';
+         pvec = pvec.calibrate('dPrefHS', cS.calExp);   % +++
       else
          error('Invalid');
       end

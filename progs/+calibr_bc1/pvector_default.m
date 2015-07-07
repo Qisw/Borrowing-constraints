@@ -9,6 +9,8 @@ Experiments can override with calExper
 pvec = pvector(30, cS.doCalValueV);
 
 
+%% Preferences
+
 % Discount factor
 pvec = pvec.change('prefBeta', '\beta', 'Discount factor', 0.98, 0.8, 1.1, cS.calNever);
 % Curvature of u(c) at work
@@ -24,6 +26,7 @@ pvec = pvec.change('prefRho', '\varphi_{l}', 'Curvature of utility', 2, 1, 5, cS
 % Weight on leisure
 pvec = pvec.change('prefWtLeisure', '\omega_{l}', 'Weight on leisure', 0.5, 0.01, 5, cS.calBase);
 
+
 % Parental preferences
 pvec = pvec.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
 % Time varying: to match transfer data
@@ -37,9 +40,8 @@ pvec = pvec.change('prefScaleEntry', '\gamma', 'Preference shock at college entr
 % Pref for working as HSG. Includes leisure. No good scale. +++
 %  Calibrate in experiment to match schooling average
 pvec = pvec.change('prefHS', '\bar{\eta}', 'Preference for HS', 0, -5, 10, cS.calBase);
-% % Tax on HS earnings (a preference shock). 2 parameters. Intercept and slope. Both in (-1,1)
-% pvec = pvec.change('taxHSzero', '\tau{0}', 'Tax on college earnings',   0, -0.6, 0.6, cS.calNever);
-% pvec = pvec.change('taxHSslope',  '\tau{1}', 'Tax on college earnings', 0, -0.8, 0.8, cS.calNever);
+% If not 0: prefHS(j) varies from prefHS - 0.5*dPrefHS to prefHS + 0.5*dPrefHS
+pvec = pvec.change('dPrefHS', '\Delta\bar{\eta}', 'Range of HS preference', 0, 0, 5, cS.calNever);
 
 
 %% Default: endowments

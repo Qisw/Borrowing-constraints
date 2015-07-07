@@ -80,7 +80,7 @@ outS.devRegrIqYp = dev_add(dataV,  [aggrS.qyS.betaIq, aggrS.qyS.betaYp],  1, 2 *
 % Target level for CD
 data_sV = log(paramS.tgS.pvEarn_sV);
 model_sV = aggrS.pvEarnMeanLog_sV;
-outS.devPvLty = dev_add(data_sV(cS.iCD),  model_sV(cS.iCD),  1,  2 * pctFactor, ...
+outS.devPvLty = dev_add(data_sV(cS.iCD),  model_sV(cS.iCD),  1,  1.2 * pctFactor, ...
    cS.tgS.tgPvLty,  'pvLty',  'Lifetime earnings CD',  '%.2f');
 
 % Target premiums relative to dropouts

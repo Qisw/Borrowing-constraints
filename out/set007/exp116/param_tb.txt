@@ -4,7 +4,7 @@
 ------------------------------------------------------
      Endowments                                       
     Preferences                                       
-   $\bar{\eta}$  Preference for HS             $-0.13$
+   $\bar{\eta}$  Preference for HS             $-0.15$
           Other                                       
-   $\hat{e}{s}$   Log skill prices  -0.33, -0.28, 0.08
+   $\hat{e}{s}$   Log skill prices  -0.05, -0.01, 0.40
 ------------------------------------------------------

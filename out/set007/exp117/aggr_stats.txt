@@ -5,7 +5,7 @@ Stats by schooling
 E{a | s}:  -0.25   -0.00   0.87   
 Mean log lifetime earnings, discounted to work start: 
     6.56    6.64    7.24
-    fixed(s):  6.34  6.38  6.74  
+    fixed(s):  13.00  13.04  13.40  
     ability part(s):  0.23  0.26  0.50  
 
 Debt stats computed both ways 

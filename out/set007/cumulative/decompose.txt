@@ -3,9 +3,9 @@
                                                                                    
                              $\beta_{IQ}$  $\beta_{yp}$  $\beta_{IQ}$  $\beta_{yp}$
 -----------------------------------------------------------------------------------
-       Change college costs          0.70          0.04          0.71          0.05
-     Change borrowing limit          0.67          0.08          0.67          0.09
-   Change earnings profiles         -0.62         -0.22          0.63          0.29
-   Change parental altruism         -0.51         -0.28          0.64          0.27
-       Change college entry         -0.00         -0.00          0.66          0.28
+       Change college costs          0.72          0.06          0.70          0.05
+     Change borrowing limit          0.67          0.11          0.68          0.09
+   Change earnings profiles          0.15          0.28          0.40          0.27
+   Change parental altruism          0.16          0.26          0.41          0.24
+       Change college entry          0.17          0.20          0.42          0.24
 -----------------------------------------------------------------------------------

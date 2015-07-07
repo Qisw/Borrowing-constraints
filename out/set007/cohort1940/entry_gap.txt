@@ -6,13 +6,13 @@
                        Model   0.56   0.32
                         Data   0.55   0.20
    Only change earn profiles              
-                       Model   0.60   0.44
+                       Model   0.00  -0.00
                         Data   0.55   0.20
           Only change bLimit              
                        Model   0.54   0.33
                         Data   0.55   0.20
         Change college costs              
-                       Model   0.55   0.31
+                       Model   0.54   0.31
                         Data   0.55   0.20
             Change schooling              
                        Model   0.57   0.33

@@ -2400,6 +2400,105 @@ Counterfactuals: Set selected parameters to values for other cohorts (e.g.
 \end_layout
 
 \begin_layout Subsection
+Years with small college premium
+\end_layout
+
+\begin_layout Standard
+Model fails to match small college premium (or dropout premium is 0).
+\end_layout
+
+\begin_layout Standard
+Reason:
+\end_layout
+
+\begin_layout Itemize
+when college premium gets small, high ability agents stay out of college
+ (which is painful)
+\end_layout
+
+\begin_layout Itemize
+because of selection into graduation, the college premium cannot get too
+ small
+\end_layout
+
+\begin_layout Itemize
+for the same reason, when entry selection is weak, the CD premium goes negative
+\end_layout
+
+\begin_layout Subsubsection
+Modeling dropout
+\end_layout
+
+\begin_layout Standard
+would weaken selection into graduation => CD premium can rise, CG premium
+ can fall
+\end_layout
+
+\begin_layout Subsubsection
+Allow for shallower 
+\begin_inset Formula $\pi\left(\ability\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+tried that - effect was pretty small
+\end_layout
+
+\begin_layout Subsubsection
+Calibrate 
+\begin_inset Formula $\prefScaleEntry$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+tried that - effect pretty small
+\end_layout
+
+\begin_layout Subsubsection
+Psychic costs correlated with 
+\begin_inset Formula $\abilSignal$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and time varying
+\end_layout
+
+\begin_layout Standard
+Idea:
+\end_layout
+
+\begin_layout Standard
+have a fudge factor that allows the model to 
+\begin_inset Quotes eld
+\end_inset
+
+exactly
+\begin_inset Quotes erd
+\end_inset
+
+ match entry by IQ for each cohort
+\end_layout
+
+\begin_layout Standard
+then we could get positive selection with small college premium
+\end_layout
+
+\begin_layout Standard
+Problem:
+\end_layout
+
+\begin_layout Standard
+CD premium would likely remain low
+\end_layout
+
+\begin_layout Subsection
 Parental transfers
 \end_layout
 
