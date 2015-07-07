@@ -5,18 +5,13 @@
 \textclass article
 \begin_preamble
 
-\input{/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set001/exp001/preamble1.tex}
+\input{/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/preamble1.tex}
 
 % Model notation
 
 % Pref shock at college entry
 % \newcommand{\prefShockEntry}{\eta}
 % Params of pi(a) start with this
-\newcommand{\prGradParam}{\pi}
-\newcommand{\age}{d}
-\newcommand{\pvEarn}{Y}
-\newcommand{\cColl}{\bar{c}}
-\newcommand{\lColl}{\bar{l}}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -659,7 +654,7 @@ Choice of
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{HS}\left(z_{w,}j\right)=\max_{z_{w}\ge0}T_{c}u_{p}\left(y_{p}-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(T_{c}z_{w},HS,a\right)|j\right\} 
+V_{HS}\left(j\right)=\max_{z_{w}\ge0}T_{c}u_{p}\left(y_{p}-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(T_{c}z_{w},HS,a\right)|j\right\} 
 \end{equation}
 
 \end_inset
@@ -670,7 +665,7 @@ V_{HS}\left(z_{w,}j\right)=\max_{z_{w}\ge0}T_{c}u_{p}\left(y_{p}-z_{w}\right)+\m
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{entry}\left(z_{c},j\right)=\max_{z_{c}\ge0}T_{c}u_{p}\left(y_{p}-z_{c}\right)+V_{1}\left(T_{c}z_{c},j\right)
+V_{entry}\left(j\right)=\max_{z_{c}\ge0}T_{c}u_{p}\left(y_{p}-z_{c}\right)+V_{1}\left(T_{c}z_{c},j\right)
 \end{equation}
 
 \end_inset
@@ -699,7 +694,7 @@ Entry decision
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\max\left\{ V_{HS}\left(z_{w},j\right)+\prefHS_{c}-\prefScaleEntry\prefShockEntry_{w},V_{entry}\left(z_{c},j\right)-\prefScaleEntry\prefShockEntry_{c}\right\} 
+\max\left\{ V_{HS}\left(j\right)+\prefHS-\prefScaleEntry\prefShockEntry_{w},V_{entry}\left(j\right)-\prefScaleEntry\prefShockEntry_{c}\right\} 
 \end{equation}
 
 \end_inset
@@ -894,7 +889,7 @@ Bellman
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{1}\left(k,j\right)=\max_{k',l}\left(1+\beta\right)u\left(Rk/2+w_{coll}l-p-k'/2,1-l\right)+\beta^{2}V_{m}\left(k',j\right)
+V_{1}\left(k,j\right)=\max_{k',l}\left(1+\beta\right)u\left(Rk/2+w_{coll}l-p_{j}-k'/2+\cColl_{j},1+\lColl_{j}-l\right)+\beta^{2}V_{m}\left(k',j\right)
 \end{equation}
 
 \end_inset
@@ -1028,7 +1023,7 @@ Bellman
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{3}\left(k,j\right)=\max_{k',l}\left(1+\beta\right)u\left(Rk/2+w_{coll}l-p_{j}-k'/2,1-l\right)+\beta^{2}\sum_{a}\Pr\left(a|j,grad\right)V_{w}\left(k',a,CG\right)
+V_{3}\left(k,j\right)=\max_{k',l}\left(1+\beta\right)u\left(Rk/2+w_{coll}l-p_{j}-k'/2+\cColl_{j},1+\lColl_{j}-l\right)+\beta^{2}\sum_{a}\Pr\left(a|j,grad\right)V_{w}\left(k',a,CG\right)
 \end{equation}
 
 \end_inset
@@ -1596,7 +1591,7 @@ Work
 \end_layout
 
 \begin_layout Standard
-CPS measures average lifetime earnings by 
+CPS measures average log lifetime earnings by 
 \begin_inset Formula $\left(s,c\right)$
 \end_inset
 
@@ -1657,6 +1652,33 @@ set
  
 \end_layout
 
+\begin_layout Standard
+Calibration needs to ensure that lifetime earnings are rising in schooling
+ (at least for most agents).
+\end_layout
+
+\begin_layout Standard
+For now impose:
+\end_layout
+
+\begin_layout Enumerate
+Not discounting to age 1, going to school longer raises lifetime earnings
+ for all abilities (a bit strong b/c schooling shortens work lives).
+ That requires 
+\begin_inset Formula $a-\bar{a}\ge0$
+\end_inset
+
+ and 
+\begin_inset Formula $\hat{e}+\bar{Y}$
+\end_inset
+
+ rising in 
+\begin_inset Formula $s$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsection
 Fixed Parameters
 \end_layout
@@ -1699,7 +1721,7 @@ name "tab:Fixed-Model-Parameters"
 \begin_layout Plain Layout
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set001/param_fixed_tb.tex"
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/param_fixed_tb.tex"
 
 \end_inset
 
@@ -1786,7 +1808,7 @@ name "tab:Cal-Model-Parameters"
 \begin_layout Plain Layout
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set001/param_tb.tex"
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/param_tb.tex"
 
 \end_inset
 
@@ -1800,6 +1822,50 @@ filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set001/param_tb.t
 
 \begin_layout Subsection
 Calibration targets for NLSY79 or 97 cohort
+\end_layout
+
+\begin_layout Standard
+Complete summary in this table (showing model fit):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Calibrated Model Parameters
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Cal-Fit"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset include
+LatexCommand include
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/fit/fit.tex"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection

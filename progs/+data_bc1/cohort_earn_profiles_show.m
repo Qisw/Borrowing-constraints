@@ -18,7 +18,7 @@ for iCohort = 1 : length(cS.bYearV)
    hold on;
    
    for iSchool = 1 : cS.nSchool
-      ageV = cS.ageWorkStart_sV(iSchool) : cS.ageMax;
+      ageV = cS.ageWorkStart_sV(iSchool) : cS.ageRetire;
       
       % Complete profile
       iLine = iSchool;

@@ -33,7 +33,7 @@ pvec = pvec.change('alphaPuM', '\alpha_{\omega,m}', 'Correlation, $\omega_{p},m$
 
 
 % Pref shock at entry. For numerical reasons only. Fixed.
-pvec = pvec.change('prefScaleEntry', '\gamma', 'Preference shock at college entry', 0.1, 0.05, 1, cS.calNever);
+pvec = pvec.change('prefScaleEntry', '\gamma', 'Preference shock at college entry', 0.1, 0.05, 0.5, cS.calNever);
 % Pref for working as HSG. Includes leisure. No good scale. +++
 %  Calibrate in experiment to match schooling average
 pvec = pvec.change('prefHS', '\bar{\eta}', 'Preference for HS', 0, -5, 10, cS.calBase);
@@ -102,10 +102,13 @@ pvec = pvec.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0.155,  0.0
 pvec = pvec.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0.194, 0.02, 0.2, cS.calNever);
 
 % Scale factors of lifetime earnings (log)
-pvec = pvec.change('eHatCD', '\hat_{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
-pvec = pvec.change('dEHatHSG', 'd\hat_{e}_{HSG}', 'Skill price gap HSG', -0.1, -3, 0, cS.calBase);
-pvec = pvec.change('dEHatCG',  'd\hat_{e}_{CG}',  'Skill price gap CG',   0.1,  0, 3, cS.calBase);
-% pvec = pvec.change('eHatCG',  '\hat_{e_{CG}}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
+pvec = pvec.change('eHatCD', '\hat{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
+% Lifetime earnings premium (discounted to work start) for lowest ability
+%  Should be < 0 for HSG (going to college raises earnings)
+pvec = pvec.change('dEHatHSG', 'd\hat{e}_{HSG}', 'Skill price gap HSG', -0.1, -1, 0, cS.calBase);
+%  Should be > 0 for CG
+pvec = pvec.change('dEHatCG',  'd\hat{e}_{CG}',  'Skill price gap CG',   0.1, 0, 2, cS.calBase);
+% pvec = pvec.change('eHatCG',  '\hat{e}_{CG}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
 
 %% Other
 

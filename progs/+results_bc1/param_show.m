@@ -18,9 +18,19 @@ mean_abil_j(saveFigures, paramS, cS);
 
 %% Return to schooling by ability
 if 1
-   legendV = cell([2,1]);
+   % Discount lifetime earnings to age 1
+   pvEarn_asM = zeros(size(paramS.pvEarn_asM));
+   for iSchool = 1 : cS.nSchool
+      discFactor = paramS.R .^ (cS.ageWorkStart_sV(iSchool) - 1);
+      pvEarn_asM(:, iSchool) = paramS.pvEarn_asM(:, iSchool) ./ discFactor;
+   end
+   
    % Log pv earn difference by [a,s]
-   dLogPv_asM = diff(log(paramS.pvEarn_asM), 1, 2);
+   dLogPv_asM = diff(log(pvEarn_asM), 1, 2);
+   validateattributes(dLogPv_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      'size', [cS.nAbil, cS.nSchool - 1]});
+
+   legendV = cell([2,1]);
    
    fh = output_bc1.fig_new(saveFigures, []);
    hold on;

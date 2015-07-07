@@ -25,7 +25,7 @@ end
 
 %% Main
 
-% Present value of earnings
+% Present value of earnings, discounted to work start
 pvEarn = paramS.pvEarn_asM(iAbil, iSchool); 
 
 % Length of work period

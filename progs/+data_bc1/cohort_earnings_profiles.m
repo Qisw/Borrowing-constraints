@@ -13,16 +13,22 @@ useMedian = 1;
 
 % Load cps profiles (in constant dollars), by model age
 cpsS = const_cpsbc(cS.cpsSetNo);
-loadS = var_load_cpsbc(cpsS.vCohortEarnProfilesMedian, [], cS.cpsSetNo);
+if useMedian == 1
+   loadS = var_load_cpsbc(cpsS.vCohortEarnProfilesMedian, [], cS.cpsSetNo);
+else
+   error('Not updated');
+end
 
 
 %% Extract the right ages, convert into model ages
 % drop HSD
 
-T = min(size(loadS.logEarn_ascM, 1), cS.physAgeLast);
+T = min(size(loadS.logEarn_ascM, 1), cS.physAgeRetire);
 
 % By model age, drop HSD
-medianEarn_ascM = loadS.logEarn_ascM(cS.age1 : T, 2:end, :);
+data_ascM = loadS.logEarn_ascM(cS.age1 : T, 2:end, :);
+medianEarn_ascM = exp(data_ascM);
+medianEarn_ascM(data_ascM == cS.missVal) = cS.missVal;
 if cS.dbg > 10
    validateattributes(medianEarn_ascM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [T - cS.age1 + 1, cS.nSchool, cS.nCohorts]})
@@ -33,7 +39,7 @@ T = size(medianEarn_ascM, 1);
 %% Convert into units of account
 % Fill in missing ages
 
-earn_ascM = repmat(cS.missVal, [cS.ageMax, cS.nSchool, cS.nCohorts]);
+earn_ascM = repmat(cS.missVal, [cS.ageRetire, cS.nSchool, cS.nCohorts]);
 
 % Convert into units of account
 if useMedian == 1
@@ -41,7 +47,7 @@ if useMedian == 1
    earn_ascM(1 : T, :, :) = (valid_ascM .* medianEarn_ascM) ./ cS.unitAcct;
 else
    valid_ascM = (medianEarn_ascM > -10);
-   earn_ascM(1 : T, :, :) = exp(valid_ascM .* medianEarn_ascM) ./ cS.unitAcct;
+   earn_ascM(1 : T, :, :) = (valid_ascM .* medianEarn_ascM) ./ cS.unitAcct;
 end
 
 
@@ -56,8 +62,9 @@ end
 
 
 % Ages past what can be constructed from data are set to 0 earnings
-if T < cS.ageMax
-   earn_ascM((T+1) : cS.ageMax, :, :) = 0;
+% Or past model retirement age
+if T < cS.ageRetire
+   earn_ascM((T+1) : cS.ageRetire, :, :) = 0;
 end
 
 
@@ -68,7 +75,7 @@ var_save_bc1(earn_ascM, cS.vCohortEarnProfiles, cS);
 
 if cS.dbg > 10
    validateattributes(earn_ascM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-      'size', [cS.ageMax, cS.nSchool, cS.nCohorts]})
+      'size', [cS.ageRetire, cS.nSchool, cS.nCohorts]})
    
    for iCohort = 1 : cS.nCohorts
       for iSchool = 1 : cS.nSchool

@@ -197,27 +197,31 @@ classdef pvector
       % ******  Show params that are close to bounds
       %{
       Only for params that are calibrated (ps.Cal == doCalV)
+      IN:
+         fp
+            file pointer for output text file
       %}
-      function show_close_to_bounds(p, paramS, doCalV)
+      function show_close_to_bounds(p, paramS, doCalV, fp)
          % Tolerance
          dTol = 1e-2;
-         fprintf('\nParameters that are close to bounds\n');
+         fprintf(fp, '\nParameters that are close to bounds\n');
          for i1 = 1 : p.np
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
                value2V = paramS.(ps.name);
-               diffUbV = (ps.ubV(:) - value2V(:)) ./ max(0.1, value2V(:));
-               diffLbV = (value2V(:) - ps.lbV(:)) ./ max(0.1, value2V(:));
-               idxV = find(abs(diffUbV < dTol)  |  abs(diffLbV < dTol));
+               % Differences should be positive
+               diffUbV = (ps.ubV(:) - value2V(:)) ./ max(0.1, abs(value2V(:)));
+               diffLbV = (value2V(:) - ps.lbV(:)) ./ max(0.1, abs(value2V(:)));
+               idxV = find((abs(diffUbV) < dTol)  |  (abs(diffLbV) < dTol));
                if ~isempty(idxV)
-                  fprintf('  %s:  ',  ps.name);
+                  fprintf(fp, '  %s:  ',  ps.name);
                   for i2 = 1 : length(value2V)
-                     fprintf('  [%.3f %.3f %.3f]',  ps.lbV(i2), value2V(i2), ps.ubV(i2));
+                     fprintf(fp, '  [%.3f %.3f %.3f]',  ps.lbV(i2), value2V(i2), ps.ubV(i2));
                      if rem(i2, 5) == 0
-                        fprintf('\n');
+                        fprintf(fp, '\n');
                      end
                   end
-                  fprintf('\n');
+                  fprintf(fp, '\n');
                end
             end
          end

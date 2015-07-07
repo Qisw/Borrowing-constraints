@@ -25,7 +25,7 @@ debtEndOfCollegeS.setNo = cS.setNo;
 %%  By j,  [s,j],  [s,a]
 
 % By j
-[aggrS.prGrad_jV, aggrS.mass_jV, aggrS.massColl_jV] = aggr_j(aggrS, hhS, paramS, cS);
+[aggrS.prGrad_jV, aggrS.mass_jV, aggrS.massColl_jV, aggrS.massGrad_jV] = aggr_j(aggrS, hhS, paramS, cS);
 
 
 % By [s,j]
@@ -127,11 +127,11 @@ aggrS.mass_sV = aggrS.mass_sV(:);
 aggrS.frac_sV = aggrS.mass_sV ./ sum(aggrS.mass_sV);
 
 
-% Mean lifetime earnings
-aggrS.pvEarn_sV = nan([cS.nSchool, 1]);
+% Mean lifetime earnings, discounted to work start
+aggrS.pvEarnMeanLog_sV = nan([cS.nSchool, 1]);
 for iSchool = 1 : cS.nSchool
    mass_aV = aggrS.mass_asM(:, iSchool);
-   aggrS.pvEarn_sV(iSchool) = sum(mass_aV .* paramS.pvEarn_asM(:,iSchool)) ./ sum(mass_aV);
+   aggrS.pvEarnMeanLog_sV(iSchool) = sum(mass_aV .* log(paramS.pvEarn_asM(:,iSchool))) ./ sum(mass_aV);
 end
 
 
@@ -231,7 +231,7 @@ end
 
 
 %% By j
-function [prGrad_jV, mass_jV, massColl_jV] = aggr_j(aggrS, hhS, paramS, cS)
+function [prGrad_jV, mass_jV, massColl_jV, massGrad_jV] = aggr_j(aggrS, hhS, paramS, cS)
 
    % Prob grad conditional on entry = sum of Pr(a|j) * Pr(grad|a)
    prGrad_jV = nan([cS.nTypes, 1]);
@@ -252,6 +252,8 @@ function [prGrad_jV, mass_jV, massColl_jV] = aggr_j(aggrS, hhS, paramS, cS)
       validateattributes(massColl_jV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
          '>=', 0, 'size', [cS.nTypes, 1]})
    end   
+   
+   massGrad_jV = massColl_jV .* prGrad_jV;
 end
 
 

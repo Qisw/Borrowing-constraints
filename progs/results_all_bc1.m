@@ -24,10 +24,15 @@ for showCalibrated = [0 1]
    calibr_bc1.param_tb(showCalibrated, setNo, expNo);
 end
 results_bc1.param_show(saveFigures, setNo, expNo);
+results_bc1.lty_show(saveFigures, setNo, expNo);
+
 % Show policy functions
 results_bc1.hh_show(saveFigures, setNo, expNo);
+results_bc1.iq_outcomes(saveFigures, setNo, expNo);
+results_bc1.yp_outcomes(saveFigures, setNo, expNo);
 % Show value functions
 results_bc1.value_show(saveFigures, setNo, expNo);
+
 % Show aggregates
 results_bc1.aggr_show(saveFigures, setNo, expNo);
 results_bc1.aggr_qy_show(saveFigures, setNo, expNo);
@@ -45,7 +50,9 @@ calibr_bc1.check_solution(setNo, expNo);
 results_bc1.static_show(saveFigures, setNo, expNo);
 
 % Which params are close to bounds?
-cS.pvector.show_close_to_bounds(paramS, cS.doCalV);
+fp = fopen(fullfile(cS.paramDir, 'close_to_bounds.txt'), 'w');
+cS.pvector.show_close_to_bounds(paramS, cS.doCalV, fp);
+fclose(fp);
 
 % For given j: show history
 results_bc1.history_show(setNo, expNo);

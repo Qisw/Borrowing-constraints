@@ -47,11 +47,13 @@ for iCohort = 1 : cS.nCohorts
    
    ir = ir + 1;
    tbM{ir,1} = 'Lifetime earnings by s';
-   tbM{ir,ic} = string_lh.string_from_vector(tgS.pvEarn_scM(:,iCohort) .* dollarFactor, '%.0f');
+   pvEarn_sV = tgS.pvEarn_scM(:, iCohort) .* dollarFactor;
+   tbM{ir,ic} = string_lh.string_from_vector(pvEarn_sV, '%.0f');
    
    ir = ir + 1;
    tbM{ir,1} = 'Premium relative to HSG';
-   tbM{ir,ic} = string_lh.string_from_vector(diff(log(tgS.pvEarn_scM(:,iCohort))), '%.2f');
+   pvGap_sV = log(pvEarn_sV(2 : cS.nSchool)) - log(pvEarn_sV(1));
+   tbM{ir,ic} = string_lh.string_from_vector(pvGap_sV, '%.2f');
    
    ir = ir + 1;
    tbM{ir,1} = 'School fractions';

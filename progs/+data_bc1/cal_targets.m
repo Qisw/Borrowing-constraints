@@ -50,7 +50,7 @@ clear schoolS;
 
 %% Lifetime earnings and scale factors
 
-[tgS.dollarFactor_cV, tgS.earn_tscM, tgS.pvEarn_scM] = earn_tg(tgS, cS);
+[tgS.dollarFactor_cV, tgS.earn_tscM, tgS.pvEarn_scM] = data_bc1.earn_tg(tgS, cS);
 
 
 
@@ -124,11 +124,10 @@ end
 hsbStdToMean = 4397 / 3892;
 
 % Assume std/mean stays constant over time
-tgS.pStd_cV = hsbStdToMean .* tgS.pMean_cV;
+   % not any more (2015 july 7)
+tgS.pStd_cV(tgS.icNlsy79) = hsbStdToMean .* tgS.pMean_cV(tgS.icNlsy79);
 
 validateattributes(tgS.pMean_cV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   '>', 100 ./ cS.unitAcct, '<', 1e4 ./ cS.unitAcct, 'size', [cS.nCohorts, 1]})
-validateattributes(tgS.pStd_cV,  {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
    '>', 100 ./ cS.unitAcct, '<', 1e4 ./ cS.unitAcct, 'size', [cS.nCohorts, 1]})
 
 
@@ -213,66 +212,6 @@ function mean_cV = mean_by_yp(in_ycM, fracEnter_ycM, cS)
       mass_yV = fracEnter_ycM(:, iCohort) .* cS.pr_ypV;
       mean_cV(iCohort) = sum(in_ycM(:,iCohort) .* mass_yV) ./ sum(mass_yV);
    end
-
-end
-
-
-%% Earnings and dollar scale factors
-function [dollarFactor_cV, tgEarn_tscM, pvEarn_scM] = earn_tg(tgS, cS)
-
-   % ********  Construct a scale factor for each cohort
-   %  Multiply all dollar figures by this factor to make model stationary
-
-   % Load profiles (units of account, not scaled), by model age
-   earn_tscM = var_load_bc1(cS.vCohortEarnProfiles, cS);
-
-   % Average earnings over this age range
-   ageV = (30 : 50) - cS.age1 + 1;
-
-   % Weights by [age, school] (arbitrary)
-   %  Would make sense to use actual population weights +++
-   wt_asM = ones([length(ageV), 1]) * tgS.frac_scM(:, cS.iRefCohort)';
-   validateattributes(wt_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
-      'size', [length(ageV), cS.nSchool]})
-
-   % Mean earnings by cohort, constant weights, constant prices
-   meanEarn_cV = nan([cS.nCohorts, 1]);
-   for iCohort = 1 : cS.nCohorts
-      earnM = earn_tscM(ageV, :, iCohort);
-      meanEarn_cV(iCohort) = sum(earnM(:) .* wt_asM(:)) ./ sum(wt_asM(:));
-   end
-
-   % Scale factor to make model stationary
-   %  MULTIPLY by this factor to make data figures into model targets
-   dollarFactor_cV = meanEarn_cV(cS.iRefCohort) ./ meanEarn_cV;
-
-
-   % *********  Earnings profiles by [a,s,c]
-   % Made stationary
-
-   tgEarn_tscM = nan(size(earn_tscM));
-   for iCohort = 1 : cS.nCohorts
-      tgEarn_tscM(:,:,iCohort) = earn_tscM(:,:,iCohort) .* dollarFactor_cV(iCohort);
-   end
-   if cS.dbg > 10
-      validateattributes(tgEarn_tscM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-         'size', [cS.ageMax, cS.nSchool, cS.nCohorts]})
-   end
-
-   % This could fail if R is calibrated
-   ps = cS.pvector.retrieve('R');
-   if ps.doCal ~= 0
-      error('R cannot be calibrated for this to work');
-   end
-   pvEarn_scM = nan([cS.nSchool, cS.nCohorts]);
-   for iCohort = 1 : cS.nCohorts
-      for iSchool = 1 : cS.nSchool
-         pvEarn_scM(iSchool,iCohort) = prvalue_bc1(tgEarn_tscM(cS.ageWorkStart_sV(iSchool) : cS.ageMax, ...
-            iSchool,iCohort), cS.R);
-      end
-   end
-
-   validateattributes(pvEarn_scM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
 
 end
 

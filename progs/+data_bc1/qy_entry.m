@@ -2,8 +2,9 @@ function qy_entry(saveFigures, setNo)
 % For selected historical studies, show entry rates by [iq, yp]
 
 cS = const_bc1(setNo);
+figS = const_fig_bc1;
 
-studyFnV = {'updegraff 1936',  'sibley 1948', 'flanagan 1964',  'flanagan 1971',  'nlsy79'};
+studyFnV = {'updegraff_quartiles', 'updegraff 1936',  'sibley 1948', 'flanagan 1964',  'flanagan 1971',  'nlsy79'};
 
 for iStudy = 1 : length(studyFnV)
    if strcmp(studyFnV{iStudy}, 'nlsy79')
@@ -18,8 +19,8 @@ for iStudy = 1 : length(studyFnV)
    end
    
    output_bc1.bar_graph_qy(entryS.perc_coll_qyM, 'Entry rate', saveFigures, cS);
-   xlabel('yp group');
-   ylabel('IQ group');
+   xlabel(figS.ypGroupStr);
+   ylabel(figS.iqGroupStr);
    set(gca, 'XTickLabel', string_lh.vector_to_string_array(entryS.ypUbV .* 100, '%.0f'));
    set(gca, 'YTickLabel', string_lh.vector_to_string_array(entryS.iqUbV .* 100, '%.0f'));
    output_bc1.fig_save(fullfile(cS.dataOutDir, ['qy_entry_', studyFnV{iStudy}]), saveFigures, cS);

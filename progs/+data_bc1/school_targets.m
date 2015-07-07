@@ -34,7 +34,7 @@ for iCohort = 1 : 2
       dataFn = 'flanagan 1971.csv';   
    elseif abs(bYear - 1915) < 3
       % Updegraff
-      dataFn = 'updegraff 1936.csv';
+      dataFn = 'updegraff_quartiles.csv'; % 'updegraff 1936.csv';
    else
       error('Invalid');
    end

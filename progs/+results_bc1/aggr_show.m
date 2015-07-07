@@ -11,6 +11,7 @@ fp = fopen(outFn, 'w');
 
 fprintf(fp, '\nAggregate statistics\n');
 
+school_stats(fp, aggrS, paramS, cS);
 debt_stats(fp, aggrS, paramS, cS);
 financial_stats(fp, aggrS, cS);
 
@@ -19,6 +20,26 @@ type(outFn);
 
 end
 
+
+%% Stats by schooling
+function school_stats(fp, aggrS, paramS, cS)
+   statS = var_load_bc1(cS.vAggrStats, cS);
+   fprintf(fp, '\nStats by schooling\n');
+   
+   fprintf(fp, 'E{a | s}:  ');
+   fprintf(fp, '%.2f   ',  statS.abilMean_sV);
+   fprintf(fp, '\n');
+   
+   fprintf(fp, 'Mean log lifetime earnings, discounted to work start: \n');
+   fprintf(fp, '    %.2f',  aggrS.pvEarnMeanLog_sV);
+   fprintf(fp, '\n');
+   fprintf(fp, '    fixed(s):  ');
+   fprintf(fp, '%.2f  ',  log(paramS.tgS.pvEarn_sV(cS.iHSG)) + paramS.eHat_sV);
+   fprintf(fp, '\n');
+   fprintf(fp, '    ability part(s):  ');
+   fprintf(fp, '%.2f  ',  paramS.phi_sV .* (statS.abilMean_sV - paramS.aBar));
+   fprintf(fp, '\n');
+end
 
 
 %% Financial stats

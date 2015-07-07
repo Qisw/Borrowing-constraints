@@ -1,26 +1,26 @@
 
-----------------------------------------------
-                       Entry gap  by IQ  by yp
-----------------------------------------------
-                        Baseline              
-                           Model   0.57   0.24
-                            Data   0.55   0.20
-            Change college costs              
-                           Model   0.56   0.22
-                            Data   0.55   0.20
-              Also change bLimit              
-                           Model   0.54   0.23
-                            Data   0.55   0.20
-       Only change earn profiles              
-                           Model   0.64   0.46
-                            Data   0.55   0.20
-   Also change parental altruism              
-                           Model   0.64   0.46
-                            Data   0.55   0.20
-           Also change schooling              
-                           Model   0.66   0.47
-                            Data   0.55   0.20
-                     Cohort 1940              
-                           Model   0.66   0.47
-                            Data   0.62   0.55
-----------------------------------------------
+-----------------------------------------
+                  Entry gap  by IQ  by yp
+-----------------------------------------
+                   Baseline              
+                      Model   0.56   0.32
+                       Data   0.55   0.20
+       Change college costs              
+                      Model   0.55   0.31
+                       Data   0.55   0.20
+     Change borrowing limit              
+                      Model   0.53   0.32
+                       Data   0.55   0.20
+   Change earnings profiles              
+                      Model   0.57   0.44
+                       Data   0.55   0.20
+   Change parental altruism              
+                      Model   0.57   0.44
+                       Data   0.55   0.20
+       Change college entry              
+                      Model   0.58   0.44
+                       Data   0.55   0.20
+                Cohort 1940              
+                      Model   0.58   0.44
+                       Data   0.62   0.55
+-----------------------------------------

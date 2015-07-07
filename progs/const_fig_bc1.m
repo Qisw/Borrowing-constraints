@@ -113,4 +113,11 @@ end
 cS.barWidth = 1;
 
 
+
+%% Notation and labels
+
+cS.iqGroupStr = 'Ability';
+cS.ypGroupStr = 'Family background';
+
+
 end

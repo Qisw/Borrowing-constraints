@@ -11,7 +11,7 @@ t_devvect;
 t_devstruct;
 
 
-helper_bc1.test_marginals;
+helper_bc1.marginals_test;
 
 dbclear all;
 

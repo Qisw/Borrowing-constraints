@@ -82,6 +82,10 @@ cS.guessUb = 2;
 cS.R = 1.04;
 
 
+% *******  Notation (used for preamble and for generating results)
+
+
+
 %% Default parameters: Demographics, Preferences
 
 % Cohorts modeled
@@ -97,8 +101,8 @@ cS.nCohorts = length(cS.bYearV);
 cS.age1 = 18;
 % Last physical age
 cS.physAgeLast = 75;
-% Retirement age
-% cS.physAgeRetire = 65;
+% Retirement age (last age with earnings)
+cS.physAgeRetire = 65;
 
 % Is curvature of u(c) the same in college / at work?
 cS.ucCurvatureSame = 1;
@@ -116,7 +120,7 @@ cS.lFloor = 0.01;
 cS.nAbil = 9;
 % Earnings are determined by phi(s) * (a - aBar)
 %  aBar determines for which abilities earnings gains from schooling MUST be positive
-cS.aBar = 0;
+% cS.aBar = 0;
 
 % Number of types
 cS.nTypes = 150;
@@ -127,6 +131,9 @@ cS.nIQ = length(cS.iqUbV);
 
 % Parental income classes
 cS.ypUbV = (0.25 : 0.25 : 1)';
+
+
+cS.abilAffectsEarnings = 1;
 
 
 
@@ -142,11 +149,6 @@ cS.nSchool = cS.iCG;
 cS.sLabelV = {'HSG', 'CD', 'CG'};
 cS.ageWorkStart_sV = [1; 3; cS.collLength+1];
 
-
-
-%% Defaults: work
-
-cS.abilAffectsEarnings = 1;
 
 
 
@@ -252,7 +254,7 @@ cS.yearStartCollege_cV = cS.bYearV + 18;
 
 % Lifespan
 cS.ageMax = cS.physAgeLast - cS.age1 + 1;
-% cS.ageRetire = cS.physAgeRetire - cS.age1 + 1;
+cS.ageRetire = cS.physAgeRetire - cS.age1 + 1;
 
 % Length of work phase by s
 cS.workYears_sV = cS.ageMax - cS.ageWorkStart_sV + 1;

@@ -134,17 +134,28 @@ fprintf(fid, '%s\n', '}');
 fprintf(fid, '%s\n', '\hline');
 
 
-% Write the table body
+%% Write the table body
+
 for ir = 1 : nRows
    if isempty(tbS.lineStrV{ir})
+      % Regular line
       fprintf(fid, '%s', dataM{ir,1});
       for ic = 2 : nCols
          fprintf(fid, ' & %s ', dataM{ir,ic});
       end
+      fprintf(fid, ' \\\\ \n');
    else
-      fprintf(fid, '%s', tbS.lineStrV{ir});
+      % User provided line
+      lineStr = tbS.lineStrV{ir};
+      fprintf(fid, '%s', lineStr);
+      % Append \\ if needed
+      if lineStr(end) == '\'
+         fprintf(fid, ' \n');
+      else
+         fprintf(fid, ' \\\\ \n');
+      end
    end
-   fprintf(fid, '%s\n', ' \\');
+   
    % Underline this row
    if tbS.rowUnderlineV(ir) == 1
       fprintf(fid, '%s\n', '\hline');
@@ -156,7 +167,7 @@ fprintf(fid, '%s\n', '\hline');
 fprintf(fid, '%s\n', '\end{tabular}%');
 
 
-% ****  Table notes
+%%  Table notes
 if isfield(tbS, 'noteV')
    fprintf(fid, '\n \\vspace{5 mm} \n');
    fprintf(fid, '\\small \n');
@@ -198,6 +209,9 @@ if ~isempty(fPath)  &&  tbS.createTextFile
    fclose(fid2);
 end
 
+if ~isempty(fPath)
+   fprintf('Saved table  %s \n', fPath);
+end
 
 
 end

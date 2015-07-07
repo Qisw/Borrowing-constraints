@@ -105,7 +105,7 @@ tbM{ir, cName} = 'Other';
 
 row_add_vector({'phiHSG', 'phiCG'},  'Returns to ability', '%.3f', []);
 if showCalibrated == 1
-   row_add_direct('$\hat{e}_{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
+   row_add_direct('$\hat{e}{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
 end
 % Not directly used
 pNameV = mark_done(pNameV, 'eHatCD');
@@ -137,7 +137,7 @@ if showCalibrated == 1
 else
    tbFn = 'param_fixed_tb.tex';
 end
-latex_lh.latex_texttb_lh(fullfile(cS.tbDir, tbFn), tbM(1:ir,:), 'Caption', 'Label', tbS);
+latex_lh.latex_texttb_lh(fullfile(cS.paramDir, tbFn), tbM(1:ir,:), 'Caption', 'Label', tbS);
 
 
 % Check that all params are taken care of

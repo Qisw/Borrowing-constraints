@@ -3,18 +3,18 @@
                    Entry gap  by IQ  by yp
 ------------------------------------------
                     Baseline              
-                       Model   0.57   0.24
+                       Model   0.56   0.32
                         Data   0.55   0.20
    Only change earn profiles              
-                       Model   0.38   0.28
+                       Model   0.60   0.44
                         Data   0.55   0.20
           Only change bLimit              
-                       Model   0.55   0.25
+                       Model   0.54   0.33
                         Data   0.55   0.20
         Change college costs              
-                       Model   0.56   0.23
+                       Model   0.55   0.31
                         Data   0.55   0.20
             Change schooling              
-                       Model   0.58   0.24
+                       Model   0.57   0.33
                         Data   0.55   0.20
 ------------------------------------------

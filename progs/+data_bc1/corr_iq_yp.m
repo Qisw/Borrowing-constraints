@@ -80,6 +80,7 @@ for iFile = 1 : length(dirV)
    fnStr = dirV(iFile).name;
    if ~strcmpi(fnStr, 'gardner income 1987.csv')  &&  ~strcmpi(fnStr, 'goetsch 1940.csv') ...
       &&  ~strcmpi(fnStr, 'suny 1955.csv')
+%          &&  ~strncmpi(fnStr, 'updegraff_quart', 13)
 %          &&  ~strcmpi(fnStr, 'sibley 1948.csv')  &&  ...
 %       
       fprintf('Loading %s \n',  fnStr);

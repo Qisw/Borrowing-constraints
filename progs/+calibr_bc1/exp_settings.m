@@ -169,23 +169,23 @@ function counterfactuals
          expS.collCostExpNo = cfExpNo;
       end
       if eDiff >= 5
-         expS.expStr = 'Also change bLimit';    % when not recalibrated
+         expS.expStr = 'Change borrowing limit';    % when not recalibrated
          expS.bLimitCohort = cfCohort;
       end
       if eDiff >= 6
          % Take pvEarn_asM from cfExpNo
-         expS.expStr = 'Only change earn profiles'; 
+         expS.expStr = 'Change earnings profiles'; 
          expS.earnExpNo = cfExpNo;
       end
       if eDiff >= 7
          % Parental altruism
-         expS.expStr = 'Also change parental altruism';
+         expS.expStr = 'Change parental altruism';
          expS.puWeightExpNo = cfExpNo;
          pvec = pvec.calibrate('puWeightMean', cS.calNever);
       end
       if eDiff >= 8
          %  Target schooling of cf cohort
-         expS.expStr = 'Also change schooling';
+         expS.expStr = 'Change college entry';
          expS.schoolFracCohort = cfCohort;
          expS.prefHsExpNo = cfExpNo;
          % Now nothing is calibrated anymore
@@ -208,6 +208,9 @@ function time_series
    % Calibrate pMean, which is really a truncated data moment
    %  Should also do something about pStd +++
    pvec = pvec.calibrate('pMean', cS.calExp);
+   tgS = calibr_bc1.caltg_defaults('timeSeriesPartial');
+         % also implement: do not target IQ/yp sorting +++++
+         % this is 'timeSeries'
 
    % Calibrate all time varying parameters to match data for another cohort
    if any(expNo == cS.bYearExpNoV)
@@ -230,6 +233,30 @@ function time_series
       % Keeping college wage fixed for now
       %pvec = pvec.calibrate('wCollMean', cS.calExp);
       
+   elseif expNo == 205  ||  expNo == 206
+      iCohort = 1;
+      expS.expStr = sprintf('Cohort %i', cS.bYearV(iCohort));
+      
+      % Signal noise
+      % pvec = pvec.calibrate('alphaAM', cS.calExp);
+      % Match transfers
+      pvec = pvec.calibrate('puWeightMean', cS.calExp);
+      % Match overall college entry
+      pvec = pvec.calibrate('prefHS', cS.calExp);
+      
+      % Scale factors of lifetime earnings (log)
+      pvec = pvec.calibrate('eHatCD', cS.calExp);
+      pvec = pvec.calibrate('dEHatHSG', cS.calExp);
+      pvec = pvec.calibrate('dEHatCG',  cS.calExp);
+      if expNo == 205
+         % testing: calibrate pref scale at entry
+         pvec = pvec.calibrate('prefScaleEntry', cS.calExp);   % +++
+      elseif expNo == 206
+         % testing: calibrate graduation rates
+         pvec = pvec.calibrate('prGradMax', cS.calExp);   % +++
+      else
+         error('Invalid');
+      end
 
    elseif expNo == 211
       % This changes earnings, borrowing limits, pMean

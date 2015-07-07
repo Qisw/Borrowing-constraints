@@ -12,7 +12,7 @@ if 1
    xlabel('Year');
    ylabel('CPI');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('cpi_year', saveFigures, cS);   
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'cpi_year'), saveFigures, cS);   
 end
 
 
@@ -24,7 +24,7 @@ if 1
    xlabel('Year');
    ylabel('Mean college cost');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('collcost_year', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'collcost_year'), saveFigures, cS);
 end
 
 

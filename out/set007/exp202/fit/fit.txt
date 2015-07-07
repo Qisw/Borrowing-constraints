@@ -1,19 +1,14 @@
 
----------------------------------------------------------------------------------------------
-                                  Description                   Model                    Data
----------------------------------------------------------------------------------------------
-                        Fraction by schooling        0.46, 0.31, 0.24        0.47, 0.26, 0.27
-     Fraction entering college by IQ quartile  0.22, 0.44, 0.65, 0.86  0.23, 0.39, 0.66, 0.85
-           Fraction graduating by IQ quartile  0.06, 0.15, 0.27, 0.47  0.05, 0.13, 0.35, 0.56
-      Fraction entering college by y quartile  0.24, 0.48, 0.67, 0.77  0.26, 0.45, 0.63, 0.81
-            Fraction graduating by y quartile  0.08, 0.19, 0.28, 0.39  0.10, 0.18, 0.31, 0.51
-     Fraction entering college by qy quartile                                                
-   Fraction graduating college by qy quartile                                                
-                   Regression entry on iq, yp              0.71, 0.36              0.70, 0.48
-                       Lifetime earnings by s        4.84, 4.87, 5.61        4.65, 4.73, 4.92
-                         Mean of college cost                    2.07                    1.37
-                          Std of college cost                    2.90                    1.55
-                        Mean hours in college                    0.13                    0.08
-         Share of college costs from earnings                    0.34                    0.30
-            Share of college costs from loans                    0.00                    0.02
----------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+                                Description                   Model                    Data
+-------------------------------------------------------------------------------------------
+                      Fraction by schooling        0.47, 0.32, 0.22        0.47, 0.26, 0.27
+   Fraction entering college by IQ quartile  0.34, 0.48, 0.58, 0.74  0.23, 0.39, 0.66, 0.85
+    Fraction entering college by y quartile  0.34, 0.52, 0.61, 0.66  0.26, 0.45, 0.63, 0.81
+                       Lifetime earnings CD                    6.83                    6.85
+                 Lifetime earnings premiums       -0.01, 0.00, 0.47       -0.13, 0.00, 0.22
+                       Mean of college cost                    1.30                    1.44
+                      Mean hours in college                    0.14                    0.08
+       Share of college costs from earnings                    0.33                    0.30
+          Share of college costs from loans                    0.00                    0.02
+-------------------------------------------------------------------------------------------

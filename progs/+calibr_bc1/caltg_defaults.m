@@ -67,6 +67,36 @@ tgS.tgFinShares = 1;
 %% Override for cases
 if strcmpi(caseStr, 'default')
    % Nothing
+
+elseif strcmpi(caseStr, 'timeSeriesFit')
+   % Time series calibration. Try to match everything for each cohort
+   % Not everything is available, of course
+
+elseif strcmpi(caseStr, 'timeSeriesPartial')
+   % Match everything but IQ, yp sorting
+   % But need to target marginal entry rates -- otherwise model implies negative sorting
+   % ad hoc +++
+   tgS.tgRegrIqYp = 0;
+   % fraction graduating (not conditional on entry)
+   tgS.tgFracGradIq = 0;
+   tgS.tgFracGradYp = 0;
+   % Targets by [iq, yp]: entry and graduation rates
+   tgS.tgCollegeQy = 0;
+   
+elseif strcmpi(caseStr, 'timeSeries')
+   % Time series calibration
+   % Do not target regression coefficients betaIq, betaYp
+   %  We want to see how far we go without targeting them. We need to match frac_s and LTY(s)
+   tgS.tgRegrIqYp = 0;
+   % fraction entering college
+   tgS.tgFracEnterIq = 0;
+   % fraction graduating (not conditional on entry)
+   tgS.tgFracGradIq = 0;
+   tgS.tgFracEnterYp = 0;
+   tgS.tgFracGradYp = 0;
+   % Targets by [iq, yp]: entry and graduation rates
+   tgS.tgCollegeQy = 0;
+   
    
 elseif strcmpi(caseStr, 'onlySchoolFrac')
    % Target only school fractions

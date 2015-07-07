@@ -258,16 +258,19 @@ paramS.prA_jgradM = hh_bc1.prob_a_jgrad(paramS.prGrad_aV, paramS.prob_jV, paramS
 
 
 
-%% Earnings by [model age, school]
-% Including skill price
+%% Lifetime earnings by [model age, school]
+% Discounted to work start
 
 % Returns to ability by s
 paramS.phi_sV = [paramS.phiHSG; paramS.phiHSG; paramS.phiCG];
-paramS.eHat_sV = paramS.eHatCD + [paramS.dEHatHSG; 0; paramS.dEHatCG];
+% Initialize this to a meaningless default (changed later if used)
+paramS.eHat_sV = zeros([cS.nSchool, 1]);
+paramS.aBar = paramS.abilGrid_aV(1);
 
 % Do we copy pvEarn_asM from another experiment?
 if isempty(cS.expS.earnExpNo)
    % Targets
+   % Present values are discounted to work start
    paramTgS.pvEarn_sV = tgS.pvEarn_scM(:, cS.iCohort);
 
    % Present value by [ability, school]
@@ -276,10 +279,11 @@ if isempty(cS.expS.earnExpNo)
       % Ability does not affect earnings
       paramS.pvEarn_asM = ones([cS.nAbil, 1]) * paramTgS.pvEarn_sV';
    else
-      dAbilV = (paramS.abilGrid_aV - cS.aBar);
+      paramS.eHat_sV = log(paramTgS.pvEarn_sV(cS.iHSG)) + paramS.eHatCD + [paramS.dEHatHSG; 0; paramS.dEHatCG];
+      dAbilV = (paramS.abilGrid_aV - paramS.aBar);
       paramS.pvEarn_asM = nan([cS.nAbil, cS.nSchool]);
       for iSchool = 1 : cS.nSchool
-         paramS.pvEarn_asM(:,iSchool) = paramTgS.pvEarn_sV(cS.iHSG) * ...
+         paramS.pvEarn_asM(:,iSchool) = ...
             exp(paramS.eHat_sV(iSchool) + dAbilV .* paramS.phi_sV(iSchool));
       end
    end

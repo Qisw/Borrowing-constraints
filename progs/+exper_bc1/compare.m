@@ -18,6 +18,7 @@ dbg = 111;
 saveFigures = 1;
 nx = length(expNoV);
 cS = const_bc1(setNoV(1), expNoV(1));
+figS = const_fig_bc1;
 nIq = length(cS.iqUbV);
 nYp = length(cS.ypUbV);
 tgS = var_load_bc1(cS.vCalTargets, cS);
@@ -73,10 +74,10 @@ if 1
    
    for iPlot = 1 : length(xTypeV)
       if xTypeV(iPlot) == iIq
-         xStr = 'IQ group';
+         xStr = figS.iqGroupStr;
          xV = 1 : nIq;
       elseif xTypeV(iPlot) == iYp
-         xStr = 'yp group';
+         xStr = figS.ypGroupStr;
          xV = 1 : nYp;
       else
          error('Invalid');
@@ -147,10 +148,10 @@ for ix = 1 : nx
    tbM{ir,1} = 'Drivers';
    ir = ir + 1;
    tbM{ir,1} = 'PV of lifetime earnings by s';
-   tbM{ir, ic} = string_lh.string_from_vector(log(aggrS.pvEarn_sV), '%.2f');
+   tbM{ir, ic} = string_lh.string_from_vector(aggrS.pvEarnMeanLog_sV, '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'Premium relative to HSG';
-   tbM{ir,ic} = string_lh.string_from_vector(diff(log(aggrS.pvEarn_sV)), '%.2f');
+   tbM{ir,ic} = string_lh.string_from_vector(diff(aggrS.pvEarnMeanLog_sV), '%.2f');
    ir = ir + 1;
    tbM{ir,1} = 'Mean college cost';
    [~, tbM{ir,ic}] = string_lh.dollar_format(paramV{ix}.pMean * cS.unitAcct, ',', 0);
@@ -232,6 +233,14 @@ end
 
 %% Local: Regression of entry rate on [iq, yp]
 % With original bins, this is run in the data summary
+%{
+IN
+   tgS
+      calibration targets
+   aggrV, constV
+      model aggregates, constants
+      one for each decomposition
+%}
 function tb_regr_entry(tgS, aggrV, constV, outDir)
    cS = constV{1};
    nx = length(aggrV);

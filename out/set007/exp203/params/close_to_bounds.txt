@@ -1,0 +1,3 @@
+
+Parameters that are close to bounds
+  dEHatHSG:    [-1.000 -0.000 0.000]
