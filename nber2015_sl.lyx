@@ -1,0 +1,2338 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\input{/Users/lutz/Dropbox/data/software/lyx/beamer_settings}
+
+\input{/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/preamble1.tex}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+
+\size largest
+Family Background, Academic Ability, and College Decisions in the 20th Century
+ U.S.
+\end_layout
+
+\begin_layout Author
+Lutz Hendricks (UNC)
+\begin_inset Newline newline
+\end_inset
+
+Chris Herrington (VCU)
+\begin_inset Newline newline
+\end_inset
+
+Todd Schoellman (ASU)
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Motivation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+\series bold
+Big picture goal:
+\series default
+ 
+\end_layout
+
+\begin_layout Standard
+Understand changes in U.S.
+ college enrollment over time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Focus of this paper:
+\end_layout
+
+\begin_layout Standard
+Changes in the 
+\series bold
+composition
+\series default
+ of college students since 1920s.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+rich
+\series default
+ versus 
+\series bold
+poor
+\series default
+ students
+\end_layout
+
+\begin_layout Itemize
+high versus low 
+\series bold
+ability
+\series default
+ students
+\end_layout
+
+\begin_layout Standard
+The role of 
+\series bold
+financial
+\series default
+ conditions
+\end_layout
+
+\begin_layout Itemize
+student loans
+\end_layout
+
+\begin_layout Itemize
+college costs
+\end_layout
+
+\begin_layout Itemize
+college wage premium
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Empirical Contribution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Compile 40+ historical data sources on college enrollment
+\end_layout
+
+\begin_layout Standard
+1919 - 1980
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Main finding:
+\end_layout
+
+\begin_layout Itemize
+The role of student 
+\series bold
+ability
+\series default
+ has 
+\series bold
+increased
+\series default
+.
+\end_layout
+
+\begin_layout Itemize
+The role of family 
+\series bold
+background
+\series default
+ has 
+\series bold
+decreased
+\series default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Quantitative Modeling Contribution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Model college decisions of heterogeneous students.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Identify changes in financial conditions that drive changes in enrollment
+ patterns.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Main finding:
+\end_layout
+
+\begin_layout Itemize
+Unimportant: college costs and borrowing limits.
+\end_layout
+
+\begin_layout Itemize
+Important: college wage premium.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Data
+\end_layout
+
+\begin_layout PlainFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionHeading{Evidence}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Objective
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The goal: Characterize how college entry varies with
+\end_layout
+
+\begin_layout Itemize
+student ability
+\end_layout
+
+\begin_layout Itemize
+family background
+\end_layout
+
+\begin_layout Standard
+over the period 1930-1980.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Data Sources
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+
+\series bold
+Post 1960 data
+\end_layout
+
+\begin_layout Itemize
+access to micro data
+\end_layout
+
+\begin_layout Itemize
+Project Talent, NLSY
+\end_layout
+
+\begin_layout Itemize
+ability measured by standardized test scores
+\end_layout
+
+\begin_layout Itemize
+family background measured by income
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Pre 1960 data
+\end_layout
+
+\begin_layout Itemize
+no micro data
+\end_layout
+
+\begin_layout Itemize
+published cross-tabulations of college entry rates
+\end_layout
+
+\begin_layout Itemize
+ability: test scores or class rank
+\end_layout
+
+\begin_layout Itemize
+family background: income or socioeconomic status
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Updegraff (1936)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Sample: 15% of Pennsylvania's 1933 graduating class.
+\end_layout
+
+\begin_layout Standard
+Family background: socioeconomic status (6 bins)
+\end_layout
+
+\begin_layout Standard
+Ability: test scores (6 bins)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/data/qy_entry_updegraff 1936.pdf
+	height 60theight%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Summarizing Historical Studies
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Regress college entry rates on 
+\end_layout
+
+\begin_layout Itemize
+ability percentile 
+\begin_inset Formula $\rightarrow\betaIq$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+family background percentile 
+\begin_inset Formula $\rightarrow\betaYp$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Percentiles are bin midpoints.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Importance of Background vs.
+ Ability
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_all.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_all.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100text%">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Family background
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ability
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coefficients from 
+\series bold
+univariate
+\series default
+ regressions (entry rates on ability 
+\series bold
+or
+\series default
+ family background)
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Importance of Background vs.
+ Ability
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_complete.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_complete.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100text%">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Family background
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ability
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coefficients from 
+\series bold
+bivariate
+\series default
+ regressions (entry rates on ability 
+\series bold
+and
+\series default
+ family background)
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Comparability
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Histories studies differ in
+\end_layout
+
+\begin_layout Itemize
+sizes of percentile bins
+\end_layout
+
+\begin_layout Itemize
+measures of ability and family background
+\end_layout
+
+\begin_layout Standard
+Does lack of comparability affect the results?
+\end_layout
+
+\begin_layout Standard
+To address this problem, we replicate each study in NLSY79 data.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Updegraff (1936)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/data/qy_entry_updegraff 1936.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/exp001/updegraff_nlsy.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Entry rates: Updegraff (1936) and NLSY replication.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+NLSY Replication Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_nlsy79_all.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_nlsy79_all.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Variation in study design does not systematically affect 
+\begin_inset Formula $\betaIq$
+\end_inset
+
+ or 
+\begin_inset Formula $\betaYp$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Key Empirical Finding
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Large change in who attends college
+\end_layout
+
+\begin_layout Itemize
+Academic 
+\series bold
+ability
+\series default
+ has become 
+\series bold
+more
+\series default
+ important
+\end_layout
+
+\begin_layout Itemize
+Family 
+\series bold
+background
+\series default
+ has become 
+\series bold
+less
+\series default
+ important
+\end_layout
+
+\begin_layout Standard
+Next step:
+\end_layout
+
+\begin_layout Standard
+Develop a 
+\series bold
+model
+\series default
+ to uncover why these changes occurred.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Model
+\end_layout
+
+\begin_layout PlainFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionHeading{Model}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Model Overview
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+We follow one cohort from high school graduation to retirement.
+\end_layout
+
+\begin_layout Standard
+Timing:
+\end_layout
+
+\begin_layout Enumerate
+Choose between college entry or work as high school graduate (HSG).
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+family income is used for parental consumption or transfer to child
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Years 1-2 in college:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+choose consumption, saving, leisure, work hours
+\begin_inset Newline newline
+\end_inset
+
+subject to a borrowing constraint
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+At the end of year 2:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+learn whether student graduates
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Years 3-4 in college:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+similar to years 1-2
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Work as CG starting in year 5
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Endowments
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Each family is endowed with a type 
+\begin_inset Formula $j\in\left\{ 1,...,J\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All agents of type 
+\begin_inset Formula $j$
+\end_inset
+
+ share the same values for
+\end_layout
+
+\begin_layout Itemize
+parental income 
+\begin_inset Formula $\famIncome$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+college cost 
+\begin_inset Formula $\collCost$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+ability signal 
+\begin_inset Formula $\abilSignal$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+preference for college (details below)
+\end_layout
+
+\begin_layout Standard
+Ability 
+\begin_inset Formula $\ability$
+\end_inset
+
+ is not observed until the start of work.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Entry Decision
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\max\{\underset{\mbox{work as HSG}}{\underbrace{V_{HS}\left(j\right)+\prefHS-\prefScaleEntry\prefShockEntry_{w}}},\underset{\mbox{enter college}}{\underbrace{V_{entry}\left(j\right)-\prefScaleEntry\prefShockEntry_{c}}}\}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\prefHS$
+\end_inset
+
+: common preference for working as HSG
+\end_layout
+
+\begin_layout Itemize
+permits the model to match overall college entry rate for each cohort
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\prefShockEntry_{c},\prefShockEntry_{w}$
+\end_inset
+
+: type I extreme value shocks (for computational reasons)
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Entry Decision
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Value of working as HSG:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{HS}\left(j\right)=\max_{z_{w}\ge0}T_{c}u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(T_{c}z_{w},HS,\ability\right)|j\right\} 
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Divide parental income 
+\begin_inset Formula $\famIncome$
+\end_inset
+
+ between 
+\end_layout
+
+\begin_layout Itemize
+transfer to the child 
+\begin_inset Formula $z$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+parental consumption 
+\begin_inset Formula $\famIncome-z$
+\end_inset
+
+ 
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Value of college entry:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{entry}\left(j\right)=\max_{z_{c}\ge0}T_{c}u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(T_{c}z_{c},j\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add: hetero in parental altruism
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Years 1-2 In College
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{1}\left(k,j\right)=\max_{k',c,l}\left(1+\beta\right)u\left(c+\cColl_{j},1+\lColl_{j}-l\right)+\beta^{2}V_{m}\left(k',j\right)
+\end{equation}
+
+\end_inset
+
+subject to 
+\end_layout
+
+\begin_layout Itemize
+budget constraint: 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $k'=Rk+2\left(w_{coll}l-\collCost_{j}-c\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+borrowing constraint: 
+\begin_inset Formula $k'\ge k_{min,3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Continuation value:
+\begin_inset Formula 
+\begin{equation}
+V_{m}\left(k,j\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right]\right)V_{w}\left(k,\ability,CD\right)+\pi\left[\ability\right]V_{3}\left(k,j\right)\right]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\cColl_{j},\lColl_{j}$
+\end_inset
+
+: increasing in 
+\begin_inset Formula $\abilSignal$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+prevents high ability students from consuming too much in college
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Years 3-4 In College
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{3}\left(k,j\right)=\max_{k',c,l}\left(1+\beta\right)u(c+\cColl_{j},1+\lColl_{j}-l)+\beta^{2}\mathbb{E}_{\ability}V_{w}\left(k',\ability,CG\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+subject to 
+\end_layout
+
+\begin_layout Itemize
+budget constraint
+\end_layout
+
+\begin_layout Itemize
+borrowing constraint
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Work Phase
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+State vector:
+\end_layout
+
+\begin_layout Itemize
+assets (or debts) 
+\begin_inset Formula $k$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+ability 
+\begin_inset Formula $\ability$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+schooling 
+\begin_inset Formula $s\in\left\{ HSG,CD,CG\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Household problem:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{w}\left(k,\ability,s\right)=\max_{c_{\age}}\sum_{\age=1}^{\ageMax-\tSchool}\beta^{t-1}u_{w}\left(c_{\age}\right)
+\end{equation}
+
+\end_inset
+
+subject to a lifetime budget constraint
+\begin_inset Formula 
+\begin{equation}
+\sum_{\age=1}^{\ageMax-\tSchool}R^{1-\age}c_{\age}=\pvEarn\left(s,\ability\right)+Rk
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Calibration
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Calibration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Step 1: 
+\end_layout
+
+\begin_layout Itemize
+Calibrate all parameters to 
+\series bold
+NLSY79
+\series default
+ data
+\end_layout
+
+\begin_layout Itemize
+High school graduates in 1979
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Step 2:
+\end_layout
+
+\begin_layout Standard
+Calibrate a subset of 
+\series bold
+time-varying
+\series default
+ parameters for high school graduates in
+\end_layout
+
+\begin_layout Itemize
+1960: Project Talent data
+\end_layout
+
+\begin_layout Itemize
+1933: Updegraff (1936) data
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Calibration Targets (NLSY79)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Median lifetime 
+\series bold
+earnings
+\series default
+ by schooling (CPS)
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+College 
+\series bold
+entry
+\series default
+ and graduation rates, by 
+\begin_inset Formula $\left[\famIncome,\IQ\right]$
+\end_inset
+
+ quartile
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Colege 
+\series bold
+financing
+\series default
+ (by 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\famIncome$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ and 
+\begin_inset Formula $\IQ$
+\end_inset
+
+ quartile):
+\end_layout
+
+\begin_layout Enumerate
+College costs
+\end_layout
+
+\begin_layout Enumerate
+Parental transfers (High School & Beyond)
+\end_layout
+
+\begin_layout Enumerate
+Parental income
+\end_layout
+
+\begin_layout Enumerate
+Hours worked and earnings in college
+\end_layout
+
+\begin_layout Enumerate
+Student loans
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Calibrated Parameters
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Endowment distributions (college costs, parental income, abilities and signals)
+\end_layout
+
+\begin_layout Itemize
+Preferences (consumption, leisure, parental altruism)
+\end_layout
+
+\begin_layout Itemize
+Lifetime earnings
+\end_layout
+
+\begin_layout Itemize
+Graduation rates
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{CalibrParams}{
+\backslash
+beamergotobutton{Details}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Fit
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{FitCollegeEntry}{
+\backslash
+beamergotobutton{College entry}}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{FitCollegeGrad}{
+\backslash
+beamergotobutton{College graduation}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time-Varying Parameters
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Target
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mean college cost
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mean college cost
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Borrowing limit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Federal student loan limits
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parental altruism
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Share of college costs paid by 
+\begin_inset Quotes eld
+\end_inset
+
+family contributions
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\bar{Y}\left(s\right)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Median lifetime earnings by schooling
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Preference for work as HSG, 
+\begin_inset Formula $\prefHS$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+College enrollment
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+also target: entry rates by iq, yp +++
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout PlainFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionHeading{Results}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Entry Over Time
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+We characterize changes in college entry patterns by regressing entry rates
+ on 
+\begin_inset Formula $\IQ$
+\end_inset
+
+ and 
+\begin_inset Formula $\famIncome$
+\end_inset
+
+ quartiles.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\rightarrow\betaIq,\betaYp$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/regr_entry.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Result: financial conditions account for x% of the variation in ability
+ sorting, y% of the variation in income sorting
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Accounting for Changing College Entry
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Which exogenous driving forces account for the changes in college entry
+ patterns?
+\end_layout
+
+\begin_layout Standard
+One answer:
+\end_layout
+
+\begin_layout Enumerate
+Start with the baseline (NLSY79) model.
+\end_layout
+
+\begin_layout Enumerate
+One-by-one, change a forcing variable to match the value for an earlier
+ cohort.
+\end_layout
+
+\begin_layout Standard
+For ease of interpretation: The overall college entry rate is held fixed
+ by adjusting the preference parameter 
+\begin_inset Formula $\prefHS$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Accounting for Changing College Entry
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Table: regression coefficients for each change (1915 and 1940 cohort)
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "/users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/cumulative/decompose.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Upshot:
+\end_layout
+
+\begin_layout Itemize
+most of the change in IQ sorting is due to college premium
+\end_layout
+
+\begin_layout Itemize
+same for yp sorting, but there borrowing limits play a role
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Conclusion
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+x
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Detail Slides
+\end_layout
+
+\begin_layout PlainFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+sectionHeading{Detail Slides}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Calibration
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Calibrated Parameters
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "CalibrParams"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/param_tb.tex"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Fit
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Entry Rates
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_enter.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/yp_enter.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "FitCollegeEntry"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Graduation Rates
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_grad.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/yp_grad.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "FitCollegeGrad"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+allowframebreaks
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+References
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+newblock{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "/Users/lutz/Documents/econ/References"
+options "econometrica"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

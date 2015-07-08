@@ -30,7 +30,7 @@ outS.pvEarn = 'Y';
 
 outS.prGradParam = '\pi';
 outS.tSchool = 'A_{s}';
-
+outS.prefShockEntry = '\eta';
 
 
 %% Data
