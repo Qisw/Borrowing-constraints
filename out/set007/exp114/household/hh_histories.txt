@@ -4,35 +4,35 @@
 Life history of type 139
 
 Parents:  
-income (per year): 18.4 
+income (per year): 19.4 
 
 Work as HSG:
-Parent:  transfer: 4.2   c: 14.2  uPrime: 6.93 
-Child:   c: 47.3  EuPrime: 0.95 
+Parent:  transfer: 4.2   c: 15.1  uPrime: 7.17 
+Child:   c: 45.4  EuPrime: 1.20 
 
 Try college:
-Parent:  transfer: 4.2   c: 14.1  uPrime: 6.94 
-Child:   coll cost: 1.6    probGrad: 0.10 
-Child phase 1:   c: 10.0  uPrime: 1.00  earn: 1.2  save: -20.2  kPrime: -3.3 
-Child phase 2:   c: 9.8  uPrime: 1.04  earn: 1.8  save: -19.3  kPrime: -22.6 
+Parent:  transfer: 4.2   c: 15.2  uPrime: 7.17 
+Child:   coll cost: 2.1    probGrad: 0.11 
+Child phase 1:   c: 9.2  uPrime: 1.19  earn: 3.9  save: -14.1  kPrime: 2.7 
+Child phase 2:   c: 10.2  uPrime: 0.96  earn: 0.6  save: -23.4  kPrime: -20.7 
 
 
     ---------    
 
-Life history of type 121
+Life history of type 105
 
 Parents:  
-income (per year): 156.8 
+income (per year): 11.5 
 
 Work as HSG:
-Parent:  transfer: 9.5   c: 147.3  uPrime: 3.44 
-Child:   c: 48.1  EuPrime: 0.78 
+Parent:  transfer: 1.4   c: 10.1  uPrime: 18.86 
+Child:   c: 45.0  EuPrime: 1.07 
 
 Try college:
-Parent:  transfer: 9.4   c: 147.4  uPrime: 3.44 
-Child:   coll cost: 0.4    probGrad: 0.16 
-Child phase 1:   c: 11.3  uPrime: 0.77  earn: 1.1  save: -19.7  kPrime: 18.0 
-Child phase 2:   c: 13.9  uPrime: 0.50  earn: 0.0  save: -28.1  kPrime: -10.0 
+Parent:  transfer: 1.4   c: 10.1  uPrime: 18.87 
+Child:   coll cost: 6.1    probGrad: 0.16 
+Child phase 1:   c: 9.3  uPrime: 1.12  earn: 7.9  save: -14.9  kPrime: -9.3 
+Child phase 2:   c: 9.0  uPrime: 1.19  earn: 8.7  save: -13.3  kPrime: -22.6 
 
 
     ---------    
@@ -40,17 +40,17 @@ Child phase 2:   c: 13.9  uPrime: 0.50  earn: 0.0  save: -28.1  kPrime: -10.0
 Life history of type 10
 
 Parents:  
-income (per year): 26.9 
+income (per year): 27.7 
 
 Work as HSG:
-Parent:  transfer: 1.8   c: 25.2  uPrime: 15.06 
-Child:   c: 46.9  EuPrime: 0.78 
+Parent:  transfer: 1.8   c: 25.9  uPrime: 15.23 
+Child:   c: 45.0  EuPrime: 1.00 
 
 Try college:
-Parent:  transfer: 1.8   c: 25.2  uPrime: 15.07 
-Child:   coll cost: 2.4    probGrad: 0.20 
-Child phase 1:   c: 10.6  uPrime: 0.86  earn: 4.3  save: -17.2  kPrime: -10.1 
-Child phase 2:   c: 10.0  uPrime: 0.97  earn: 6.3  save: -12.5  kPrime: -22.6 
+Parent:  transfer: 1.8   c: 26.0  uPrime: 15.23 
+Child:   coll cost: 2.8    probGrad: 0.18 
+Child phase 1:   c: 9.9  uPrime: 0.99  earn: 7.1  save: -10.9  kPrime: -3.9 
+Child phase 2:   c: 10.8  uPrime: 0.84  earn: 4.3  save: -18.7  kPrime: -22.6 
 
 
     ---------    
@@ -58,17 +58,17 @@ Child phase 2:   c: 10.0  uPrime: 0.97  earn: 6.3  save: -12.5  kPrime: -22.6
 Life history of type 9
 
 Parents:  
-income (per year): 43.3 
+income (per year): 46.8 
 
 Work as HSG:
-Parent:  transfer: 4.8   c: 38.5  uPrime: 5.94 
-Child:   c: 47.4  EuPrime: 0.72 
+Parent:  transfer: 4.9   c: 41.9  uPrime: 6.01 
+Child:   c: 45.5  EuPrime: 0.89 
 
 Try college:
-Parent:  transfer: 4.8   c: 38.5  uPrime: 5.94 
-Child:   coll cost: 0.5    probGrad: 0.23 
-Child phase 1:   c: 11.4  uPrime: 0.74  earn: 2.7  save: -17.6  kPrime: 1.7 
-Child phase 2:   c: 12.4  uPrime: 0.63  earn: 0.7  save: -24.3  kPrime: -22.6 
+Parent:  transfer: 4.9   c: 42.0  uPrime: 6.01 
+Child:   coll cost: 1.2    probGrad: 0.22 
+Child phase 1:   c: 10.6  uPrime: 0.85  earn: 5.8  save: -11.4  kPrime: 8.1 
+Child phase 2:   c: 12.7  uPrime: 0.60  earn: 0.0  save: -27.4  kPrime: -19.3 
 
 
     ---------    
@@ -76,107 +76,107 @@ Child phase 2:   c: 12.4  uPrime: 0.63  earn: 0.7  save: -24.3  kPrime: -22.6
 Life history of type 142
 
 Parents:  
-income (per year): 19.9 
+income (per year): 22.3 
 
 Work as HSG:
-Parent:  transfer: 3.8   c: 16.0  uPrime: 7.28 
-Child:   c: 47.2  EuPrime: 0.69 
+Parent:  transfer: 3.9   c: 18.3  uPrime: 7.27 
+Child:   c: 45.4  EuPrime: 0.85 
 
 Try college:
-Parent:  transfer: 3.8   c: 16.0  uPrime: 7.28 
-Child:   coll cost: -0.7    probGrad: 0.26 
-Child phase 1:   c: 11.7  uPrime: 0.71  earn: 2.8  save: -15.7  kPrime: -0.4 
-Child phase 2:   c: 12.4  uPrime: 0.63  earn: 0.6  save: -22.1  kPrime: -22.6 
+Parent:  transfer: 3.9   c: 18.4  uPrime: 7.26 
+Child:   coll cost: 0.2    probGrad: 0.25 
+Child phase 1:   c: 10.9  uPrime: 0.80  earn: 5.5  save: -10.6  kPrime: 4.9 
+Child phase 2:   c: 13.2  uPrime: 0.56  earn: 0.0  save: -26.6  kPrime: -21.7 
 
 
     ---------    
 
-Life history of type 57
+Life history of type 40
 
 Parents:  
-income (per year): 66.7 
+income (per year): 37.4 
 
 Work as HSG:
-Parent:  transfer: 5.5   c: 61.2  uPrime: 5.21 
-Child:   c: 47.5  EuPrime: 0.66 
+Parent:  transfer: 2.9   c: 34.5  uPrime: 9.34 
+Child:   c: 45.2  EuPrime: 0.83 
 
 Try college:
-Parent:  transfer: 5.6   c: 61.1  uPrime: 5.21 
-Child:   coll cost: 6.3    probGrad: 0.28 
-Child phase 1:   c: 11.2  uPrime: 0.76  earn: 4.6  save: -24.8  kPrime: -2.2 
-Child phase 2:   c: 10.5  uPrime: 0.86  earn: 6.7  save: -20.4  kPrime: -22.6 
+Parent:  transfer: 2.9   c: 34.5  uPrime: 9.34 
+Child:   coll cost: 1.2    probGrad: 0.26 
+Child phase 1:   c: 10.9  uPrime: 0.80  earn: 6.1  save: -11.6  kPrime: 0.1 
+Child phase 2:   c: 12.2  uPrime: 0.64  earn: 2.0  save: -22.7  kPrime: -22.6 
 
 
     ---------    
 
-Life history of type 135
+Life history of type 85
 
 Parents:  
-income (per year): 65.4 
+income (per year): 49.0 
 
 Work as HSG:
-Parent:  transfer: 3.6   c: 61.8  uPrime: 7.59 
-Child:   c: 47.2  EuPrime: 0.65 
+Parent:  transfer: 4.5   c: 44.5  uPrime: 6.35 
+Child:   c: 45.4  EuPrime: 0.77 
 
 Try college:
-Parent:  transfer: 3.6   c: 61.8  uPrime: 7.59 
-Child:   coll cost: -6.6    probGrad: 0.31 
-Child phase 1:   c: 12.7  uPrime: 0.59  earn: 0.5  save: -10.7  kPrime: 3.7 
-Child phase 2:   c: 16.2  uPrime: 0.37  earn: 0.0  save: -19.0  kPrime: -15.3 
+Parent:  transfer: 4.5   c: 44.5  uPrime: 6.35 
+Child:   coll cost: 5.3    probGrad: 0.29 
+Child phase 1:   c: 11.0  uPrime: 0.79  earn: 6.6  save: -18.5  kPrime: -0.4 
+Child phase 2:   c: 11.3  uPrime: 0.74  earn: 5.5  save: -22.2  kPrime: -22.6 
 
 
     ---------    
 
-Life history of type 39
+Life history of type 108
 
 Parents:  
-income (per year): 109.1 
+income (per year): 56.4 
 
 Work as HSG:
-Parent:  transfer: 6.8   c: 102.3  uPrime: 4.30 
-Child:   c: 47.7  EuPrime: 0.62 
+Parent:  transfer: 3.7   c: 52.7  uPrime: 7.52 
+Child:   c: 45.3  EuPrime: 0.75 
 
 Try college:
-Parent:  transfer: 6.9   c: 102.2  uPrime: 4.30 
-Child:   coll cost: 2.8    probGrad: 0.33 
-Child phase 1:   c: 12.1  uPrime: 0.66  earn: 2.9  save: -22.9  kPrime: 4.7 
-Child phase 2:   c: 12.5  uPrime: 0.61  earn: 1.6  save: -27.3  kPrime: -22.6 
+Parent:  transfer: 3.7   c: 52.7  uPrime: 7.52 
+Child:   coll cost: 3.5    probGrad: 0.31 
+Child phase 1:   c: 11.2  uPrime: 0.76  earn: 6.3  save: -16.2  kPrime: -1.3 
+Child phase 2:   c: 11.7  uPrime: 0.69  earn: 4.7  save: -21.3  kPrime: -22.6 
 
 
     ---------    
 
-Life history of type 94
+Life history of type 1
 
 Parents:  
-income (per year): 42.3 
+income (per year): 38.8 
 
 Work as HSG:
-Parent:  transfer: 4.2   c: 38.1  uPrime: 6.57 
-Child:   c: 47.3  EuPrime: 0.61 
+Parent:  transfer: 4.0   c: 34.9  uPrime: 7.03 
+Child:   c: 45.4  EuPrime: 0.73 
 
 Try college:
-Parent:  transfer: 4.3   c: 38.0  uPrime: 6.58 
-Child:   coll cost: 7.9    probGrad: 0.35 
-Child phase 1:   c: 11.0  uPrime: 0.78  earn: 6.5  save: -24.2  kPrime: -6.9 
-Child phase 2:   c: 9.9  uPrime: 0.97  earn: 10.0  save: -15.7  kPrime: -22.6 
+Parent:  transfer: 4.0   c: 34.9  uPrime: 7.03 
+Child:   coll cost: 3.9    probGrad: 0.33 
+Child phase 1:   c: 11.3  uPrime: 0.74  earn: 6.3  save: -17.1  kPrime: -1.2 
+Child phase 2:   c: 11.7  uPrime: 0.69  earn: 4.9  save: -21.4  kPrime: -22.6 
 
 
     ---------    
 
-Life history of type 109
+Life history of type 87
 
 Parents:  
-income (per year): 123.7 
+income (per year): 119.2 
 
 Work as HSG:
-Parent:  transfer: 7.0   c: 116.7  uPrime: 4.15 
-Child:   c: 47.7  EuPrime: 0.58 
+Parent:  transfer: 5.3   c: 113.9  uPrime: 5.43 
+Child:   c: 45.6  EuPrime: 0.69 
 
 Try college:
-Parent:  transfer: 7.3   c: 116.4  uPrime: 4.15 
-Child:   coll cost: 7.9    probGrad: 0.38 
-Child phase 1:   c: 11.7  uPrime: 0.70  earn: 5.0  save: -27.9  kPrime: 1.2 
-Child phase 2:   c: 11.0  uPrime: 0.78  earn: 7.0  save: -23.8  kPrime: -22.6 
+Parent:  transfer: 5.3   c: 113.9  uPrime: 5.43 
+Child:   coll cost: 6.0    probGrad: 0.36 
+Child phase 1:   c: 11.4  uPrime: 0.72  earn: 6.5  save: -21.1  kPrime: 0.3 
+Child phase 2:   c: 11.6  uPrime: 0.71  earn: 6.2  save: -22.8  kPrime: -22.6 
 
 
     ---------    
@@ -184,53 +184,53 @@ Child phase 2:   c: 11.0  uPrime: 0.78  earn: 7.0  save: -23.8  kPrime: -22.6
 Life history of type 140
 
 Parents:  
-income (per year): 71.3 
+income (per year): 86.6 
 
 Work as HSG:
-Parent:  transfer: 6.2   c: 65.1  uPrime: 4.61 
-Child:   c: 47.6  EuPrime: 0.56 
+Parent:  transfer: 6.7   c: 79.9  uPrime: 4.42 
+Child:   c: 45.8  EuPrime: 0.64 
 
 Try college:
-Parent:  transfer: 6.1   c: 65.2  uPrime: 4.61 
-Child:   coll cost: -3.9    probGrad: 0.41 
-Child phase 1:   c: 13.8  uPrime: 0.50  earn: 0.0  save: -18.7  kPrime: 5.8 
-Child phase 2:   c: 17.2  uPrime: 0.33  earn: 0.0  save: -26.3  kPrime: -20.5 
+Parent:  transfer: 6.5   c: 80.0  uPrime: 4.42 
+Child:   coll cost: -2.5    probGrad: 0.40 
+Child phase 1:   c: 12.9  uPrime: 0.57  earn: 2.5  save: -14.7  kPrime: 11.3 
+Child phase 2:   c: 15.5  uPrime: 0.40  earn: 0.0  save: -25.5  kPrime: -14.1 
 
 
     ---------    
 
-Life history of type 43
+Life history of type 49
 
 Parents:  
-income (per year): 215.3 
+income (per year): 307.4 
 
 Work as HSG:
-Parent:  transfer: 50.0   c: 165.3  uPrime: 0.60 
-Child:   c: 54.1  EuPrime: 0.39 
+Parent:  transfer: 6.2   c: 301.2  uPrime: 4.66 
+Child:   c: 45.7  EuPrime: 0.61 
 
 Try college:
-Parent:  transfer: 50.0   c: 165.3  uPrime: 0.60 
-Child:   coll cost: -0.2    probGrad: 0.44 
-Child phase 1:   c: 16.5  uPrime: 0.35  earn: 0.0  save: -24.7  kPrime: 175.3 
-Child phase 2:   c: 19.8  uPrime: 0.25  earn: 0.0  save: -32.3  kPrime: 142.9 
+Parent:  transfer: 6.2   c: 301.2  uPrime: 4.66 
+Child:   coll cost: 1.5    probGrad: 0.43 
+Child phase 1:   c: 12.6  uPrime: 0.59  earn: 4.1  save: -19.0  kPrime: 5.7 
+Child phase 2:   c: 13.7  uPrime: 0.50  earn: 1.0  save: -28.3  kPrime: -22.6 
 
 
     ---------    
 
-Life history of type 19
+Life history of type 150
 
 Parents:  
-income (per year): 37.0 
+income (per year): 91.9 
 
 Work as HSG:
-Parent:  transfer: 3.2   c: 33.8  uPrime: 8.46 
-Child:   c: 47.1  EuPrime: 0.52 
+Parent:  transfer: 3.1   c: 88.8  uPrime: 8.56 
+Child:   c: 45.2  EuPrime: 0.59 
 
 Try college:
-Parent:  transfer: 3.2   c: 33.8  uPrime: 8.47 
-Child:   coll cost: 0.5    probGrad: 0.50 
-Child phase 1:   c: 12.6  uPrime: 0.59  earn: 4.1  save: -17.6  kPrime: -4.8 
-Child phase 2:   c: 12.6  uPrime: 0.60  earn: 4.3  save: -17.7  kPrime: -22.6 
+Parent:  transfer: 3.1   c: 88.8  uPrime: 8.56 
+Child:   coll cost: -0.6    probGrad: 0.47 
+Child phase 1:   c: 12.7  uPrime: 0.58  earn: 4.6  save: -14.6  kPrime: -2.0 
+Child phase 2:   c: 13.4  uPrime: 0.53  earn: 2.5  save: -20.5  kPrime: -22.6 
 
 
     ---------    
@@ -238,17 +238,17 @@ Child phase 2:   c: 12.6  uPrime: 0.60  earn: 4.3  save: -17.7  kPrime: -22.6
 Life history of type 106
 
 Parents:  
-income (per year): 230.6 
+income (per year): 224.5 
 
 Work as HSG:
-Parent:  transfer: 16.4   c: 214.2  uPrime: 2.00 
-Child:   c: 49.1  EuPrime: 0.46 
+Parent:  transfer: 15.3   c: 209.3  uPrime: 2.18 
+Child:   c: 47.0  EuPrime: 0.52 
 
 Try college:
-Parent:  transfer: 15.8   c: 214.8  uPrime: 2.00 
-Child:   coll cost: 4.0    probGrad: 0.52 
-Child phase 1:   c: 15.3  uPrime: 0.40  earn: 0.0  save: -36.1  kPrime: 27.2 
-Child phase 2:   c: 18.4  uPrime: 0.28  earn: 0.0  save: -43.6  kPrime: -16.5 
+Parent:  transfer: 14.6   c: 209.9  uPrime: 2.17 
+Child:   coll cost: 4.1    probGrad: 0.51 
+Child phase 1:   c: 14.5  uPrime: 0.45  earn: 0.0  save: -34.9  kPrime: 23.6 
+Child phase 2:   c: 16.9  uPrime: 0.33  earn: 0.0  save: -41.1  kPrime: -17.6 
 
 
     ---------    
@@ -256,15 +256,15 @@ Child phase 2:   c: 18.4  uPrime: 0.28  earn: 0.0  save: -43.6  kPrime: -16.5
 Life history of type 99
 
 Parents:  
-income (per year): 156.7 
+income (per year): 152.2 
 
 Work as HSG:
-Parent:  transfer: 6.8   c: 149.9  uPrime: 4.14 
-Child:   c: 47.7  EuPrime: 0.45 
+Parent:  transfer: 6.4   c: 145.7  uPrime: 4.39 
+Child:   c: 45.7  EuPrime: 0.49 
 
 Try college:
-Parent:  transfer: 7.0   c: 149.8  uPrime: 4.14 
-Child:   coll cost: 4.1    probGrad: 0.61 
-Child phase 1:   c: 13.3  uPrime: 0.53  earn: 4.2  save: -25.4  kPrime: 2.5 
-Child phase 2:   c: 13.1  uPrime: 0.54  earn: 4.7  save: -25.1  kPrime: -22.6 
+Parent:  transfer: 6.5   c: 145.7  uPrime: 4.39 
+Child:   coll cost: 4.3    probGrad: 0.60 
+Child phase 1:   c: 13.3  uPrime: 0.53  earn: 5.1  save: -23.9  kPrime: 2.1 
+Child phase 2:   c: 13.3  uPrime: 0.53  earn: 5.1  save: -24.7  kPrime: -22.6 
 

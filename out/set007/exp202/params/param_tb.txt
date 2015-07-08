@@ -3,10 +3,10 @@
           Parameter                   Description             Value
 -------------------------------------------------------------------
          Endowments                                                
-          $\mu_{p}$  Marginal distribution of $p$             $2.8$
+          $\mu_{p}$  Marginal distribution of $p$             $3.0$
         Preferences                                                
-   $\mu_{\omega,p}$    Weight on parental utility            $0.31$
-       $\bar{\eta}$             Preference for HS           $-0.82$
+   $\mu_{\omega,p}$    Weight on parental utility            $0.21$
+       $\bar{\eta}$             Preference for HS           $-0.78$
               Other                                                
-       $\hat{e}{s}$              Log skill prices  6.59, 6.59, 6.83
+       $\hat{e}{s}$              Log skill prices  6.57, 6.57, 6.78
 -------------------------------------------------------------------

@@ -6,28 +6,28 @@
                                                              $T$                           Lifespan                                    58
                                                          $T_{s}$                   School durations                               0, 2, 4
                                                       Endowments                                                                         
-   $\alpha_{p,y}, \alpha_{p,m}, \alpha_{y,m}, \alpha_{\omega,m}$             Endowment correlations              $0.01, 0.27, 0.73, 0.38$
-                                                  $\alpha_{a,m}$                 Correlation, $a,m$                                $0.85$
-                                           $\mu_{p}, \sigma_{p}$       Marginal distribution of $p$                            $4.0, 4.2$
+   $\alpha_{p,y}, \alpha_{p,m}, \alpha_{y,m}, \alpha_{\omega,m}$             Endowment correlations             $-0.14, 0.23, 0.76, 0.38$
+                                                  $\alpha_{a,m}$                 Correlation, $a,m$                                $1.41$
+                                           $\mu_{p}, \sigma_{p}$       Marginal distribution of $p$                            $3.8, 3.5$
                                            $\mu_{y}, \sigma_{y}$   Marginal distribution of $y_{p}$                          $4.20, 0.80$
-                                                   $\sigma_{IQ}$                           IQ noise                                $0.49$
+                                                   $\sigma_{IQ}$                           IQ noise                                $0.36$
                                                      Preferences                                                                         
                                                          $\beta$                    Discount factor                                $0.98$
                                                    $\varphi_{c}$               Curvature of utility                                $2.00$
                                                     $\omega_{c}$                     Weight on u(c)                                $1.00$
                                                    $\varphi_{l}$               Curvature of utility                                $2.00$
                                                     $\omega_{l}$                  Weight on leisure                                $0.30$
-                                                    $\omega_{w}$             Weight on u(c) at work                                $7.99$
+                                                    $\omega_{w}$             Weight on u(c) at work                                $8.84$
                                                    $\varphi_{p}$      Curvature of parental utility                                $0.48$
-                                                $\mu_{\omega,p}$         Weight on parental utility                                $0.32$
+                                                $\mu_{\omega,p}$         Weight on parental utility                                $0.22$
                                              $\sigma_{\omega,p}$  Std of weight on parental utility                                $0.19$
                                                         $\gamma$  Preference shock at college entry                                $0.10$
                                                      $Max cColl$               Max free consumption                                 $0.6$
                                                      $Max lColl$                   Max free leisure                                $0.18$
                                                            Other                                                                         
                                          $\phi_{HSG}, \phi_{CG}$                 Returns to ability                        $0.155, 0.194$
-            $\pi_{0}, \pi_{1}, \pi_{a}, \pi_{b}, \pi_{c}, a_{0}$                 Governing $\pi(a)$  $0.06, 0.92, 2.62, 1.69, 1.00, 0.00$
-                                                 $Mean w_{coll}$        Maximum earnings in college                                $31.9$
+            $\pi_{0}, \pi_{1}, \pi_{a}, \pi_{b}, \pi_{c}, a_{0}$                 Governing $\pi(a)$  $0.07, 0.93, 2.53, 1.14, 1.00, 0.00$
+                                                 $Mean w_{coll}$        Maximum earnings in college                                $32.6$
                                                              $R$                      Interest rate                                $1.04$
                                                      $c_{Floor}$                  Consumption floor                                  0.50
 -----------------------------------------------------------------------------------------------------------------------------------------

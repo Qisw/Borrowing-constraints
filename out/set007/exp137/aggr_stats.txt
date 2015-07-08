@@ -2,25 +2,25 @@
 Aggregate statistics
 
 Stats by schooling
-E{a | s}:  -0.13   -0.26   0.68   
+E{a | s}:  -0.24   -0.09   0.64   
 Mean log lifetime earnings, discounted to work start: 
-    6.89    6.87    7.26
+    6.84    6.86    7.20
     fixed(s):  6.73  6.73  6.73  
-    ability part(s):  0.24  0.22  0.46  
+    ability part(s):  0.23  0.25  0.45  
 
 Debt stats computed both ways 
   Fraction in debt by IQ: 
     Transfer paid out t=1:       0.00  0.00  0.00  0.00
-    Transfer paid out each t:    0.71  0.72  0.72  0.82
+    Transfer paid out each t:    0.35  0.43  0.49  0.69
   Mean in debt by IQ: 
     Transfer paid out t=1:        0.0   0.0   0.0   0.0
-    Transfer paid out each t:     2.7   2.5   2.3   2.3
+    Transfer paid out each t:     0.9   1.1   1.2   1.7
   Fraction in debt by yp: 
     Transfer paid out t=1:       0.00  0.00  0.00  0.00
-    Transfer paid out each t:    0.88  0.79  0.69  0.69
+    Transfer paid out each t:    0.62  0.52  0.41  0.55
   Mean in debt by yp: 
     Transfer paid out t=1:        0.0   0.0   0.0   0.0
-    Transfer paid out each t:     3.2   2.8   1.8   2.2
+    Transfer paid out each t:     2.0   1.0   0.9   1.3
 
 Financial stats
-  Fraction of spending paid by earnings: 0.32   debt: 0.00   transfers: 0.81 
+  Fraction of spending paid by earnings: 0.29   debt: 0.00   transfers: 1.12 

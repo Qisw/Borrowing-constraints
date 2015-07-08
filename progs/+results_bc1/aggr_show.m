@@ -1,10 +1,11 @@
 function aggr_show(saveFigures, setNo, expNo)
 
 cS = const_bc1(setNo, expNo);
-figS = const_fig_bc1;
+% figS = const_fig_bc1;
 paramS = param_load_bc1(setNo, expNo);
 % hhS = var_load_bc1(cS.vHhSolution, cS);
 aggrS = var_load_bc1(cS.vAggregates, cS);
+tgS = var_load_bc1(cS.vCalTargets, cS);
 
 outFn = fullfile(cS.outDir, 'aggr_stats.txt');
 fp = fopen(outFn, 'w');
@@ -15,10 +16,33 @@ school_stats(fp, aggrS, paramS, cS);
 debt_stats(fp, aggrS, paramS, cS);
 financial_stats(fp, aggrS, cS);
 
+
+%% BetaIq, betaYp
+if 1
+   if cS.regrEntryIqYpWeighted == 1
+      mBetaIq = aggrS.qyS.betaIqWeighted;
+      mBetaYp = aggrS.qyS.betaYpWeighted;
+      dataIdx = tgS.schoolS.iWeighted;
+   else
+      mBetaIq = aggrS.qyS.betaIq;
+      mBetaYp = aggrS.qyS.betaYp;
+      dataIdx = tgS.schoolS.iUnweighted;
+   end
+
+   fmtStr = '  betaIq: %5.2f    betaYp: %5.2f \n';
+   fprintf(fp, 'Model:  ');
+   fprintf(fp, fmtStr, mBetaIq, mBetaYp);
+   fprintf(fp, 'Data:   ');
+   fprintf(fp, fmtStr, tgS.schoolS.betaIqM(dataIdx, cS.iCohort), tgS.schoolS.betaYpM(dataIdx, cS.iCohort));
+end
+
+
 fclose(fp);
 type(outFn);
 
 end
+
+% ---------------- end of main function
 
 
 %% Stats by schooling
