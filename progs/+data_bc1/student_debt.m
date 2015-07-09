@@ -56,7 +56,7 @@ if 1
    xlabel('Year');
    ylabel('Average debt per undergraduate');
    output_bc1.fig_format(fh, 'line');
-   output_bc1.fig_save('debt_mean_year', saveFigures, cS);
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'debt_mean_year'), saveFigures, cS);
 end
 
 

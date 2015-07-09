@@ -41,7 +41,7 @@ for ix = 1 : nx
    paramV{ix} = param_load_bc1(setNoV(ix), expNoV(ix));
    aggrV{ix} = var_load_bc1(cS.vAggregates, cxS);
    statsV{ix} = var_load_bc1(cS.vAggrStats, cxS);
-   cohortStrV{ix} = sprintf('%i', cS.bYearV(constV{ix}.iCohort));
+   cohortStrV{ix} = sprintf('%i', cS.cohYearV(constV{ix}.iCohort));
    expStrV{ix} = cxS.expS.expStr;
 end
 
@@ -64,51 +64,13 @@ end
 
 %% By iq, yp: Entry and graduation rates
 if 1
-   % What is plotted in each figure?
-   iIq = 1;
-   iYp = 2;
-   xTypeV = [iIq, iIq, iYp, iYp];
-   yStrV = {'Fraction entering college',  'Fraction graduating from college', ...
-      'Fraction entering college',  'Fraction graduating from college'};
-   figFnV = {'iq_enter',   'iq_grad',    'yp_enter',    'yp_grad'};
-   
-   for iPlot = 1 : length(xTypeV)
-      if xTypeV(iPlot) == iIq
-         xStr = figS.iqGroupStr;
-         xV = 1 : nIq;
-      elseif xTypeV(iPlot) == iYp
-         xStr = figS.ypGroupStr;
-         xV = 1 : nYp;
-      else
-         error('Invalid');
-      end
-      
-      yM = zeros([length(xV), nx]);
-      for ix = 1 : nx
-         if iPlot == 1
-            yV = aggrV{ix}.fracEnter_qV;
-         elseif iPlot == 2
-            yV = aggrV{ix}.fracGrad_qV;
-         elseif iPlot == 3
-            yV = aggrV{ix}.ypS.fracEnter_yV;
-         elseif iPlot == 4
-            yV = aggrV{ix}.ypS.fracGrad_yV;
-         else
-            error('Invalid');
-         end
-         yM(:,ix) = yV;
-      end      
-      
-      
-      fh = output_bc1.fig_new(saveFigures, []);
-      bar(xV, yM);
-      xlabel(xStr);
-      ylabel(yStrV{iPlot});
-      legend(expStrV, 'location', 'northwest');
-      figures_lh.axis_range_lh([NaN NaN 0 1]);
-      output_bc1.fig_format(fh, 'bar');
-      output_bc1.fig_save(fullfile(outDir, figFnV{iPlot}), saveFigures, cS);
-   end
+   entry_grad(aggrV, expStrV, outDir, saveFigures, cS);
+end
+
+
+%% Financing bar graph
+if 1
+   exper_bc1.college_finance(outDir, saveFigures, expStrV, setNoV, expNoV);
 end
 
 
@@ -231,6 +193,9 @@ diary off;
 end
 
 
+% ---------  end of main function
+
+
 %% Local: Regression of entry rate on [iq, yp]
 % With original bins, this is run in the data summary
 %{
@@ -243,6 +208,7 @@ IN
 %}
 function tb_regr_entry(tgS, aggrV, constV, outDir)
    cS = constV{1};
+   symS = helper_bc1.symbols;
    nx = length(aggrV);
    fmtStr = '%.2f';
    
@@ -253,7 +219,7 @@ function tb_regr_entry(tgS, aggrV, constV, outDir)
    tbS.rowUnderlineV = zeros([nr, 1]);
    
    ir = 1;
-   tbM(ir, :) = {' ', '$\beta_{IQ}$', '$\beta_{yp}$'};
+   tbM(ir, :) = {' ', ['$', symS.betaIq, '$'], ['$', symS.betaYp, '$']};
    tbS.rowUnderlineV(ir) = 1;
    
    for ix = 1 : nx
@@ -288,3 +254,56 @@ function tb_regr_entry(tgS, aggrV, constV, outDir)
 end
 
 
+%% Local: By iq, yp: Entry and graduation rates
+function entry_grad(aggrV, expStrV, outDir, saveFigures, cS)
+   figS = const_fig_bc1;
+   nIq = length(cS.iqUbV);
+   nYp = length(cS.ypUbV);
+   nx  = length(aggrV);
+
+   % What is plotted in each figure?
+   iIq = 1;
+   iYp = 2;
+   xTypeV = [iIq, iIq, iYp, iYp];
+   yStrV = {'Fraction entering college',  'Fraction graduating from college', ...
+      'Fraction entering college',  'Fraction graduating from college'};
+   figFnV = {'iq_enter',   'iq_grad',    'yp_enter',    'yp_grad'};
+   
+   for iPlot = 1 : length(xTypeV)
+      if xTypeV(iPlot) == iIq
+         xStr = figS.iqGroupStr;
+         xV = 1 : nIq;
+      elseif xTypeV(iPlot) == iYp
+         xStr = figS.ypGroupStr;
+         xV = 1 : nYp;
+      else
+         error('Invalid');
+      end
+      
+      yM = zeros([length(xV), nx]);
+      for ix = 1 : nx
+         if iPlot == 1
+            yV = aggrV{ix}.fracEnter_qV;
+         elseif iPlot == 2
+            yV = aggrV{ix}.fracGrad_qV;
+         elseif iPlot == 3
+            yV = aggrV{ix}.ypS.fracEnter_yV;
+         elseif iPlot == 4
+            yV = aggrV{ix}.ypS.fracGrad_yV;
+         else
+            error('Invalid');
+         end
+         yM(:,ix) = yV;
+      end      
+      
+      
+      fh = output_bc1.fig_new(saveFigures, []);
+      bar(xV, yM);
+      xlabel(xStr);
+      ylabel(yStrV{iPlot});
+      legend(expStrV, 'location', 'northwest');
+      figures_lh.axis_range_lh([NaN NaN 0 1]);
+      output_bc1.fig_format(fh, 'bar');
+      output_bc1.fig_save(fullfile(outDir, figFnV{iPlot}), saveFigures, cS);
+   end
+end

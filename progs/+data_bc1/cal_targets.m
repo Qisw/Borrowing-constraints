@@ -40,6 +40,7 @@ n79S = n79S.all_targets;
 %% College outcomes
 
 % CPS data
+%  Should construct from entry data instead +++++
 tgS.frac_scM = var_load_bc1(cS.vCohortSchooling, cS);
 
 [tgS, schoolS] = data_bc1.school_targets(n79S, tgS, cS);

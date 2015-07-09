@@ -509,7 +509,7 @@ Ability: test scores (6 bins)
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/data/qy_entry_updegraff 1936.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/qy_entry_updegraff 1936.pdf
 	height 60theight%
 
 \end_inset
@@ -582,14 +582,14 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/all_inc_coeffs_orig.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_all.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/all_ability_coeffs_orig.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_all.pdf
 	width 50text%
 
 \end_inset
@@ -668,14 +668,14 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_complete.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_complete.pdf
 	width 50text%
 
 \end_inset
@@ -792,7 +792,7 @@ Example: Updegraff (1936)
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/data/qy_entry_updegraff 1936.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/qy_entry_updegraff 1936.pdf
 	width 50text%
 
 \end_inset
@@ -832,14 +832,14 @@ NLSY Replication Results
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/all_inc_coeffs_nlsy79.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_nlsy79_all.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/all_ability_coeffs_nlsy79.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_nlsy79_all.pdf
 	width 50text%
 
 \end_inset
@@ -992,7 +992,15 @@ Timing:
 \end_layout
 
 \begin_layout Enumerate
-Choose between college entry or work as high school graduate (HSG).
+Choose between 
+\series bold
+college
+\series default
+ entry or 
+\series bold
+work
+\series default
+ as high school graduate.
 \end_layout
 
 \begin_deeper
@@ -1021,7 +1029,9 @@ At the end of year 2:
 
 \begin_deeper
 \begin_layout Standard
-learn whether student graduates
+a subset of students 
+\series bold
+drops out
 \end_layout
 
 \end_deeper
@@ -1036,7 +1046,11 @@ similar to years 1-2
 
 \end_deeper
 \begin_layout Enumerate
-Work as CG starting in year 5
+Work as college 
+\series bold
+graduate
+\series default
+ starting in year 5
 \end_layout
 
 \end_deeper
@@ -1184,7 +1198,7 @@ Value of working as HSG:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{HS}\left(j\right)=\max_{z_{w}\ge0}T_{c}u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(T_{c}z_{w},HS,\ability\right)|j\right\} 
+V_{HS}\left(j\right)=\max_{z_{w}\ge0}\collLength u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(\collLength z_{w},HS,\ability\right)|j\right\} 
 \end{equation}
 
 \end_inset
@@ -1227,7 +1241,7 @@ Value of college entry:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{entry}\left(j\right)=\max_{z_{c}\ge0}T_{c}u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(T_{c}z_{c},j\right)
+V_{entry}\left(j\right)=\max_{z_{c}\ge0}\collLength u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(\collLength z_{c},j\right)
 \end{equation}
 
 \end_inset
@@ -1250,10 +1264,6 @@ add: hetero in parental altruism
 
 \end_deeper
 \begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
 
 \end_layout
 
@@ -1296,7 +1306,7 @@ budget constraint:
 \noun off
 \color none
 
-\begin_inset Formula $k'=Rk+2\left(w_{coll}l-\collCost_{j}-c\right)$
+\begin_inset Formula $k'=Rk+2\left(\collegeWage l-\collCost_{j}-c\right)$
 \end_inset
 
 
@@ -1305,18 +1315,6 @@ budget constraint:
 \begin_layout Itemize
 borrowing constraint: 
 \begin_inset Formula $k'\ge k_{min,3}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Continuation value:
-\begin_inset Formula 
-\begin{equation}
-V_{m}\left(k,j\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right]\right)V_{w}\left(k,\ability,CD\right)+\pi\left[\ability\right]V_{3}\left(k,j\right)\right]
-\end{equation}
-
 \end_inset
 
 
@@ -1335,6 +1333,57 @@ V_{m}\left(k,j\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right
 
 \begin_layout Itemize
 prevents high ability students from consuming too much in college
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+End of Year 2 in College
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+With probability 
+\begin_inset Formula $1-\pi\left(\ability\right)$
+\end_inset
+
+: drop out and start working.
+ 
+\end_layout
+
+\begin_layout Standard
+Otherwise: remain in college for 2 more years.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Continuation value:
+\begin_inset Formula 
+\begin{equation}
+V_{m}\left(k,j\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right]\right)V_{w}\left(k,\ability,CD\right)+\pi\left[\ability\right]V_{3}\left(k,j\right)\right]
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -1398,38 +1447,6 @@ Work Phase
 \end_layout
 
 \begin_deeper
-\begin_layout Standard
-State vector:
-\end_layout
-
-\begin_layout Itemize
-assets (or debts) 
-\begin_inset Formula $k$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-ability 
-\begin_inset Formula $\ability$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-schooling 
-\begin_inset Formula $s\in\left\{ HSG,CD,CG\right\} $
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Household problem:
-\end_layout
-
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
@@ -1560,7 +1577,7 @@ entry
 \end_layout
 
 \begin_layout Standard
-Colege 
+College 
 \series bold
 financing
 \series default
@@ -1619,6 +1636,20 @@ Hours worked and earnings in college
 Student loans
 \end_layout
 
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\IQ=\ability+\mbox{noise}$
+\end_inset
+
+
+\end_layout
+
 \end_deeper
 \begin_layout Separator
 
@@ -1670,28 +1701,14 @@ beamergotobutton{Details}}
 \end_inset
 
 
-\end_layout
-
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Fit
-\end_layout
-
+\begin_inset VSpace bigskip
 \end_inset
 
 
 \end_layout
 
-\begin_deeper
 \begin_layout Standard
+Fit: 
 \begin_inset ERT
 status open
 
@@ -1721,6 +1738,36 @@ beamergotobutton{College graduation}}
 
 \end_inset
 
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{FitEarnings}{
+\backslash
+beamergotobutton{Earnings}}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{FitDebtTransfers}{
+\backslash
+beamergotobutton{Debt and transfers}}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1734,7 +1781,7 @@ beamergotobutton{College graduation}}
 status open
 
 \begin_layout Plain Layout
-Time-Varying Parameters
+Time Series Calibration
 \end_layout
 
 \end_inset
@@ -1744,147 +1791,137 @@ Time-Varying Parameters
 
 \begin_deeper
 \begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="2">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Parameter
+We focus on 2 earlier cohorts:
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Target
+\begin_layout Enumerate
+Project Talent (1960 cohort)
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Mean college cost
+\begin_deeper
+\begin_layout Itemize
+college entry similar to NLSY79
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
+\begin_layout Itemize
 
-\begin_layout Plain Layout
-Mean college cost
+\series bold
+no college loans
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Borrowing limit
+\begin_layout Itemize
+lower college premium
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Federal student loan limits
+\end_deeper
+\begin_layout Enumerate
+Updegraff (1933 cohort)
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Parental altruism
+\begin_deeper
+\begin_layout Itemize
+lower college entry
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
 
 \begin_layout Plain Layout
-Share of college costs paid by 
-\begin_inset Quotes eld
-\end_inset
+Time Series Data
+\end_layout
 
-family contributions
-\begin_inset Quotes erd
 \end_inset
 
 
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $\bar{Y}\left(s\right)$
-\end_inset
-
-
-\end_layout
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
+	width 50text%
+	groupId 2across
 
 \end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
 
-\begin_layout Plain Layout
-Median lifetime earnings by schooling
-\end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_cohort.pdf
+	width 50text%
+	groupId 2across
 
-\begin_layout Plain Layout
-Preference for work as HSG, 
-\begin_inset Formula $\prefHS$
 \end_inset
 
 
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
 
 \begin_layout Plain Layout
-College enrollment
+Time Series Data
 \end_layout
 
 \end_inset
-</cell>
-</row>
-</lyxtabular>
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_cohort.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+need to detrend this +++
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time-Series Calibration
+\end_layout
 
 \end_inset
 
@@ -1892,10 +1929,53 @@ College enrollment
 \end_layout
 
 \begin_layout Standard
-also target: entry rates by iq, yp +++
+Time-varying parameters:
 \end_layout
 
-\end_deeper
+\begin_layout Itemize
+borrowing limit: 
+\begin_inset Formula $k_{min}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+mean college cost: 
+\begin_inset Formula $\pMean$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+lifetime earnings gap by schooling: 
+\begin_inset Formula $\bar{\pvEarn}\left(s\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+taste for college: 
+\begin_inset Formula $\prefHS$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+parental altruism (to match share of college costs paid by 
+\begin_inset Quotes eld
+\end_inset
+
+family contributions
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
 \begin_layout Separator
 
 \end_layout
@@ -2084,6 +2164,42 @@ same for yp sorting, but there borrowing limits play a role
 
 \end_layout
 
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Financing Over Time
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/spending.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/income.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
 \begin_layout Section
 Conclusion
 \end_layout
@@ -2176,9 +2292,11 @@ name "CalibrParams"
 
 \begin_deeper
 \begin_layout Standard
+
+\size footnotesize
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/param_tb.tex"
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/params/param_tb.tex"
 
 \end_inset
 
@@ -2205,6 +2323,13 @@ College Entry Rates
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "FitCollegeEntry"
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2219,13 +2344,6 @@ College Entry Rates
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/yp_enter.pdf
 	width 50text%
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "FitCollegeEntry"
 
 \end_inset
 
@@ -2248,6 +2366,13 @@ College Graduation Rates
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "FitCollegeGrad"
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2266,13 +2391,301 @@ College Graduation Rates
 \end_inset
 
 
-\begin_inset CommandInset label
-LatexCommand label
-name "FitCollegeGrad"
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Debt and Transfers
+\end_layout
 
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "FitDebtTransfers"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_debtmean.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_transfer.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hours and Earnings in College
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "FitEarnings"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_hours.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_earn.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Data Slides
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Premium
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailCollegePremium"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Cohort Schooling
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailCohortSchooling"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Mean Student Debt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/debt_mean_year.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailMeanDebt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mean debt per undergraduate, 
+\begin_inset Formula $\cpiBaseYear$
+\end_inset
+
+ prices.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+College Costs
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailCollegeCosts"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_year.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mean out of pocket college cost, 
+\begin_inset Formula $\cpiBaseYear$
+\end_inset
+
+ prices.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Borrowing Limits
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailBorrowLimits"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_year.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lifetime maximum undergraduate federal loan limits.
 \end_layout
 
 \end_deeper

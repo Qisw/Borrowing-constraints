@@ -216,7 +216,7 @@ function time_series
    if any(expNo == cS.bYearExpNoV)
       % ******  Calibrate all time varying params
       iCohort = find(expNo == cS.bYearExpNoV);
-      expS.expStr = sprintf('Cohort %i', cS.bYearV(iCohort));
+      expS.expStr = sprintf('Cohort %i', cS.cohYearV(iCohort));
       
       % Signal noise
       % pvec = pvec.calibrate('alphaAM', cS.calExp);
@@ -235,7 +235,7 @@ function time_series
       
    elseif expNo == 205  ||  expNo == 206  || expNo == 207
       iCohort = 1;
-      expS.expStr = sprintf('Cohort %i', cS.bYearV(iCohort));
+      expS.expStr = sprintf('Cohort %i', cS.cohYearV(iCohort));
       
       % Signal noise
       % pvec = pvec.calibrate('alphaAM', cS.calExp);

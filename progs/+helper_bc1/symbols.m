@@ -16,8 +16,8 @@ outS.ability = 'x';
 outS.famIncome = 'y_{p}';
 outS.cColl = '\bar{c}';
 outS.lColl = '\bar{l}';
-outS.IQ = 'IQ';
-outS.collCost = 'p';
+outS.IQ = 'AFQT';
+outS.collCost = '\tau';
 outS.abilSignal = 'm';
 
 
@@ -29,8 +29,14 @@ outS.pvEarn = 'Y';
 %% College 
 
 outS.prGradParam = '\pi';
+% Length of schooling
 outS.tSchool = 'A_{s}';
+outS.collLength = 'A_{CG}';
 outS.prefShockEntry = '\eta';
+% Parental transfer
+outS.pTransfer = 'z';
+% Wage while in college
+outS.collegeWage = 'w_{coll}';
 
 
 %% Data

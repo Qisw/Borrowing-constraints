@@ -6,6 +6,9 @@ Base year dollar amounts, at the START of each year in college
 Checked: 2015-Mar-19
 %}
 
+figS = const_fig_bc1;
+saveFigures = 1;
+
 
 %% CPI
 
@@ -51,6 +54,55 @@ lifetimeMaxV = dataM(:, 6);
 bLimitM = nan(size(limitByYearM));
 for iy = 1 : size(limitByYearM, 1)
    bLimitM(iy, :) = min(lifetimeMaxV(iy), cumsum(limitByYearM(iy,:), 2));
+end
+
+
+%% Plot by year
+if 1
+   fh = output_bc1.fig_new(saveFigures, []);
+   hold on;
+   
+   for i1 = 1 : length(yLbV)
+      if i1 < length(yLbV)
+         yUb = yLbV(i1 + 1);
+      else
+         yUb = yLbV(i1) + 1;
+      end      
+      yearPlotV = max(1960, yLbV(i1)) : yUb;
+      
+      % CPI for these years
+      cpiIdxV = yearPlotV - cpiYearV(1) + 1;
+      plot(yearPlotV,  lifetimeMaxV(i1) ./ cpiV(cpiIdxV),  figS.lineStyleDenseV{1}, 'color', figS.colorM(1,:));
+   end
+   
+   hold off;
+   xlabel('Year');
+   ylabel(sprintf('Borrowing limit, %i prices', cS.cpiBaseYear));
+   output_bc1.fig_format(fh, 'line');
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'borrow_limit_year'), saveFigures, cS);
+end
+
+
+%% Plot by cohort
+if 1
+   bYearV = cS.bYearV(1) : cS.bYearV(end);
+   yearV  = bYearV + 23;
+   dataV  = zeros(size(bYearV));
+   for ic = 1 : length(bYearV)
+      if yearV(ic) >= yLbV(1)
+         % Find the applicable year bracket
+         bracketIdxV = find(yearV(ic) >= yLbV);
+         
+         % CPI for this years
+         cpiIdx = yearV(ic) - cpiYearV(1) + 1;
+         dataV(ic) = lifetimeMaxV(bracketIdxV(end)) ./ cpiV(cpiIdx);
+      end
+   end
+   
+   fh = output_bc1.plot_by_cohort(bYearV(:), dataV(:), saveFigures, cS);
+   ylabel(sprintf('Borrowing limit, %i prices', cS.cpiBaseYear));
+   output_bc1.fig_format(fh, 'line');
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'borrow_limit_cohort'), saveFigures, cS);
 end
 
 

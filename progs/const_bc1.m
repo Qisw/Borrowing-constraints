@@ -90,6 +90,8 @@ cS.R = 1.04;
 
 % Cohorts modeled
 cS.bYearV = [1915, 1940, 1961, 1979]';
+% Year to be displayed for each cohort (high school graduation)
+cS.cohYearV = cS.bYearV + 18;
 % For each cohort: calibrate time varying parameters with these experiments
 cS.bYearExpNoV = [203, 202, NaN, NaN];
 % Cross sectional calibration for this cohort
@@ -290,11 +292,11 @@ cS.modelDir = fullfile(cS.baseDir, 'model1');
    cS.matDir  = fullfile(cS.modelDir, 'mat', setStr, expStr);
 
    cS.setOutDir = fullfile(cS.modelDir, 'out', setStr);
+      % Show data
+      cS.dataOutDir = fullfile(cS.setOutDir, 'data');
       cS.outDir  = fullfile(cS.setOutDir, expStr);
          % Within an experiment: show fit
          cS.fitDir  = fullfile(cS.outDir, 'fit');
-         % Show data
-         cS.dataOutDir = fullfile(cS.outDir, 'data');
          % Parameters
          cS.paramDir = fullfile(cS.outDir, 'params');
          % Hh solution

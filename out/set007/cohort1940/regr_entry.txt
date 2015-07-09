@@ -1,20 +1,20 @@
 
---------------------------------------------------------
-                              $\beta_{IQ}$  $\beta_{yp}$
---------------------------------------------------------
-                    Baseline                            
-                       Model          0.70          0.04
-                        Data          0.71          0.07
-   Only change earn profiles                            
-                       Model         -0.00         -0.00
-                        Data          0.71          0.07
-          Only change bLimit                            
-                       Model          0.65          0.09
-                        Data          0.71          0.07
-        Change college costs                            
-                       Model          0.70          0.04
-                        Data          0.71          0.07
-            Change schooling                            
-                       Model          0.73          0.06
-                        Data          0.71          0.07
---------------------------------------------------------
+------------------------------------------------------
+                              $\beta_{A}$  $\beta_{F}$
+------------------------------------------------------
+                    Baseline                          
+                       Model         0.70         0.04
+                        Data         0.71         0.07
+   Only change earn profiles                          
+                       Model        -0.00        -0.00
+                        Data         0.71         0.07
+          Only change bLimit                          
+                       Model         0.65         0.09
+                        Data         0.71         0.07
+        Change college costs                          
+                       Model         0.70         0.04
+                        Data         0.71         0.07
+            Change schooling                          
+                       Model         0.73         0.06
+                        Data         0.71         0.07
+------------------------------------------------------

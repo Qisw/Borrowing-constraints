@@ -2070,6 +2070,15 @@ Time series calibration
 \end_layout
 
 \begin_layout Standard
+Detrending is important because it scales preference shocks (such as pref
+ for HS work, but that is actually time varying; but also 
+\begin_inset Formula $\cColl$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
 Detrending:
 \end_layout
 
@@ -2089,6 +2098,10 @@ scale so that mean earnings are the same as for reference cohort
 
 \family typewriter
 cal_targets.m
+\end_layout
+
+\begin_layout Itemize
+all cohort variables (tuition, debt) are detrended using these factors
 \end_layout
 
 \begin_layout Standard
@@ -2113,6 +2126,39 @@ financing shares
 
 \begin_layout Itemize
 hours worked in college
+\end_layout
+
+\begin_layout Subsection
+Task: new detrending
+\end_layout
+
+\begin_layout Standard
+It would be cleaner to construct detrending factors by year, not by cohort.
+\end_layout
+
+\begin_layout Standard
+Then we can show driving forces (properly detrended).
+\end_layout
+
+\begin_layout Standard
+Construct median earnings by year, 
+\end_layout
+
+\begin_layout Itemize
+1964+: cps
+\end_layout
+
+\begin_layout Itemize
+earlier?
+\end_layout
+
+\begin_layout Itemize
+perhaps better mean output per worker (nominal; easy to get)
+\end_layout
+
+\begin_layout Standard
+First detrend all dollar figures.
+ Then run earnings regressions and construct lifetime earnings.
 \end_layout
 
 \begin_layout Subsection

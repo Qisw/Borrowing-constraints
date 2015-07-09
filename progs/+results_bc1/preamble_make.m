@@ -27,6 +27,11 @@ for i1 = 1 : length(fnV)
 end
 
 
+%% Data constants
+
+results_bc1.preamble_add('cpiBaseYear',  sprintf('%i', cS.cpiBaseYear),  'CPI base year',  cS);
+
+
 results_bc1.preamble_write(cS);
 
 end

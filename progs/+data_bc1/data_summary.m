@@ -35,7 +35,7 @@ tbS.rowUnderlineV = zeros([nr, 1]);
 
 ir = 1;
 for iCohort = 1 : cS.nCohorts
-   tbM{ir, 1+iCohort} = sprintf('%i', cS.bYearV(iCohort));
+   tbM{ir, 1+iCohort} = sprintf('%i', cS.cohYearV(iCohort));
 end
 
 

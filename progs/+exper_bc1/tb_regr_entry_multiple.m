@@ -7,6 +7,7 @@ function tb_regr_entry_multiple(outFn, setTitleV, expTitleV, setNoM, expNoM)
 %}
 
 cS = const_bc1(setNoM(1,1), expNoM(1,1));
+symS = helper_bc1.symbols;
 [nx, nm] = size(setNoM);
 fmtStr = '%.2f';
 
@@ -59,7 +60,7 @@ for im = 1 : nm
    ic = 2 + 2 * (im-1);
    icV = ic : (ic + 1);
 
-   tbM(ir, icV) = {'$\beta_{IQ}$', '$\beta_{yp}$'};
+   tbM(ir, icV) = {['$', symS.betaIq, '$'], ['$', symS.betaYp, '$']};
    tbS.rowUnderlineV(ir) = 1;
 
    for ix = 1 : nx

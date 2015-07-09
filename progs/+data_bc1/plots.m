@@ -17,6 +17,7 @@ end
 
 
 %% College costs by year
+% Constant prices
 if 1
    costS = var_load_bc1(cS.vCollCosts, cS);
    fh = output_bc1.fig_new(saveFigures, []);
@@ -25,6 +26,23 @@ if 1
    ylabel('Mean college cost');
    output_bc1.fig_format(fh, 'line');
    output_bc1.fig_save(fullfile(cS.dataOutDir, 'collcost_year'), saveFigures, cS);
+end
+
+%% College costs by cohort
+% need to be detrended +++++
+if 1
+   costS = var_load_bc1(cS.vCollCosts, cS);
+   
+   bYearV = costS.yearV(:) - 23;
+   dataV  = costS.tuitionV(:);
+   % Only show reasonably recent years
+   yrIdxV = find(bYearV >= cS.bYearV(1));
+
+   fh = output_bc1.plot_by_cohort(bYearV(yrIdxV), dataV(yrIdxV), saveFigures, cS);
+   ylabel(sprintf('Mean college cost, %i prices', cS.cpiBaseYear));
+   output_bc1.fig_format(fh, 'line');
+   output_bc1.fig_save(fullfile(cS.dataOutDir, 'collcost_cohort'), saveFigures, cS);
+   
 end
 
 

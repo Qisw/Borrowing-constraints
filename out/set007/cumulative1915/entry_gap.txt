@@ -20,7 +20,7 @@
        Change college entry              
                       Model   0.30   0.24
                        Data   0.55   0.20
-                Cohort 1915              
+                Cohort 1933              
                       Model   0.30   0.24
                        Data   0.30   0.56
 -----------------------------------------

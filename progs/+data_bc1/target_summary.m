@@ -14,7 +14,7 @@ nIq = length(cS.iqUbV);
 % Undoes the stationary transformation 
 dollarFactor = 1 / tgS.dollarFactor_cV(iCohort) * cS.unitAcct;
 
-fprintf(fp, '\nSummary of calibration targets for %i cohort\n\n',  cS.bYearV(iCohort));
+fprintf(fp, '\nSummary of calibration targets for %i cohort\n\n',  cS.cohYearV(iCohort));
 fprintf(fp, 'All in year %i prices\n', cS.cpiBaseYear);
 
 

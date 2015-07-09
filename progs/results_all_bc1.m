@@ -7,8 +7,11 @@ saveFigures = 1;
 
 % Make dirs
 helper_bc1.mkdir(setNo, expNo);
-% If on the server: delete all existing out files
-if cS.runLocal == 0
+if cS.runLocal == 1
+   % If local: delete older result files
+   results_bc1.delete_old_results(setNo, expNo, 7, 'noconfirm');
+else
+   % If on the server: delete all existing out files
    results_bc1.delete_results(setNo, expNo, 'noconfirm');
 end
 

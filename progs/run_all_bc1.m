@@ -37,6 +37,8 @@ end
 if 0
    % Use this to delete existing results for clean slate
    % results_bc1.delete_results(setNo, expNo);
+   % Delete old result files with this
+   % results_bc1.delete_old_results(setNo, expNo, minAge, askConfirm);
    % Calibration runs this
    % results_all_bc1(setNo, cS.expBase);
 

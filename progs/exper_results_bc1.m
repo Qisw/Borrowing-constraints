@@ -89,7 +89,7 @@ function cohorts_side_by_side(setNo)
    setTitleV = cell([nm, 1]);
    for im = 1 : nm
       cmS = const_bc1(setNoM(1,im), expNoM(1,im));
-      setTitleV{im} = sprintf('Cohort %i', cmS.bYearV(cmS.iCohort));
+      setTitleV{im} = sprintf('Cohort %i', cmS.cohYearV(cmS.iCohort));
    end
    
    expTitleV = cell([nx, 1]);
