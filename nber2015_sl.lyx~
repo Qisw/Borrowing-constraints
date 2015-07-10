@@ -582,14 +582,14 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_all.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_all.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_all.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_all.pdf
 	width 50text%
 
 \end_inset
@@ -608,7 +608,7 @@ Importance of Background vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-Family background
+Ability
 \end_layout
 
 \end_inset
@@ -617,7 +617,7 @@ Family background
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ability
+Family background
 \end_layout
 
 \end_inset
@@ -668,14 +668,14 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_complete.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_complete.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_complete.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_complete.pdf
 	width 50text%
 
 \end_inset
@@ -694,7 +694,7 @@ Importance of Background vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-Family background
+Ability
 \end_layout
 
 \end_inset
@@ -703,7 +703,7 @@ Family background
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ability
+Family background
 \end_layout
 
 \end_inset
@@ -832,14 +832,14 @@ NLSY Replication Results
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_nlsy79_all.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_nlsy79_all.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_nlsy79_all.pdf
+	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_nlsy79_all.pdf
 	width 50text%
 
 \end_inset
@@ -1146,23 +1146,12 @@ College Entry Decision
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\max\{\underset{\mbox{work as HSG}}{\underbrace{V_{HS}\left(j\right)+\prefHS-\prefScaleEntry\prefShockEntry_{w}}},\underset{\mbox{enter college}}{\underbrace{V_{entry}\left(j\right)-\prefScaleEntry\prefShockEntry_{c}}}\}
+\max\{\underset{\mbox{work as HSG}}{\underbrace{V_{HS}\left(j\right)-\prefScaleEntry\prefShockEntry_{w}}},\underset{\mbox{enter college}}{\underbrace{V_{entry}\left(j\right)-\prefScaleEntry\prefShockEntry_{c}}}\}
 \end{equation}
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\prefHS$
-\end_inset
-
-: common preference for working as HSG
-\end_layout
-
-\begin_layout Itemize
-permits the model to match overall college entry rate for each cohort
 \end_layout
 
 \begin_layout Standard
@@ -1182,7 +1171,7 @@ permits the model to match overall college entry rate for each cohort
 status open
 
 \begin_layout Plain Layout
-College Entry Decision
+Working as HSG
 \end_layout
 
 \end_inset
@@ -1198,7 +1187,7 @@ Value of working as HSG:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{HS}\left(j\right)=\max_{z_{w}\ge0}\collLength u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(\collLength z_{w},HS,\ability\right)|j\right\} 
+V_{HS}\left(j\right)=\max_{z_{w}\ge0}u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(z_{w},HS,\ability\right)|j\right\} +\prefHS
 \end{equation}
 
 \end_inset
@@ -1207,27 +1196,20 @@ V_{HS}\left(j\right)=\max_{z_{w}\ge0}\collLength u_{p}\left(\famIncome-z_{w}\rig
 \end_layout
 
 \begin_layout Standard
-Divide parental income 
 \begin_inset Formula $\famIncome$
 \end_inset
 
- between 
+: parental income 
 \end_layout
 
-\begin_layout Itemize
-transfer to the child 
+\begin_layout Standard
 \begin_inset Formula $z$
 \end_inset
 
-
+: transfer to the child 
 \end_layout
 
-\begin_layout Itemize
-parental consumption 
-\begin_inset Formula $\famIncome-z$
-\end_inset
-
- 
+\begin_layout Standard
 \begin_inset VSpace defskip
 \end_inset
 
@@ -1235,15 +1217,15 @@ parental consumption
 \end_layout
 
 \begin_layout Standard
-Value of college entry:
+\begin_inset Formula $\prefHS$
+\end_inset
+
+: common preference for working as HSG
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-V_{entry}\left(j\right)=\max_{z_{c}\ge0}\collLength u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(\collLength z_{c},j\right)
-\end{equation}
-
+\begin_layout Itemize
+permits the model to match overall college entry rate for each cohort
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -1256,6 +1238,74 @@ status open
 \begin_layout Plain Layout
 add: hetero in parental altruism
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Work Phase
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{w}\left(k,\ability,s\right)=\max_{c_{\age}}\sum_{\age=1}^{\ageMax-\tSchool}\beta^{t-1}u_{w}\left(c_{\age}\right)
+\end{equation}
+
+\end_inset
+
+subject to a lifetime budget constraint
+\begin_inset Formula 
+\begin{equation}
+\sum_{\age=1}^{\ageMax-\tSchool}R^{1-\age}c_{\age}=\pvEarn\left(s,\ability\right)+Rk
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Value of College Entry
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{entry}\left(j\right)=\max_{z_{c}\ge0}u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(z_{c},j\right)
+\end{equation}
 
 \end_inset
 
@@ -1426,44 +1476,6 @@ budget constraint
 
 \begin_layout Itemize
 borrowing constraint
-\end_layout
-
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Work Phase
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-V_{w}\left(k,\ability,s\right)=\max_{c_{\age}}\sum_{\age=1}^{\ageMax-\tSchool}\beta^{t-1}u_{w}\left(c_{\age}\right)
-\end{equation}
-
-\end_inset
-
-subject to a lifetime budget constraint
-\begin_inset Formula 
-\begin{equation}
-\sum_{\age=1}^{\ageMax-\tSchool}R^{1-\age}c_{\age}=\pvEarn\left(s,\ability\right)+Rk
-\end{equation}
-
-\end_inset
-
-
 \end_layout
 
 \end_deeper
@@ -1928,6 +1940,7 @@ Time-Series Calibration
 
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Time-varying parameters:
 \end_layout
@@ -1976,6 +1989,7 @@ family contributions
 )
 \end_layout
 
+\end_deeper
 \begin_layout Separator
 
 \end_layout
@@ -2034,29 +2048,16 @@ College Entry Over Time
 
 \begin_deeper
 \begin_layout Standard
-We characterize changes in college entry patterns by regressing entry rates
- on 
-\begin_inset Formula $\IQ$
-\end_inset
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/beta_iq.pdf
+	width 50text%
 
- and 
-\begin_inset Formula $\famIncome$
-\end_inset
-
- quartiles.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\rightarrow\betaIq,\betaYp$
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/regr_entry.tex"
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/beta_yp.pdf
+	width 50text%
 
 \end_inset
 
@@ -2064,8 +2065,23 @@ filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_com
 \end_layout
 
 \begin_layout Standard
-Result: financial conditions account for x% of the variation in ability
- sorting, y% of the variation in income sorting
+Financial conditions account for 
+\end_layout
+
+\begin_layout Itemize
+3/4 of the change in 
+\begin_inset Formula $\betaIq$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+1/6 of the change in 
+\begin_inset Formula $\betaYp$
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -2134,13 +2150,16 @@ Accounting for Changing College Entry
 
 \begin_deeper
 \begin_layout Standard
-Table: regression coefficients for each change (1915 and 1940 cohort)
-\end_layout
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1915/beta_iq_decomp.pdf
+	width 50text%
 
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "/users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/cumulative/decompose.tex"
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1915/beta_yp_decomp.pdf
+	width 50text%
 
 \end_inset
 
@@ -2148,15 +2167,26 @@ filename "/users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/cumulative
 \end_layout
 
 \begin_layout Standard
-Upshot:
+Most of the changes in college entry patterns are due to the rising college
+ premium.
 \end_layout
 
-\begin_layout Itemize
-most of the change in IQ sorting is due to college premium
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{Decompose1940}{
+\backslash
+beamergotobutton{1960 cohort}}
 \end_layout
 
-\begin_layout Itemize
-same for yp sorting, but there borrowing limits play a role
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -2193,6 +2223,14 @@ College Financing Over Time
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+How do students pay for college without loans?
+\end_layout
+
+\begin_layout Standard
+They get larger transfers.
 \end_layout
 
 \end_deeper
@@ -2472,6 +2510,49 @@ name "FitEarnings"
 
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_earn.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Accounting for Changing College Entry
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Decompose1940"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1940/beta_iq_decomp.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1940/beta_yp_decomp.pdf
 	width 50text%
 
 \end_inset

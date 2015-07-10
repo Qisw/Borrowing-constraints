@@ -55,7 +55,7 @@ end
 % With original bins, this is run in the data summary
 if 1
    fprintf('\nRegress entry rate on [iq, yp]\n');
-   tb_regr_entry(tgS, aggrV, constV, outDir);
+   exper_bc1.tb_regr_entry(outDir, setNoV, expNoV);
    fprintf('\nEntry gaps by iq and yp \n');
    exper_bc1.tb_entry_gaps(expNoV, outDir, cS);
 end
@@ -196,62 +196,6 @@ end
 % ---------  end of main function
 
 
-%% Local: Regression of entry rate on [iq, yp]
-% With original bins, this is run in the data summary
-%{
-IN
-   tgS
-      calibration targets
-   aggrV, constV
-      model aggregates, constants
-      one for each decomposition
-%}
-function tb_regr_entry(tgS, aggrV, constV, outDir)
-   cS = constV{1};
-   symS = helper_bc1.symbols;
-   nx = length(aggrV);
-   fmtStr = '%.2f';
-   
-   nc = 3;
-   nr = 1 + 3 * nx;
-   
-   tbM = cell([nr, nc]);
-   tbS.rowUnderlineV = zeros([nr, 1]);
-   
-   ir = 1;
-   tbM(ir, :) = {' ', ['$', symS.betaIq, '$'], ['$', symS.betaYp, '$']};
-   tbS.rowUnderlineV(ir) = 1;
-   
-   for ix = 1 : nx
-      iCohort = constV{ix}.iCohort;
-      if cS.regrEntryIqYpWeighted == 1
-         mBetaIq = aggrV{ix}.qyS.betaIqWeighted;
-         mBetaYp = aggrV{ix}.qyS.betaYpWeighted;
-         dataIdx = tgS.schoolS.iWeighted;
-      else
-         mBetaIq = aggrV{ix}.qyS.betaIq;
-         mBetaYp = aggrV{ix}.qyS.betaYp;
-         dataIdx = tgS.schoolS.iUnweighted;
-      end
-      
-%       fprintf('Cohort %i \n',  cS.bYearV(iCohort));
-%       fprintf('  Model: betaIq: %.3f    betaYp: %.3f \n',  mBetaIq, mBetaYp);
-%       fprintf('  Data:  betaIq: %.3f    betaYp: %.3f \n',  ...
-%          tgS.schoolS.betaIqM(dataIdx,iCohort), tgS.schoolS.betaYpM(dataIdx,iCohort));
-      
-      ir = ir + 1;
-      tbM{ir, 1} = constV{ix}.expS.expStr;
-         %sprintf('Cohort %i',  cS.bYearV(iCohort));
-      
-      ir = ir + 1;
-      tbM(ir, :) = {'Model',  sprintf(fmtStr, mBetaIq), sprintf(fmtStr, mBetaYp)};
-      ir = ir + 1;
-      tbM(ir, :) = {'Data',  sprintf(fmtStr, tgS.schoolS.betaIqM(dataIdx,iCohort)), ...
-         sprintf(fmtStr, tgS.schoolS.betaYpM(dataIdx,iCohort))};
-   end
-   
-   latex_lh.latex_texttb_lh(fullfile(outDir, 'regr_entry.tex'), tbM, 'Caption', 'Label', tbS);
-end
 
 
 %% Local: By iq, yp: Entry and graduation rates

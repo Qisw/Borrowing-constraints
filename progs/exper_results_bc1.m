@@ -65,8 +65,15 @@ function cumulative_decomp(setNo)
    % For experiments that vary variables cumulatively
    for iCohort = 1 : size(cS.expS.decomposeCumulExpNoM, 2)
       expNoV = [cS.expBase; cS.expS.decomposeCumulExpNoM(:, iCohort); cS.bYearExpNoV(iCohort)];
+      setNoV = setNo .* ones(size(expNoV));
       outDir = fullfile(cS.setOutDir, sprintf('cumulative%i', cS.bYearV(iCohort)));
-      exper_bc1.compare(setNo .* ones(size(expNoV)), expNoV, outDir);
+      exper_bc1.compare(setNoV, expNoV, outDir);
+      
+      % Bar graph with decomposition
+      % Not showing data is clearer
+      iCohort1 = []; % cS.iRefCohort;
+      iCohort2 = []; % iCohort;
+      exper_bc1.beta_iq_yp_sequence(outDir, iCohort1, iCohort2, setNoV, expNoV);
    end
 
 end
