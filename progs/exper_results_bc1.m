@@ -39,6 +39,9 @@ function time_series(setNo)
    expNoV = [cS.expBase, cfExpNoV];  
    outDir = fullfile(cS.setOutDir, 'cohort_compare');
    exper_bc1.compare(setNo .* ones(size(expNoV)), expNoV, outDir);
+   
+   % Short cohort comparison table to explain driving forces
+   exper_bc1.cohort_summary(outDir, setNo);
 
 end
 

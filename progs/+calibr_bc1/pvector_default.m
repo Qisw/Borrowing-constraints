@@ -5,6 +5,8 @@ Only set calBase and calNever here
 Experiments can override with calExper
 %}
 
+symS = helper_bc1.symbols;
+
 % Collection of calibrated parameters
 pvec = pvector(30, cS.doCalValueV);
 
@@ -30,9 +32,9 @@ pvec = pvec.change('prefWtLeisure', '\omega_{l}', 'Weight on leisure', 0.5, 0.01
 % Parental preferences
 pvec = pvec.change('puSigma', '\varphi_{p}', 'Curvature of parental utility', 0.35, 0.1, 5, cS.calBase);
 % Time varying: to match transfer data
-pvec = pvec.change('puWeightMean', '\mu_{\omega,p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
-pvec = pvec.change('puWeightStd',  '\sigma_{\omega,p}', 'Std of weight on parental utility', 0, 0.001, 2, cS.calNever);
-pvec = pvec.change('alphaPuM', '\alpha_{\omega,m}', 'Correlation, $\omega_{p},m$', 0, -5, 5, cS.calNever);
+pvec = pvec.change('puWeightMean', '\mu_{p}', 'Weight on parental utility', 1, 0.001, 2, cS.calBase);
+pvec = pvec.change('puWeightStd',  '\sigma_{p}', 'Std of weight on parental utility', 0, 0.001, 2, cS.calBase);
+pvec = pvec.change('alphaPuM', '\alpha_{p,m}', 'Correlation, $\omega_{p},m$', 0, -5, 5, cS.calBase);
 
 
 % Pref shock at entry. For numerical reasons only. Fixed.
@@ -48,17 +50,17 @@ pvec = pvec.change('dPrefHS', '\Delta\bar{\eta}', 'Range of HS preference', 0, 0
 
 
 % Endowment correlations
-pvec = pvec.change('alphaPY', '\alpha_{p,y}', 'Correlation, $p,y$', 0.3, -5, 5, cS.calBase);
-pvec = pvec.change('alphaPM', '\alpha_{p,m}', 'Correlation, $p,m$', 0.4, -5, 5, cS.calBase);
+pvec = pvec.change('alphaPY', '\alpha_{\tau,y}', 'Correlation, $\tau,y$', 0.3, -5, 5, cS.calBase);
+pvec = pvec.change('alphaPM', '\alpha_{\tau,m}', 'Correlation, $\tau,m$', 0.4, -5, 5, cS.calBase);
 pvec = pvec.change('alphaYM', '\alpha_{y,m}', 'Correlation, $y,m$', 0.5, -5, 5, cS.calBase);
 % Does not matter right now. Until we have a direct role for ability
 %  But want to be able to change signal precision (rather than grad prob function) for experiments
 pvec = pvec.change('alphaAM', '\alpha_{a,m}', 'Correlation, $a,m$', 2, 0.1, 5, cS.calBase);
 
 % Marginal distributions
-pvec = pvec.change('pMean', '\mu_{p}', 'Mean of $p$', ...
+pvec = pvec.change('pMean', '\mu_{\tau}', 'Mean of $\tau$', ...
    (5e3 ./ cS.unitAcct), (-5e3 ./ cS.unitAcct), (1.5e4 ./ cS.unitAcct), cS.calBase);
-pvec = pvec.change('pStd', '\sigma_{p}', 'Std of $p$', 2e3 ./ cS.unitAcct, ...
+pvec = pvec.change('pStd', '\sigma_{\tau}', 'Std of $\tau$', 2e3 ./ cS.unitAcct, ...
    5e2 ./ cS.unitAcct, 1e4 ./ cS.unitAcct, cS.calBase);
 
 % This will be taken directly from data (so not calibrated)
@@ -84,16 +86,16 @@ pvec = pvec.change('prGradPower', '\pi_{c}', 'In $\pi_{a}$', 1, 0.1, 2, cS.calNe
 pvec = pvec.change('prGradABase', 'a_{0}', 'In $\pi_{a}$', 0, 0, 0.3, cS.calNever);
 
 % nCohorts = length(cS.bYearV);
-pvec = pvec.change('wCollMean', 'Mean w_{coll}', 'Maximum earnings in college', ...
+pvec = pvec.change('wCollMean', 'w_{c}', 'College wage', ...
    2e4 ./ cS.unitAcct, 5e3 ./ cS.unitAcct, 1e5 ./ cS.unitAcct, cS.calBase);
 
 % Free college consumption and leisure
 % Specified as: how much does the highest m type get? The lowest m type gets 0
 % In between: linear in m
-pvec = pvec.change('cCollMax', 'Max cColl', 'Max free consumption', ...
-   0,  0,  1e4 ./ cS.unitAcct, cS.calNever);
-pvec = pvec.change('lCollMax', 'Max lColl', 'Max free leisure', ...
-   0, 0, 0.5, cS.calNever);
+pvec = pvec.change('cCollMax', [symS.cColl, '_{max}'], 'Max free consumption', ...
+   0,  0,  1e4 ./ cS.unitAcct, cS.calBase);
+pvec = pvec.change('lCollMax', [symS.lColl, '_{max}'], 'Max free leisure', ...
+   0, 0, 0.5, cS.calBase);
 
 
 %% Defaults: work
@@ -104,12 +106,12 @@ pvec = pvec.change('phiHSG', '\phi_{HSG}', 'Return to ability, HSG', 0.155,  0.0
 pvec = pvec.change('phiCG',  '\phi_{CG}',  'Return to ability, CG',  0.194, 0.02, 0.2, cS.calNever);
 
 % Scale factors of lifetime earnings (log)
-pvec = pvec.change('eHatCD', '\hat{e}_{CD}', 'Log skill price CD', 0, -3, 1, cS.calBase);
+pvec = pvec.change('eHatCD', [symS.pvEarnSchool, '_{CD}'], 'Log skill price CD', 0, -3, 1, cS.calBase);
 % Lifetime earnings premium (discounted to work start) for lowest ability
 %  Should be < 0 for HSG (going to college raises earnings)
-pvec = pvec.change('dEHatHSG', 'd\hat{e}_{HSG}', 'Skill price gap HSG', -0.1, -1, 0, cS.calBase);
+pvec = pvec.change('dEHatHSG', ['d', symS.pvEarnSchool, '_{HSG}'], 'Skill price gap HSG', -0.1, -1, 0, cS.calBase);
 %  Should be > 0 for CG
-pvec = pvec.change('dEHatCG',  'd\hat{e}_{CG}',  'Skill price gap CG',   0.1, 0, 2, cS.calBase);
+pvec = pvec.change('dEHatCG',  ['d', symS.pvEarnSchool, '_{CG}'],  'Skill price gap CG',   0.1, 0, 2, cS.calBase);
 % pvec = pvec.change('eHatCG',  '\hat{e}_{CG}',  'Log skill price CG',  -1, -4, 1, cS.calBase);
 
 %% Other

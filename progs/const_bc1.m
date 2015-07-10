@@ -89,11 +89,13 @@ cS.R = 1.04;
 %% Default parameters: Demographics, Preferences
 
 % Cohorts modeled
-cS.bYearV = [1915, 1940, 1961, 1979]';
+cS.bYearV = [1915, 1942, 1961, 1979]';
 % Year to be displayed for each cohort (high school graduation)
 cS.cohYearV = cS.bYearV + 18;
 % For each cohort: calibrate time varying parameters with these experiments
 cS.bYearExpNoV = [203, 202, NaN, NaN];
+% Data sources
+cS.dataSource_cV = {'Updegraff (1936)', 'Project Talent', 'NLSY79'};
 % Cross sectional calibration for this cohort
 cS.iRefCohort = find(cS.bYearV == 1961);
 cS.nCohorts = length(cS.bYearV);
@@ -199,9 +201,8 @@ elseif setNo == 4
    pvec = pvec.change('prefSigma', '\varphi_{c}', 'Curvature of utility', 4, 1, 5, cS.calNever);
    
 elseif setNo == 5
-   cS.setStr = 'Free college consumption / leisure';
-   pvec = pvec.calibrate('cCollMax', cS.calBase);
-   pvec = pvec.calibrate('lCollMax', cS.calBase);
+   cS.setStr = 'SES stats';
+   cS.tgS.useSesTargets = 1;
    
 elseif setNo == 6
    cS.setStr = 'Alt debt stats';
@@ -209,13 +210,13 @@ elseif setNo == 6
    pvec = pvec.calibrate('lCollMax', cS.calBase);
 
 elseif setNo == 7
-   cS.setStr = 'Heterogeneity in altruism';
-   pvec = pvec.calibrate('cCollMax', cS.calBase);
-   pvec = pvec.calibrate('lCollMax', cS.calBase);
-   pvec = pvec.change('puWeightStd',  '\sigma_{p}', 'Std of weight on parental utility', 0.05, 0.001, 2, cS.calBase);
-   pvec = pvec.change('alphaPuM', '\alpha_{y,m}', 'Correlation, $\omega_{p},m$', 0.5, -5, 5, cS.calBase);
-   % Penalize transfers > data transfers?
-   cS.tgPenalizeLargeTransfers = 0;
+   cS.setStr = 'Default';
+%    pvec = pvec.calibrate('cCollMax', cS.calBase);
+%    pvec = pvec.calibrate('lCollMax', cS.calBase);
+%    pvec = pvec.change('puWeightStd',  '\sigma_{p}', 'Std of weight on parental utility', 0.05, 0.001, 2, cS.calBase);
+%    pvec = pvec.change('alphaPuM', '\alpha_{y,m}', 'Correlation, $\omega_{p},m$', 0.5, -5, 5, cS.calBase);
+%    % Penalize transfers > data transfers?
+%    cS.tgPenalizeLargeTransfers = 0;
 
 else
    error('Invalid');

@@ -10,6 +10,7 @@ IN
 % ----------------------------------
 
 cS = const_bc1(setNo, expNo);
+symS = helper_bc1.symbols;
 paramS = param_load_bc1(setNo, expNo);
 % dFactor = cS.unitAcct ./ cS.dollarScale;
 
@@ -45,8 +46,9 @@ if showCalibrated == 0
    ir = ir + 1;
    tbM{ir, cName} = 'Demographics';
    
-   row_add_direct('$T$', 'Lifespan', sprintf('%i', cS.ageMax));
-   row_add_direct('$T_{s}$', 'School durations', string_lh.string_from_vector(cS.ageWorkStart_sV - 1, '%i'));
+   row_add_direct(['$', symS.ageMax, '$'], 'Lifespan', sprintf('%i', cS.ageMax));
+   row_add_direct(['$', symS.tSchool, '$'], 'School durations', ...
+      string_lh.string_from_vector(cS.ageWorkStart_sV - 1, '%i'));
 end
 
 
@@ -58,18 +60,25 @@ tbM{ir, cName} = 'Endowments';
 
 
 % Endowment correlations
-nameV = {'alphaPY', 'alphaPM', 'alphaYM', 'alphaPuM'};
-% if (paramS.puWeightStd > 1e-4)  ||  1
-%    nameV = [nameV, 'alphaPuM'];
-% end
-row_add_vector(nameV, 'Endowment correlations', '%.2f', []);
+% nameV = {'alphaPY', 'alphaPM', 'alphaYM', 'alphaPuM'};
+% % if (paramS.puWeightStd > 1e-4)  ||  1
+% %    nameV = [nameV, 'alphaPuM'];
+% % end
+% row_add_vector(nameV, 'Endowment correlations', '%.2f', []);
+pNameV = mark_done(pNameV, 'alphaPY');
+pNameV = mark_done(pNameV, 'alphaPM');
+pNameV = mark_done(pNameV, 'alphaYM');
+pNameV = mark_done(pNameV, 'alphaPuM');
+
 % Signal noise
-row_add('alphaAM', '%.2f', []);
+% row_add('alphaAM', '%.2f', []);
+pNameV = mark_done(pNameV, 'alphaAM');
+
 
 % Marginal distributions
-row_add_vector({'pMean', 'pStd'}, 'Marginal distribution of $p$', '%.1f', []);
-row_add_vector({'logYpMean', 'logYpStd'}, 'Marginal distribution of $y_{p}$', '%.2f', []);
-row_add_vector({'sigmaIQ'}, 'IQ noise', '%.2f', []);
+row_add_vector({'pMean', 'pStd'}, ['Marginal distribution of $', symS.collCost, '$'], '%.1f', []);
+row_add_vector({'logYpMean', 'logYpStd'}, ['Marginal distribution of $', symS.famIncome, '$'], '%.2f', []);
+row_add_vector({'sigmaIQ'}, [symS.IQ, ' noise'], '%.2f', []);
 
 
 
@@ -105,25 +114,32 @@ tbM{ir, cName} = 'Other';
 
 row_add_vector({'phiHSG', 'phiCG'},  'Returns to ability', '%.3f', []);
 if showCalibrated == 1
-   row_add_direct('$\hat{e}{s}$', 'Log skill prices', string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
+   row_add_direct(['$', symS.pvEarnSchool, '_{s}$'], 'Log skill prices', ...
+      string_lh.string_from_vector(paramS.eHat_sV, '%.2f'));
 end
 % Not directly used
 pNameV = mark_done(pNameV, 'eHatCD');
 pNameV = mark_done(pNameV, 'dEHatHSG');
 pNameV = mark_done(pNameV, 'dEHatCG');
 
-% Prob grad(a)
-row_add_vector({'prGradMin', 'prGradMax', 'prGradMult', 'prGradExp', 'prGradPower', 'prGradABase'}, ...
-   'Governing $\pi(a)$', '%.2f', []);
+% Prob grad(a) -- only show graph
+% row_add_vector({'prGradMin', 'prGradMax', 'prGradMult', 'prGradExp', 'prGradPower', 'prGradABase'}, ...
+%    'Governing $\pi(a)$', '%.2f', []);
+pNameV = mark_done(pNameV, 'prGradMin');
+pNameV = mark_done(pNameV, 'prGradMax');
+pNameV = mark_done(pNameV, 'prGradMult');
+pNameV = mark_done(pNameV, 'prGradExp');
+pNameV = mark_done(pNameV, 'prGradPower');
+pNameV = mark_done(pNameV, 'prGradABase');
 
 row_add('wCollMean', '%.1f', []);
 
 row_add('R', '%.2f', []);
 
-if showCalibrated == 0
-   [~, valueStr] = string_lh.dollar_format(cS.cFloor, ',', 2);
-   row_add_direct('$c_{Floor}$', 'Consumption floor', valueStr);
-end
+% if showCalibrated == 0
+%    [~, valueStr] = string_lh.dollar_format(cS.cFloor, ',', 2);
+%    row_add_direct('$c_{Floor}$', 'Consumption floor', valueStr);
+% end
 
 
 %%  Write table

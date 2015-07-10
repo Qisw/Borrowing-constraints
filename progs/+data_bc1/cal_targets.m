@@ -32,9 +32,9 @@ validateattributes(hsbCpiFactor, {'double'}, {'finite', 'nonnan', 'nonempty', 'r
 % Divide by this for nlsy results provided by Chris
 tgS.nlsyCpiFactor = cpiV(cpiYearV == 2010) ./ cpiV(cpiYearV == cS.cpiBaseYear);
 
-% Load file with all NLSY79 targets
-n79S = load(fullfile(cS.dataDir, 'nlsy79_moments.mat'));
-n79S = n79S.all_targets;
+
+%  Load file with all NLSY79 targets
+n79S = data_bc1.nlsy79_targets_load(cS);
 
 
 %% College outcomes

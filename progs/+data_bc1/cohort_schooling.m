@@ -36,6 +36,8 @@ var_save_bc1(frac_s_cM, cS.vCohortSchooling, cS);
 if 1
    % Not ideal: time varying age coverage +++
    bYearV = cS.bYearV(1) : 1 : cS.bYearV(end);
+   % Gap between birth year and year we show (hsg)
+   dYear = cS.cohYearV(1) - cS.bYearV(1);
    nCohorts = length(bYearV);
    outS = byear_school_age_stats_cpsbc(bYearV - 1, bYearV + 1,  25 : 60, cS.cpsSetNo);
    
@@ -74,9 +76,10 @@ if 1
       end
       
       iLine = 1;
-      plot(bYearV(plotIdxV), fracEnterV(plotIdxV),  lineStyleV{iLine}, 'Color', figS.colorM(iLine,:));
+      % Plotted by year of hsg
+      plot(bYearV(plotIdxV) + dYear, fracEnterV(plotIdxV),  lineStyleV{iLine}, 'Color', figS.colorM(iLine,:));
       iLine = iLine + 1;
-      plot(bYearV(plotIdxV), fracGradV(plotIdxV),   lineStyleV{iLine}, 'Color', figS.colorM(iLine,:));
+      plot(bYearV(plotIdxV) + dYear, fracGradV(plotIdxV),   lineStyleV{iLine}, 'Color', figS.colorM(iLine,:));
    end
    
    hold off;

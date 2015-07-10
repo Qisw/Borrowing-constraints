@@ -1,6 +1,9 @@
 function tgS = caltg_defaults(caseStr)
 % Default: what moments are targeted?
 
+% Use stats by SES or by fam income
+tgS.useSesTargets = 0;
+
 % PV of lifetime earnings by schooling
 tgS.tgPvLty = 1;
 
@@ -58,7 +61,7 @@ tgS.tgTransfer = 1;
 tgS.tgTransferYp = 1;
 tgS.tgTransferIq = 1;
 % Penalize transfers > data transfers?
-tgS.tgPenalizeLargeTransfers = 1;
+tgS.tgPenalizeLargeTransfers = 0;      % was 1 until 2015-july-10
 
 % Financing shares (only constructed for cohorts where transfers etc not available)
 tgS.tgFinShares = 1;

@@ -173,12 +173,12 @@ end
 % *******  Write table
 
 outFn = fullfile(outDir, 'summary.tex');
-fp = fopen(outFn, 'w');
-fclose(fp);
-diary(outFn);
+% fp = fopen(outFn, 'w');
+% fclose(fp);
+% diary(outFn);
 tbS.rowUnderlineV = tbS.rowUnderlineV(1 : ir);
 latex_lh.latex_texttb_lh(outFn, tbM(1:ir,:), 'Caption', 'Label', tbS);
-diary off;
+% diary off;
 
 
 %% Nested: add a row

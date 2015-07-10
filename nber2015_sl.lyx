@@ -1807,118 +1807,52 @@ Time Series Calibration
 
 \begin_deeper
 \begin_layout Standard
-We focus on 2 earlier cohorts:
+We compare 3 cohorts:
 \end_layout
 
-\begin_layout Enumerate
-Project Talent (1960 cohort)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-college entry similar to NLSY79
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-no college loans
-\end_layout
-
-\begin_layout Itemize
-lower college premium
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Updegraff (1933 cohort)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-lower college entry
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Time Series Data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
-	width 50text%
-	groupId 2across
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_cohort.pdf
-	width 50text%
-	groupId 2across
+\begin_inset CommandInset include
+LatexCommand include
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/cohort_summary.tex"
 
 \end_inset
 
 
 \end_layout
 
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Time Series Data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
-	width 50text%
-	groupId 2across
-
+\begin_inset VSpace defskip
 \end_inset
 
 
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_cohort.pdf
-	width 50text%
-	groupId 2across
+\end_layout
 
-\end_inset
-
-
-\begin_inset Note Note
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-need to detrend this +++
+
+
+\backslash
+hyperlink{PathCollPrem}{
+\backslash
+beamergotobutton{Details}}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{PathCollEntry}{
+\backslash
+beamergotobutton{Details}}
 \end_layout
 
 \end_inset
@@ -2571,6 +2505,106 @@ name "Decompose1940"
 
 \begin_layout Section
 Data Slides
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time Series Data
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "PathCollPrem"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_cohort.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time Series Data
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "PathCollEntry"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_cohort.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+need to detrend this +++
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
 \end_layout
 
 \begin_layout Frame

@@ -16,7 +16,7 @@ outS.ability = 'x';
 outS.famIncome = 'y_{p}';
 outS.cColl = '\bar{c}';
 outS.lColl = '\bar{l}';
-outS.IQ = 'AFQT';
+outS.IQ = 'IQ';
 outS.collCost = '\tau';
 outS.abilSignal = 'm';
 
@@ -24,6 +24,8 @@ outS.abilSignal = 'm';
 %% Work
 
 outS.pvEarn = 'Y';
+% Skill prices (so to speak)
+outS.pvEarnSchool = '\bar{Y}';
 
 
 %% College 
@@ -41,7 +43,7 @@ outS.collegeWage = 'w_{coll}';
 
 %% Data
 
-outS.betaIq = '\beta_{A}';
+outS.betaIq = '\beta_{IQ}';
 outS.betaYp = '\beta_{F}';
 
 

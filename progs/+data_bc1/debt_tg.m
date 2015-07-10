@@ -4,8 +4,7 @@ function debtS = debt_tg(tgS, cS)
 icNlsy79 = tgS.icNlsy79;
 
 % Load file with all NLSY79 targets
-n79S = load(fullfile(cS.dataDir, 'nlsy79_moments.mat'));
-n79S = n79S.all_targets;
+n79S = data_bc1.nlsy79_targets_load(cS);
 
 
 

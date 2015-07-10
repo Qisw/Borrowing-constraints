@@ -1694,7 +1694,11 @@ Lifetime earnings
 \end_layout
 
 \begin_layout Itemize
-Graduation rates
+Graduation rates: 
+\begin_inset Formula $\pi\left(\ability\right)$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1803,39 +1807,19 @@ Time Series Calibration
 
 \begin_deeper
 \begin_layout Standard
-We focus on 2 earlier cohorts:
+We compare 3 cohorts:
 \end_layout
 
-\begin_layout Enumerate
-Project Talent (1960 cohort)
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/cohort_summary.tex"
+
+\end_inset
+
+
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-college entry similar to NLSY79
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-no college loans
-\end_layout
-
-\begin_layout Itemize
-lower college premium
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Updegraff (1933 cohort)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-lower college entry
-\end_layout
-
-\end_deeper
 \end_deeper
 \begin_layout Separator
 
