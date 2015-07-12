@@ -1,0 +1,12 @@
+
+-------------------------------------------------------------------
+       Parameter                      Description             Value
+-------------------------------------------------------------------
+      Endowments                                                   
+    $\mu_{\tau}$  Marginal distribution of $\tau$             $2.6$
+     Preferences                                                   
+       $\mu_{p}$       Weight on parental utility            $0.28$
+    $\bar{\eta}$                Preference for HS           $-0.52$
+           Other                                                   
+   $\bar{Y}_{s}$                 Log skill prices  6.65, 6.65, 6.73
+-------------------------------------------------------------------
