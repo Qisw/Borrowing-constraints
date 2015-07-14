@@ -119,5 +119,7 @@ cS.barWidth = 1;
 cS.iqGroupStr = 'Ability';
 cS.ypGroupStr = 'Family background';
 
+cS.cohortXLabelStr = 'Cohort';
+
 
 end

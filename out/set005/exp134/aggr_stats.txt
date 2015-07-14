@@ -14,12 +14,12 @@ Debt stats computed both ways
     Transfer paid out each t:    0.28  0.46  0.59  0.86
   Mean in debt by IQ: 
     Transfer paid out t=1:        1.4   3.0   5.2  11.2
-    Transfer paid out each t:     2.3   4.3   6.9  14.3
+    Transfer paid out each t:     2.2   4.3   6.9  14.3
   Fraction in debt by yp: 
     Transfer paid out t=1:       0.37  0.31  0.31  0.47
     Transfer paid out each t:    0.64  0.68  0.50  0.69
   Mean in debt by yp: 
-    Transfer paid out t=1:        4.2   5.5   5.8   8.6
+    Transfer paid out t=1:        4.2   5.4   5.7   8.6
     Transfer paid out each t:     6.8   7.1   7.5  10.9
 
 Financial stats

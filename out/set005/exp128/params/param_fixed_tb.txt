@@ -6,7 +6,7 @@
                            $A$                           Lifespan              58
                        $A_{s}$                   School durations         0, 2, 4
                     Endowments                                                   
-   $\mu_{\tau}, \sigma_{\tau}$    Marginal distribution of $\tau$      $1.9, 3.0$
+   $\mu_{\tau}, \sigma_{\tau}$    Marginal distribution of $\tau$      $2.0, 3.0$
          $\mu_{y}, \sigma_{y}$   Marginal distribution of $y_{p}$    $4.34, 0.65$
                  $\sigma_{IQ}$                           IQ noise          $0.32$
                    Preferences                                                   

@@ -12,10 +12,10 @@
                       Model   0.57   0.55
                        Data   0.54   0.48
    Change earnings profiles              
-                      Model   0.00   0.00
+                      Model   0.56   0.58
                        Data   0.54   0.48
    Change parental altruism              
-                      Model   0.00   0.00
+                      Model   0.54   0.51
                        Data   0.54   0.48
        Change college entry              
                       Model   0.56   0.53

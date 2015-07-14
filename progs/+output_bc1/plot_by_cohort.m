@@ -35,7 +35,7 @@ for iCase = 1 : 2
 end
 
 hold off;
-xlabel('Birth year');
+xlabel(figS.cohortXLabelStr);
 
    
 end

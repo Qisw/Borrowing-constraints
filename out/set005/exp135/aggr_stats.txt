@@ -2,7 +2,7 @@
 Aggregate statistics
 
 Stats by schooling
-E{a | s}:  -0.48   0.02   0.77   
+E{a | s}:  -0.49   0.02   0.77   
 Mean log lifetime earnings, discounted to work start: 
     6.67    6.79    7.19
     fixed(s):  13.15  13.19  13.38  

@@ -1,23 +1,20 @@
 
-------------------------------------------------------------------------------------------------------------------------------
-                                                       Parameter                        Description                      Value
-------------------------------------------------------------------------------------------------------------------------------
-                                                      Endowments                                                              
-   $\alpha_{p,y}, \alpha_{p,m}, \alpha_{y,m}, \alpha_{\omega,m}$             Endowment correlations  $-0.24, 0.70, 1.98, 1.28$
-                                                  $\alpha_{a,m}$                 Correlation, $a,m$                     $2.26$
-                                           $\mu_{p}, \sigma_{p}$       Marginal distribution of $p$                 $3.9, 3.0$
-                                                   $\sigma_{IQ}$                           IQ noise                     $0.32$
-                                                     Preferences                                                              
-                                                    $\omega_{l}$                  Weight on leisure                     $0.23$
-                                                    $\omega_{w}$             Weight on u(c) at work                     $8.60$
-                                                   $\varphi_{p}$      Curvature of parental utility                     $0.54$
-                                                $\mu_{\omega,p}$         Weight on parental utility                     $0.44$
-                                             $\sigma_{\omega,p}$  Std of weight on parental utility                     $0.14$
-                                                    $\bar{\eta}$                  Preference for HS                    $-0.10$
-                                                     $Max cColl$               Max free consumption                      $0.9$
-                                                     $Max lColl$                   Max free leisure                     $0.10$
-                                                           Other                                                              
-                                                    $\hat{e}{s}$                   Log skill prices           6.48, 6.52, 6.72
-                            $\pi_{0}, \pi_{1}, \pi_{a}, \pi_{b}$                 Governing $\pi(a)$   $0.05, 0.95, 2.30, 1.25$
-                                                 $Mean w_{coll}$        Maximum earnings in college                     $24.4$
-------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+                     Parameter                        Description             Value
+-----------------------------------------------------------------------------------
+                    Endowments                                                     
+   $\mu_{\tau}, \sigma_{\tau}$    Marginal distribution of $\tau$        $3.9, 3.0$
+                 $\sigma_{IQ}$                           IQ noise            $0.32$
+                   Preferences                                                     
+                  $\omega_{l}$                  Weight on leisure            $0.23$
+                  $\omega_{w}$             Weight on u(c) at work            $8.60$
+                 $\varphi_{p}$      Curvature of parental utility            $0.54$
+                     $\mu_{p}$         Weight on parental utility            $0.44$
+                  $\sigma_{p}$  Std of weight on parental utility            $0.14$
+                  $\bar{\eta}$                  Preference for HS           $-0.10$
+               $\bar{c}_{max}$               Max free consumption             $0.9$
+               $\bar{l}_{max}$                   Max free leisure            $0.10$
+                         Other                                                     
+                 $\bar{Y}_{s}$                   Log skill prices  6.48, 6.52, 6.72
+                       $w_{c}$                       College wage            $24.4$
+-----------------------------------------------------------------------------------

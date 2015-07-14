@@ -83,7 +83,7 @@ if 1
    end
    
    hold off;
-   xlabel('Birth year');
+   xlabel(figS.cohortXLabelStr);
    legend({'College entry', 'College graduation'}, 'Location', 'Best');
    ylabel('Fraction');
    output_bc1.fig_format(fh, 'line');

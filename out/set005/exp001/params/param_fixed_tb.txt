@@ -3,8 +3,8 @@
                  Parameter                        Description           Value
 -----------------------------------------------------------------------------
               Demographics                                                   
-                       $T$                           Lifespan              58
-                   $T_{s}$                   School durations         0, 2, 4
+                       $A$                           Lifespan              58
+                   $A_{s}$                   School durations         0, 2, 4
                 Endowments                                                   
      $\mu_{y}, \sigma_{y}$   Marginal distribution of $y_{p}$    $4.34, 0.65$
                Preferences                                                   
@@ -15,7 +15,5 @@
                   $\gamma$  Preference shock at college entry          $0.10$
                      Other                                                   
    $\phi_{HSG}, \phi_{CG}$                 Returns to ability  $0.155, 0.194$
-          $\pi_{c}, a_{0}$                 Governing $\pi(a)$    $1.00, 0.00$
                        $R$                      Interest rate          $1.04$
-               $c_{Floor}$                  Consumption floor            0.50
 -----------------------------------------------------------------------------

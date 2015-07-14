@@ -114,6 +114,10 @@ for ix = 1 : nx
    ir = ir + 1;
    tbM{ir,1} = 'Premium relative to HSG';
    tbM{ir,ic} = string_lh.string_from_vector(diff(aggrS.pvEarnMeanLog_sV), '%.2f');
+   
+   xV = statsV{ix}.abilMean_sV .* paramV{ix}.phi_sV;
+   row_add('Premium due to selection',  diff(xV),  '%.2f');
+   
    ir = ir + 1;
    tbM{ir,1} = 'Mean college cost';
    [~, tbM{ir,ic}] = string_lh.dollar_format(paramV{ix}.pMean * cS.unitAcct, ',', 0);
