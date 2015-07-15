@@ -6,7 +6,7 @@
 \begin_preamble
 \input{/Users/lutz/Dropbox/data/software/lyx/beamer_settings}
 
-\input{/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/preamble1.tex}
+\input{/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/preamble1.tex}
 \end_preamble
 \use_default_options false
 \maintain_unincluded_children false
@@ -410,7 +410,7 @@ family background
 \end_layout
 
 \begin_layout Standard
-over the period 1930-1980.
+over the period 1919-1980.
 \end_layout
 
 \end_deeper
@@ -509,7 +509,7 @@ Ability: test scores (6 bins)
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/qy_entry_updegraff 1936.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/qy_entry_updegraff 1936.pdf
 	height 60theight%
 
 \end_inset
@@ -582,100 +582,14 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_all.pdf
+	filename PaperFigures/ability_coeffs_orig_bi.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_all.pdf
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="2">
-<features rotate="0" tabularvalignment="middle" tabularwidth="100text%">
-<column alignment="center" valignment="top" width="0pt">
-<column alignment="center" valignment="top" width="0pt">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Ability
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Family background
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Coefficients from 
-\series bold
-univariate
-\series default
- regressions (entry rates on ability 
-\series bold
-or
-\series default
- family background)
-\end_layout
-
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Importance of Background vs.
- Ability
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_orig_complete.pdf
-	width 50text%
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_orig_complete.pdf
+	filename PaperFigures/inc_coeffs_orig_uni.pdf
 	width 50text%
 
 \end_inset
@@ -742,6 +656,92 @@ and
 status open
 
 \begin_layout Plain Layout
+Importance of Background vs.
+ Ability
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename PaperFigures/ability_coeffs_orig_uni.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename PaperFigures/inc_coeffs_orig_uni.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100text%">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ability
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Family background
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coefficients from 
+\series bold
+univariate
+\series default
+ regressions (entry rates on ability 
+\series bold
+or
+\series default
+ family background)
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
 Comparability
 \end_layout
 
@@ -768,7 +768,7 @@ Does lack of comparability affect the results?
 \end_layout
 
 \begin_layout Standard
-To address this problem, we replicate each study in NLSY79 data.
+To address this question, we replicate each study in NLSY79 data.
 \end_layout
 
 \end_deeper
@@ -792,7 +792,7 @@ Example: Updegraff (1936)
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/qy_entry_updegraff 1936.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/qy_entry_updegraff 1936.pdf
 	width 50text%
 
 \end_inset
@@ -811,51 +811,16 @@ Example: Updegraff (1936)
 Entry rates: Updegraff (1936) and NLSY replication.
 \end_layout
 
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-NLSY Replication Results
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/ability_coeffs_nlsy79_all.pdf
-	width 50text%
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/borrowing constraints/paper/PaperFigures/inc_coeffs_nlsy79_all.pdf
-	width 50text%
-
+\begin_inset VSpace bigskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Variation in study design does not systematically affect 
+Across studies: no evidence that changes in study design affect time trends
+ in 
 \begin_inset Formula $\betaIq$
 \end_inset
 
@@ -864,6 +829,22 @@ Variation in study design does not systematically affect
 \end_inset
 
 .
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{DetailNlsyReplication}{
+\backslash
+beamergotobutton{Details}}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -1813,92 +1794,46 @@ We compare 3 cohorts:
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/cohort_summary.tex"
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/cohort_summary.tex"
 
 \end_inset
 
 
 \end_layout
 
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Time Series Data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
-	width 50text%
-	groupId 2across
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_cohort.pdf
-	width 50text%
-	groupId 2across
-
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
-status open
-
-\begin_layout Plain Layout
-Time Series Data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
-	width 50text%
-	groupId 2across
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_cohort.pdf
-	width 50text%
-	groupId 2across
-
-\end_inset
-
-
-\begin_inset Note Note
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-need to detrend this +++
+
+
+\backslash
+hyperlink{PathCollPrem}{
+\backslash
+beamergotobutton{Details}}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{PathCollEntry}{
+\backslash
+beamergotobutton{Details}}
 \end_layout
 
 \end_inset
@@ -2033,14 +1968,14 @@ College Entry Over Time
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/beta_iq.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/beta_iq.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/beta_yp.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/beta_yp.pdf
 	width 50text%
 
 \end_inset
@@ -2135,14 +2070,14 @@ Accounting for Changing College Entry
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1915/beta_iq_decomp.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1915/beta_iq_decomp.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1915/beta_yp_decomp.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1915/beta_yp_decomp.pdf
 	width 50text%
 
 \end_inset
@@ -2194,14 +2129,14 @@ College Financing Over Time
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/spending.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/spending.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cohort_compare/income.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/income.pdf
 	width 50text%
 
 \end_inset
@@ -2288,6 +2223,68 @@ sectionHeading{Detail Slides}
 
 \end_layout
 
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+NLSY Replication Results
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "DetailNlsyReplication"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename PaperFigures/ability_coeffs_nlsy79_bi.pdf
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename PaperFigures/inc_coeffs_nlsy79_bi.pdf
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Variation in study design does not systematically affect 
+\begin_inset Formula $\betaIq$
+\end_inset
+
+ or 
+\begin_inset Formula $\betaYp$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
 \begin_layout Subsection
 Calibration
 \end_layout
@@ -2318,7 +2315,7 @@ name "CalibrParams"
 \size footnotesize
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/params/param_tb.tex"
+filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/params/param_tb.tex"
 
 \end_inset
 
@@ -2357,14 +2354,14 @@ name "FitCollegeEntry"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_enter.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_enter.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/yp_enter.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/yp_enter.pdf
 	width 50text%
 
 \end_inset
@@ -2400,14 +2397,14 @@ name "FitCollegeGrad"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_grad.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_grad.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/yp_grad.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/yp_grad.pdf
 	width 50text%
 
 \end_inset
@@ -2443,14 +2440,14 @@ name "FitDebtTransfers"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_debtmean.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_debtmean.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_transfer.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_transfer.pdf
 	width 50text%
 
 \end_inset
@@ -2486,14 +2483,14 @@ name "FitEarnings"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_hours.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_hours.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/exp001/fit/iq_earn.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/exp001/fit/iq_earn.pdf
 	width 50text%
 
 \end_inset
@@ -2529,14 +2526,14 @@ name "Decompose1940"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1940/beta_iq_decomp.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1942/beta_iq_decomp.pdf
 	width 50text%
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/cumulative1940/beta_yp_decomp.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1942/beta_yp_decomp.pdf
 	width 50text%
 
 \end_inset
@@ -2551,6 +2548,106 @@ name "Decompose1940"
 
 \begin_layout Section
 Data Slides
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time Series Data
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "PathCollPrem"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/cps/set001/cohort_lty_premium_logmedian.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/borrow_limit_cohort.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time Series Data
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "PathCollEntry"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/cohort_college.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/collcost_cohort.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+need to detrend this +++
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
 \end_layout
 
 \begin_layout Frame
@@ -2613,7 +2710,7 @@ name "DetailCohortSchooling"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/cohort_college.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/cohort_college.pdf
 	height 80theight%
 	groupId graphFullPage
 
@@ -2643,7 +2740,7 @@ Mean Student Debt
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/debt_mean_year.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/debt_mean_year.pdf
 	height 80theight%
 	groupId graphFullPage
 
@@ -2695,7 +2792,7 @@ name "DetailCollegeCosts"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/collcost_year.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/collcost_year.pdf
 	height 80theight%
 	groupId graphFullPage
 
@@ -2740,7 +2837,7 @@ name "DetailBorrowLimits"
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set007/data/borrow_limit_year.pdf
+	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/data/borrow_limit_year.pdf
 	height 80theight%
 	groupId graphFullPage
 
