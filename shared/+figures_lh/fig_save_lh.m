@@ -91,10 +91,11 @@ end
 
 %% Save figure
 if saveFigures == 1
-   % Fix for slide output
-   if slideOutput == 1
-      fixfig_lh
-   end
+%    % Fix for slide output
+      % broken in newer matlab versions
+%    if slideOutput == 1
+%       figures_lh.fixfig_lh;
+%    end
    
 %    % Make sure figure size is correct
 %    %  Resulting figures are too small (why?)

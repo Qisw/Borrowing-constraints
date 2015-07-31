@@ -66,7 +66,7 @@ for iPlot = 1 : length(figNameV)
    bar(yM, 'stacked');
    xlabel('Cohort');
    ylabel(yLabelV{iPlot});
-   legend(legendV{iPlot}, 'location', 'southoutside');
+   legend(legendV{iPlot}, 'location', 'southoutside',  'orientation', 'horizontal');
    set(gca, 'XTickLabel', expStrV);
    output_bc1.fig_format(fh, 'bar');
    output_bc1.fig_save(fullfile(outDir, figNameV{iPlot}), saveFigures, cS);

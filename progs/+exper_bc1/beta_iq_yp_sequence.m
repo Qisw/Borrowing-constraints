@@ -14,6 +14,7 @@ IN
 %}
 
 cS = const_bc1(setNoV(1));
+figS = const_fig_bc1;
 symS = helper_bc1.symbols;
 tgS = var_load_bc1(cS.vCalTargets, cS);
 nx = length(setNoV);
@@ -89,9 +90,17 @@ for iPlot = 1 : 2
       figFn = 'beta_yp_decomp';
    end
       
-   fh = output_bc1.fig_new(saveFigures, []);
+   % Must be wide because of long labels
+   figOptS = figS.figOptS;
+   if iPlot == 1
+      figOptS.width = figOptS.width * 1.5;
+   end
+   fh = output_bc1.fig_new(saveFigures, figOptS);
    barh(yV);
-   set(gca, 'YTickLabel', caseStrV(showIdxV));
+   if iPlot == 1
+      % graphs are shown side-by-side; only 1 needs case descriptions
+      set(gca, 'YTickLabel', caseStrV(showIdxV));
+   end
    xlabel(xStr);
    output_bc1.fig_format(fh, 'bar');
    output_bc1.fig_save(fullfile(outDir, figFn), saveFigures, cS);

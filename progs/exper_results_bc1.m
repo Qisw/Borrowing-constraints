@@ -36,7 +36,7 @@ function time_series(setNo)
 
    % Compare cohort outcomes
    cfExpNoV = fliplr(cS.bYearExpNoV(~isnan(cS.bYearExpNoV)));
-   expNoV = [cS.expBase, cfExpNoV];  
+   expNoV = flip([cS.expBase, cfExpNoV]);  
    outDir = fullfile(cS.setOutDir, 'cohort_compare');
    exper_bc1.compare(setNo .* ones(size(expNoV)), expNoV, outDir);
    

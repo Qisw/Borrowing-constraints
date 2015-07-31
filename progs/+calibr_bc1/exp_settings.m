@@ -76,7 +76,7 @@ return;
 %% Nested:  Base experiments: calibrate everything to match all targets
 function base_exper
    if expNo == cS.expBase
-      expS.expStr = 'Baseline';
+      expS.expStr = '1979';
       % Parameters with these values of doCal are calibrated
       doCalV = cS.calBase;
       iCohort = cS.iRefCohort;  
@@ -216,7 +216,7 @@ function time_series
    if any(expNo == cS.bYearExpNoV)
       % ******  Calibrate all time varying params
       iCohort = find(expNo == cS.bYearExpNoV);
-      expS.expStr = sprintf('Cohort %i', cS.cohYearV(iCohort));
+      expS.expStr = sprintf('%i', cS.cohYearV(iCohort));
       
       % Signal noise
       % pvec = pvec.calibrate('alphaAM', cS.calExp);

@@ -91,6 +91,7 @@ for iPlot = 1 : 2
    set(gca, 'XTickLabel', caseStrV);
    xlabel('Cohort');
    ylabel(yStr);
+   figures_lh.axis_range_lh([NaN, NaN, 0, 0.8]);
    legend({'Model', 'Data'}, 'location', 'southoutside', 'orientation', 'horizontal');
    output_bc1.fig_format(fh, 'bar');
    output_bc1.fig_save(fullfile(outDir, figFn), saveFigures, cS);

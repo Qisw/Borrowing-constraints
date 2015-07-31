@@ -25,4 +25,4 @@ Debt stats computed both ways
 Financial stats
   Fraction of spending paid by earnings: 0.27   debt: 0.00   transfers: 0.96 
 Model:    betaIq:  0.25    betaYp:  0.36 
-Data:     betaIq:  0.21    betaYp:  0.68 
+Data:     betaIq:  0.21    betaYp:  0.61 

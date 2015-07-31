@@ -1,5 +1,8 @@
 function fh = new(optS, visible)
 % open a new figure window
+%{
+optS contains figure size
+%}
 % --------------------------
 
 if visible == 1

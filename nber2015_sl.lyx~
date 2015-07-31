@@ -44,8 +44,8 @@
 \use_package stackrel 0
 \use_package stmaryrd 0
 \use_package undertilde 0
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type authoryear
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -216,11 +216,11 @@ student loans
 \end_layout
 
 \begin_layout Itemize
-college costs
+college wage premium
 \end_layout
 
 \begin_layout Itemize
-college wage premium
+college costs
 \end_layout
 
 \end_deeper
@@ -446,14 +446,6 @@ access to micro data
 Project Talent, NLSY
 \end_layout
 
-\begin_layout Itemize
-ability measured by standardized test scores
-\end_layout
-
-\begin_layout Itemize
-family background measured by income
-\end_layout
-
 \begin_layout Standard
 
 \series bold
@@ -468,12 +460,17 @@ no micro data
 published cross-tabulations of college entry rates
 \end_layout
 
-\begin_layout Itemize
-ability: test scores or class rank
+\begin_layout Standard
+Measurement:
 \end_layout
 
 \begin_layout Itemize
-family background: income or socioeconomic status
+Family background: parental income or socioeconomic status (SES)
+\end_layout
+
+\begin_layout Itemize
+Student ability: standardized test scores (e.g.
+ AFQT) or class rank
 \end_layout
 
 \end_deeper
@@ -570,8 +567,11 @@ Percentiles are bin midpoints.
 status open
 
 \begin_layout Plain Layout
-Importance of Background vs.
- Ability
+The Role of Student Ability: 
+\begin_inset Formula $\betaIq$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -589,7 +589,7 @@ Importance of Background vs.
 
 
 \begin_inset Graphics
-	filename PaperFigures/inc_coeffs_orig_uni.pdf
+	filename PaperFigures/ability_coeffs_orig_uni.pdf
 	width 50text%
 
 \end_inset
@@ -608,7 +608,7 @@ Importance of Background vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ability
+Bivariate regressions
 \end_layout
 
 \end_inset
@@ -617,7 +617,7 @@ Ability
 \begin_inset Text
 
 \begin_layout Plain Layout
-Family background
+Univariate regressions
 \end_layout
 
 \end_inset
@@ -628,22 +628,51 @@ Family background
 \end_inset
 
 
-\begin_inset VSpace defskip
+\begin_inset VSpace bigskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-Coefficients from 
+Result 1: The 
+\begin_inset Quotes eld
+\end_inset
+
+role
+\begin_inset Quotes erd
+\end_inset
+
+ of student 
 \series bold
-bivariate
+ability rises
 \series default
- regressions (entry rates on ability 
-\series bold
-and
-\series default
- family background)
+ over time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hyperlink{MenWomen}{
+\backslash
+beamergotobutton{Men vs women}}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -656,8 +685,11 @@ and
 status open
 
 \begin_layout Plain Layout
-Importance of Background vs.
- Ability
+The Role of Family Background: 
+\begin_inset Formula $\betaYp$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -668,7 +700,7 @@ Importance of Background vs.
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename PaperFigures/ability_coeffs_orig_uni.pdf
+	filename PaperFigures/inc_coeffs_orig_bi.pdf
 	width 50text%
 
 \end_inset
@@ -694,7 +726,7 @@ Importance of Background vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ability
+Bivariate regressions
 \end_layout
 
 \end_inset
@@ -703,7 +735,7 @@ Ability
 \begin_inset Text
 
 \begin_layout Plain Layout
-Family background
+Univariate regressions
 \end_layout
 
 \end_inset
@@ -714,22 +746,30 @@ Family background
 \end_inset
 
 
-\begin_inset VSpace defskip
+\begin_inset VSpace bigskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-Coefficients from 
+Result 2: The 
+\begin_inset Quotes eld
+\end_inset
+
+role
+\begin_inset Quotes erd
+\end_inset
+
+ of 
 \series bold
-univariate
+family
 \series default
- regressions (entry rates on ability 
+ background (weakly) 
 \series bold
-or
+declines
 \series default
- family background)
+ over time.
 \end_layout
 
 \end_deeper
@@ -799,7 +839,7 @@ Example: Updegraff (1936)
 
 
 \begin_inset Graphics
-	filename /users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/exp001/updegraff_nlsy.pdf
+	filename /users/lutz/dropbox/hc/borrow_constraints/model1/out/set007/data/updegraff_nlsy.pdf
 	width 50text%
 
 \end_inset
@@ -955,7 +995,7 @@ sectionHeading{Model}
 status open
 
 \begin_layout Plain Layout
-Model Overview
+Model Timing
 \end_layout
 
 \end_inset
@@ -965,73 +1005,13 @@ Model Overview
 
 \begin_deeper
 \begin_layout Standard
-We follow one cohort from high school graduation to retirement.
-\end_layout
+\begin_inset Graphics
+	filename model_flow.pdf
+	height 90theight%
 
-\begin_layout Standard
-Timing:
-\end_layout
-
-\begin_layout Enumerate
-Choose between 
-\series bold
-college
-\series default
- entry or 
-\series bold
-work
-\series default
- as high school graduate.
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-family income is used for parental consumption or transfer to child
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Years 1-2 in college:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-choose consumption, saving, leisure, work hours
-\begin_inset Newline newline
 \end_inset
 
-subject to a borrowing constraint
-\end_layout
 
-\end_deeper
-\begin_layout Enumerate
-At the end of year 2:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-a subset of students 
-\series bold
-drops out
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Years 3-4 in college:
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-similar to years 1-2
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Work as college 
-\series bold
-graduate
-\series default
- starting in year 5
 \end_layout
 
 \end_deeper
@@ -1054,19 +1034,7 @@ Endowments
 
 \begin_deeper
 \begin_layout Standard
-Each family is endowed with a type 
-\begin_inset Formula $j\in\left\{ 1,...,J\right\} $
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-All agents of type 
-\begin_inset Formula $j$
-\end_inset
-
- share the same values for
+At high school graduation, students draw:
 \end_layout
 
 \begin_layout Itemize
@@ -1127,7 +1095,7 @@ College Entry Decision
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\max\{\underset{\mbox{work as HSG}}{\underbrace{V_{HS}\left(j\right)-\prefScaleEntry\prefShockEntry_{w}}},\underset{\mbox{enter college}}{\underbrace{V_{entry}\left(j\right)-\prefScaleEntry\prefShockEntry_{c}}}\}
+\max\{\underset{\mbox{work as HSG}}{\underbrace{V_{HS}\left(\famIncome,\abilSignal\right)-\prefScaleEntry\prefShockEntry_{w}}},\underset{\mbox{enter college}}{\underbrace{V_{entry}\left(\famIncome,\collCost,\abilSignal\right)-\prefScaleEntry\prefShockEntry_{c}}}\}
 \end{equation}
 
 \end_inset
@@ -1168,7 +1136,7 @@ Value of working as HSG:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{HS}\left(j\right)=\max_{z_{w}\ge0}u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{a}\left\{ V_{w}\left(z_{w},HS,\ability\right)|j\right\} +\prefHS
+V_{HS}\left(\famIncome,\abilSignal\right)=\max_{z_{w}\ge0}u_{p}\left(\famIncome-z_{w}\right)+\mathbb{E}_{\ability}\left\{ V_{w}\left(z_{w},HS,\ability\right)|\abilSignal\right\} +\prefHS
 \end{equation}
 
 \end_inset
@@ -1285,7 +1253,7 @@ Value of College Entry
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{entry}\left(j\right)=\max_{z_{c}\ge0}u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(z_{c},j\right)
+V_{entry}\left(\famIncome,\collCost,\abilSignal\right)=\max_{z_{c}\ge0}u_{p}\left(\famIncome-z_{c}\right)+V_{1}\left(z_{c},\collCost,\abilSignal\right)
 \end{equation}
 
 \end_inset
@@ -1315,7 +1283,7 @@ Years 1-2 In College
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-V_{1}\left(k,j\right)=\max_{k',c,l}\left(1+\beta\right)u\left(c+\cColl_{j},1+\lColl_{j}-l\right)+\beta^{2}V_{m}\left(k',j\right)
+V_{1}\left(k,\collCost,\abilSignal\right)=\max_{k',c,l}\left(1+\beta\right)u\left(c+\cColl_{\abilSignal},1+\lColl_{\abilSignal}-l\right)+\beta^{2}V_{m}\left(k',\collCost,\abilSignal\right)
 \end{equation}
 
 \end_inset
@@ -1337,7 +1305,7 @@ budget constraint:
 \noun off
 \color none
 
-\begin_inset Formula $k'=Rk+2\left(\collegeWage l-\collCost_{j}-c\right)$
+\begin_inset Formula $k'=Rk+2\left(\collegeWage l-\collCost-c\right)$
 \end_inset
 
 
@@ -1352,7 +1320,7 @@ borrowing constraint:
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\cColl_{j},\lColl_{j}$
+\begin_inset Formula $\cColl,\lColl$
 \end_inset
 
 : increasing in 
@@ -1409,7 +1377,7 @@ Otherwise: remain in college for 2 more years.
 Continuation value:
 \begin_inset Formula 
 \begin{equation}
-V_{m}\left(k,j\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right]\right)V_{w}\left(k,\ability,CD\right)+\pi\left[\ability\right]V_{3}\left(k,j\right)\right]
+V_{m}\left(k,\collCost,\abilSignal\right)=\mathbb{E}_{\ability}\left[\left(1-\pi\left[\ability\right]\right)V_{w}\left(k,\ability,CD\right)+\pi\left[\ability\right]V_{3}\left(k,\collCost,\abilSignal\right)\right]
 \end{equation}
 
 \end_inset
@@ -1439,7 +1407,7 @@ Years 3-4 In College
 \begin_layout Standard
 \begin_inset Formula 
 \[
-V_{3}\left(k,j\right)=\max_{k',c,l}\left(1+\beta\right)u(c+\cColl_{j},1+\lColl_{j}-l)+\beta^{2}\mathbb{E}_{\ability}V_{w}\left(k',\ability,CG\right)
+V_{3}\left(k,\collCost,\abilSignal\right)=\max_{k',c,l}\left(1+\beta\right)u(c+\cColl_{\abilSignal},1+\lColl_{\abilSignal}-l)+\beta^{2}\mathbb{E}_{\ability}V_{w}\left(k',\ability,CG\right)
 \]
 
 \end_inset
@@ -1495,7 +1463,7 @@ NLSY79
 \end_layout
 
 \begin_layout Itemize
-High school graduates in 1979
+High school graduates around 1979
 \begin_inset VSpace defskip
 \end_inset
 
@@ -1511,15 +1479,23 @@ Calibrate a subset of
 \series bold
 time-varying
 \series default
- parameters for high school graduates in
+ parameters for high school graduates around
 \end_layout
 
 \begin_layout Itemize
-1960: Project Talent data
+
+\series bold
+1960
+\series default
+: Project Talent data
 \end_layout
 
 \begin_layout Itemize
-1933: Updegraff (1936) data
+
+\series bold
+1933
+\series default
+: Updegraff (1936) data
 \end_layout
 
 \end_deeper
@@ -1705,6 +1681,17 @@ beamergotobutton{Details}}
 \end_layout
 
 \begin_layout Standard
+24 calibrated parameters -- 111 moments
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Fit: 
 \begin_inset ERT
 status open
@@ -1788,13 +1775,9 @@ Time Series Calibration
 
 \begin_deeper
 \begin_layout Standard
-We compare 3 cohorts:
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "/Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/cohort_summary.tex"
+filename "PaperFigures/cohort_characteristics.tex"
 
 \end_inset
 
@@ -1818,7 +1801,7 @@ status open
 \backslash
 hyperlink{PathCollPrem}{
 \backslash
-beamergotobutton{Details}}
+beamergotobutton{College premium}}
 \end_layout
 
 \end_inset
@@ -1833,79 +1816,27 @@ status open
 \backslash
 hyperlink{PathCollEntry}{
 \backslash
-beamergotobutton{Details}}
+beamergotobutton{Entry rates}}
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\end_deeper
-\begin_layout Separator
-
-\end_layout
-
-\begin_layout Frame
-\begin_inset Argument 4
+ 
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-Time-Series Calibration
+
+
+\backslash
+hyperlink{TimeVaryingParams}{
+\backslash
+beamergotobutton{Parameters}}
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_deeper
-\begin_layout Standard
-Time-varying parameters:
-\end_layout
-
-\begin_layout Itemize
-borrowing limit: 
-\begin_inset Formula $k_{min}$
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Itemize
-mean college cost: 
-\begin_inset Formula $\pMean$
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Itemize
-lifetime earnings gap by schooling: 
-\begin_inset Formula $\bar{\pvEarn}\left(s\right)$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-taste for college: 
-\begin_inset Formula $\prefHS$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-parental altruism (to match share of college costs paid by 
-\begin_inset Quotes eld
-\end_inset
-
-family contributions
-\begin_inset Quotes erd
-\end_inset
-
-)
 \end_layout
 
 \end_deeper
@@ -1957,7 +1888,7 @@ sectionHeading{Results}
 status open
 
 \begin_layout Plain Layout
-College Entry Over Time
+College Entry Patterns Over Time
 \end_layout
 
 \end_inset
@@ -1988,7 +1919,7 @@ Financial conditions account for
 \end_layout
 
 \begin_layout Itemize
-3/4 of the change in 
+90% of the change in 
 \begin_inset Formula $\betaIq$
 \end_inset
 
@@ -1996,7 +1927,7 @@ Financial conditions account for
 \end_layout
 
 \begin_layout Itemize
-1/6 of the change in 
+none of the change in 
 \begin_inset Formula $\betaYp$
 \end_inset
 
@@ -2071,14 +2002,14 @@ Accounting for Changing College Entry
 \begin_layout Standard
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1915/beta_iq_decomp.pdf
-	width 50text%
+	height 50theight%
 
 \end_inset
 
 
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1915/beta_yp_decomp.pdf
-	width 50text%
+	height 50theight%
 
 \end_inset
 
@@ -2129,8 +2060,9 @@ College Financing Over Time
 \begin_deeper
 \begin_layout Standard
 \begin_inset Graphics
-	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cohort_compare/spending.pdf
+	filename out/set005/cohort_compare/spending.pdf
 	width 50text%
+	groupId 2across
 
 \end_inset
 
@@ -2166,7 +2098,7 @@ Conclusion
 status open
 
 \begin_layout Plain Layout
-Conclusion
+Future Work
 \end_layout
 
 \end_inset
@@ -2175,10 +2107,40 @@ Conclusion
 \end_layout
 
 \begin_deeper
-\begin_layout Standard
-x
+\begin_layout Itemize
+NLSY97 data
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+\begin_inset CommandInset citation
+LatexCommand cite
+key "BelleyLochner2007"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "LochnerMonge2011"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Additional driving forces
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+e.g.
+ standardized testing
+\end_layout
+
+\end_deeper
 \end_deeper
 \begin_layout Separator
 
@@ -2287,6 +2249,76 @@ Variation in study design does not systematically affect
 
 \begin_layout Subsection
 Calibration
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Time-Varying Parameters
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "TimeVaryingParams"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+borrowing limit: 
+\begin_inset Formula $k_{min}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+mean college cost: 
+\begin_inset Formula $\pMean$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+lifetime earnings gap by schooling: 
+\begin_inset Formula $\bar{\pvEarn}\left(s\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+taste for college: 
+\begin_inset Formula $\prefHS$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+parental altruism (to match share of college costs paid by 
+\begin_inset Quotes eld
+\end_inset
+
+family contributions
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
 \end_layout
 
 \begin_layout Frame
@@ -2527,14 +2559,14 @@ name "Decompose1940"
 \begin_layout Standard
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1942/beta_iq_decomp.pdf
-	width 50text%
+	height 50theight%
 
 \end_inset
 
 
 \begin_inset Graphics
 	filename /Users/lutz/Dropbox/hc/borrow_constraints/model1/out/set005/cumulative1942/beta_yp_decomp.pdf
-	width 50text%
+	height 50theight%
 
 \end_inset
 
@@ -2548,6 +2580,51 @@ name "Decompose1940"
 
 \begin_layout Section
 Data Slides
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Men vs Women
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "MenWomen"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename PaperFigures/ability_coeffs_orig_with_genders.pdf
+	height 80theight%
+	groupId graphFullPage
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename PaperFigures/inc_coeffs_orig_with_genders.pdf
+	width 50text%
+	groupId 2across
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
 \end_layout
 
 \begin_layout Frame

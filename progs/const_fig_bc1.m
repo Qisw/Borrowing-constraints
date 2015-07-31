@@ -11,18 +11,24 @@ fileFormat = 'pdf';
 
 
 % Slide output?
-cS.slideOutput = 0;
+cS.slideOutput = false;
 
 
 
 %% Fonts
 
+if cS.slideOutput
+   fontSizeFactor = 1.35;
+else
+   fontSizeFactor = 1;
+end
+
 % Font size for legend, xlabels, axes
-cS.figFontSize = 10;
+cS.figFontSize = 10 * fontSizeFactor;
 cS.figFontName = 'Times';
-cS.legendFontSize = 10;
+cS.legendFontSize = 10 * fontSizeFactor;
 % Font size for latex must be a little larger
-cS.latexFontSize = 12;
+cS.latexFontSize = 12 * fontSizeFactor;
 
 
 %% Figure options / sizes
@@ -35,12 +41,12 @@ if strcmpi(fileFormat, 'pdf')
    % Extension
    cS.figExt = '.pdf';
    cS.figOptS = struct('height', figHeight, 'width', figWidth, 'color', 'rgb', 'Format', 'pdf', ...
-      'FontSize', 1, 'FontMode', 'scaled');
+      'FontSize', 1 * fontSizeFactor, 'FontMode', 'scaled');
 elseif strcmpi(fileFormat, 'eps')
    % Extension
    cS.figExt = '.eps';
    cS.figOptS = struct('preview', 'tiff', 'height', figWidth, 'width', figWidth, 'color', 'rgb', 'Format', 'eps', ...
-      'FontSize', 1, 'FontMode', 'scaled');   
+      'FontSize', 1 * fontSizeFactor, 'FontMode', 'scaled');   
 else
    error('Invalid');
 end

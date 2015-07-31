@@ -28,7 +28,7 @@ cS.latexFontSize = 12;
 % Sizes must be consistent with what's used in the paper. Otherwise fonts
 % get scaled
 figHeight = 3; % inches
-figWidth  = 3;
+figWidth  = figHeight * 1.61;
 if strcmpi(fileFormat, 'pdf')
    % Extension
    cS.figExt = '.pdf';
